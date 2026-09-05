@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vihara - Trip Overview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#000000",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#b9c7e4",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#2e1500",
+                        "surface-container-low": "#f4f4ef",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#dadad5",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#ffe088",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#c66d00",
+                        "inverse-on-surface": "#f1f1ec",
+                        "surface-tint": "#515f78",
+                        "on-primary-fixed": "#0d1c32",
+                        "on-primary-container": "#76849f",
+                        "secondary": "#735c00",
+                        "surface-container-highest": "#e3e3de",
+                        "background": "#fafaf5",
+                        "tertiary-fixed-dim": "#ffb77a",
+                        "inverse-surface": "#2f312e",
+                        "surface-variant": "#e3e3de",
+                        "on-background": "#1a1c19",
+                        "on-tertiary-fixed": "#2e1500",
+                        "surface-container": "#eeeee9",
+                        "surface-container-high": "#e8e8e3",
+                        "primary-container": "#0d1c32",
+                        "primary": "#000000",
+                        "on-secondary-fixed-variant": "#574500",
+                        "on-primary-fixed-variant": "#39475f",
+                        "primary-fixed": "#d6e3ff",
+                        "on-surface": "#1a1c19",
+                        "surface": "#fafaf5",
+                        "secondary-fixed-dim": "#e9c349",
+                        "tertiary-fixed": "#ffdcc2",
+                        "primary-fixed-dim": "#b9c7e4",
+                        "secondary-container": "#fed65b",
+                        "surface-bright": "#fafaf5",
+                        "on-secondary-fixed": "#241a00",
+                        "on-tertiary-fixed-variant": "#6d3a00",
+                        "outline-variant": "#c5c6cd",
+                        "outline": "#75777e",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#44474d",
+                        "on-secondary-container": "#745c00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "lg": "48px",
+                        "xl": "80px",
+                        "margin-mobile": "20px",
+                        "gutter": "24px",
+                        "base": "8px",
+                        "sm": "12px",
+                        "margin-desktop": "64px",
+                        "md": "24px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Montserrat"],
+                        "label-caps": ["Montserrat"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "caption": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #F5F5F0; }
+        .heritage-border-top { border-top: 4px solid #000000; border-image: repeating-linear-gradient(45deg, #000000, #000000 10px, transparent 10px, transparent 20px) 1; }
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .lotus-corner { border-top-right-radius: 1.5rem; }
+        .gold-border { border: 1px solid rgba(212, 175, 55, 0.3); }
+        .tab-active { border-bottom: 2px solid #735c00; color: #735c00; font-weight: 600; }
+        .tab-inactive { color: #44474d; }
+    </style>
+</head>
+<body class="font-body-md text-on-surface antialiased">
+<!-- TopNavBar -->
+<header class="bg-surface/80 backdrop-blur-md text-primary font-headline-md text-headline-md fixed top-0 w-full border-b border-secondary/30 shadow-sm z-50">
+<div class="flex justify-between items-center px-margin-desktop py-4 max-w-7xl mx-auto w-full z-50">
+<div class="font-headline-md text-headline-md font-bold text-primary">Vihara</div>
+<nav class="hidden md:flex gap-gutter items-center">
+<a class="text-on-surface-variant hover:text-secondary transition-colors duration-200 text-body-md font-body-md" href="#">Explore</a>
+<a class="text-secondary font-semibold border-b-2 border-secondary text-body-md font-body-md" href="#">Trips</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors duration-200 text-body-md font-body-md" href="#">Saved</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors duration-200 text-body-md font-body-md" href="#">Profile</a>
+</nav>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg text-body-md font-body-md hover:opacity-90 transition-opacity">Login</button>
+</div>
+<div class="h-1 w-full" style="background: repeating-linear-gradient(45deg, #0d1c32, #0d1c32 10px, #D4AF37 10px, #D4AF37 20px);"></div>
+</header>
+<main class="pt-[100px] pb-xl px-margin-desktop max-w-7xl mx-auto">
+<!-- Trip Summary Hero -->
+<section class="mb-lg mt-md">
+<div class="glass-card rounded-xl shadow-[0_16px_48px_rgba(10,25,47,0.12)] p-lg flex flex-col md:flex-row items-center justify-between gold-border">
+<div>
+<span class="font-label-caps text-label-caps text-secondary tracking-widest uppercase mb-base block">Upcoming Journey</span>
+<h1 class="font-display-lg text-display-lg text-primary mb-sm">The Golden Triangle &amp; Beyond</h1>
+<div class="flex gap-md text-on-surface-variant font-body-md text-body-md">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">calendar_month</span> 14 Days</span>
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">group</span> 2 Travelers</span>
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">category</span> Heritage &amp; Culture</span>
+</div>
+</div>
+<div class="mt-md md:mt-0">
+<button class="bg-secondary text-on-primary px-6 py-3 rounded-lg font-body-md text-body-md shadow-md hover:bg-secondary/90 transition-colors">Book Now</button>
+</div>
+</div>
+</section>
+<!-- Tabs -->
+<nav class="flex gap-md border-b border-surface-variant mb-lg overflow-x-auto">
+<button class="pb-2 px-4 tab-active font-body-md text-body-md transition-colors" onclick="switchTab('itinerary', this)">Itinerary</button>
+<button class="pb-2 px-4 tab-inactive font-body-md text-body-md hover:text-secondary transition-colors" onclick="switchTab('routes', this)">Routes</button>
+<button class="pb-2 px-4 tab-inactive font-body-md text-body-md hover:text-secondary transition-colors" onclick="switchTab('budget', this)">Budget</button>
+<button class="pb-2 px-4 tab-inactive font-body-md text-body-md hover:text-secondary transition-colors" onclick="switchTab('places', this)">Places</button>
+</nav>
+<!-- Tab Content: Itinerary -->
+<section class="tab-content block" id="itinerary">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="col-span-1 md:col-span-4 border-l-2 border-surface-variant pl-md relative space-y-xl">
+<!-- Day 1 -->
+<div class="relative">
+<div class="absolute -left-[29px] top-1 w-4 h-4 rounded-full bg-secondary border-2 border-surface"></div>
+<h3 class="font-headline-md text-headline-md text-primary mb-xs">Day 1: Delhi Arrival</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm">Check-in and evening at India Gate.</p>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest p-4 rounded-lg shadow-sm gold-border">
+<span class="font-label-caps text-label-caps text-secondary block mb-1">14:00</span>
+<span class="font-body-md text-body-md text-primary font-medium">Check-in at Imperial Hotel</span>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-lg shadow-sm gold-border">
+<span class="font-label-caps text-label-caps text-secondary block mb-1">18:00</span>
+<span class="font-body-md text-body-md text-primary font-medium">Sunset at India Gate</span>
+</div>
+</div>
+</div>
+<!-- Day 2 -->
+<div class="relative">
+<div class="absolute -left-[29px] top-1 w-4 h-4 rounded-full bg-surface-variant border-2 border-surface"></div>
+<h3 class="font-headline-md text-headline-md text-primary mb-xs">Day 2: Old Delhi Exploration</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm">Red Fort and Chandni Chowk.</p>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest p-4 rounded-lg shadow-sm gold-border">
+<span class="font-label-caps text-label-caps text-secondary block mb-1">09:00</span>
+<span class="font-body-md text-body-md text-primary font-medium">Red Fort Guided Tour</span>
+</div>
+</div>
+</div>
+</div>
+<div class="col-span-1 md:col-span-8">
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_8px_24px_rgba(10,25,47,0.04)] p-md h-full min-h-[400px] flex items-center justify-center border border-surface-variant">
+<div class="text-center">
+<span class="material-symbols-outlined text-[48px] text-surface-variant mb-4">map</span>
+<p class="font-body-md text-body-md text-on-surface-variant">Select a day to view detailed route map</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tab Content: Routes (Hidden) -->
+<section class="tab-content hidden" id="routes">
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_8px_24px_rgba(10,25,47,0.04)] p-lg gold-border">
+<h2 class="font-headline-md text-headline-md text-primary mb-md">Travel Sequence</h2>
+<div class="space-y-md">
+<div class="flex items-center gap-md">
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center"><span class="material-symbols-outlined">flight_land</span></div>
+<div class="h-16 w-[2px] bg-surface-variant my-2"></div>
+</div>
+<div class="pb-16">
+<h4 class="font-headline-md text-body-lg text-primary">Delhi</h4>
+<p class="font-body-md text-caption text-on-surface-variant">Arrival Point</p>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-surface-container text-on-surface flex items-center justify-center"><span class="material-symbols-outlined">train</span></div>
+<div class="h-16 w-[2px] bg-surface-variant my-2"></div>
+</div>
+<div class="pb-16">
+<h4 class="font-headline-md text-body-lg text-primary">Agra</h4>
+<p class="font-body-md text-caption text-on-surface-variant">Vande Bharat Express (2h 15m) • 233 km</p>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-surface-container text-on-surface flex items-center justify-center"><span class="material-symbols-outlined">directions_car</span></div>
+</div>
+<div>
+<h4 class="font-headline-md text-body-lg text-primary">Jaipur</h4>
+<p class="font-body-md text-caption text-on-surface-variant">Private Transfer (4h 30m) • 240 km</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tab Content: Budget (Hidden) -->
+<section class="tab-content hidden" id="budget">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_8px_24px_rgba(10,25,47,0.04)] p-lg gold-border flex flex-col justify-center items-center">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-2">Estimated Total</p>
+<h2 class="font-display-lg text-display-lg text-primary">₹1,45,000</h2>
+<p class="font-body-md text-caption text-on-surface-variant mt-2">For 2 travelers over 14 days</p>
+</div>
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_8px_24px_rgba(10,25,47,0.04)] p-lg gold-border">
+<h3 class="font-headline-md text-headline-md text-primary mb-md">Breakdown</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center border-b border-surface-variant pb-2">
+<span class="font-body-md text-body-md text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-secondary">hotel</span> Accommodation</span>
+<span class="font-body-md text-body-md text-primary font-medium">₹85,000</span>
+</div>
+<div class="flex justify-between items-center border-b border-surface-variant pb-2">
+<span class="font-body-md text-body-md text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-secondary">directions_car</span> Transport</span>
+<span class="font-body-md text-body-md text-primary font-medium">₹25,000</span>
+</div>
+<div class="flex justify-between items-center border-b border-surface-variant pb-2">
+<span class="font-body-md text-body-md text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-secondary">restaurant</span> Food &amp; Dining</span>
+<span class="font-body-md text-body-md text-primary font-medium">₹20,000</span>
+</div>
+<div class="flex justify-between items-center border-b border-surface-variant pb-2">
+<span class="font-body-md text-body-md text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-secondary">local_activity</span> Experiences</span>
+<span class="font-body-md text-body-md text-primary font-medium">₹15,000</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tab Content: Places -->
+<section class="tab-content hidden" id="places">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_8px_24px_rgba(10,25,47,0.04)] overflow-hidden lotus-corner relative group">
+<div class="h-1 w-full bg-secondary absolute top-0 left-0 z-10"></div>
+<div class="h-48 w-full bg-surface-variant relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A majestic, high-resolution daytime photograph of the Taj Mahal in Agra. The pristine white marble monument stands elegantly against a clear, vibrant blue sky. The reflecting pool in the foreground mirrors the structure perfectly. The lighting is bright and even, highlighting the intricate details of the architecture. The scene conveys a sense of grandeur and historical heritage, fitting a luxury travel aesthetic." src="https://lh3.googleusercontent.com/aida/AEtjO1ULqJax3w-Z6sdFN13KduAij-QcFISG02BfvtwfYgJgjrZhhiQMWVJKqB9I-koapjegmDkiRrDRBF67liAlXsLKNJKlhd68G1X6H8TChbv24JK9uz1aSc-7y27nS22jFmjkJPVI3pzfWxL7mGBXDQd7u76goBsXco3_jyD0jAawa1V3j_XsJEa0Ck5br4fqJ5EQyYqth6gDZN57n6ddocG7PCSK---RQw6fcsDWNtQLnkEe40lPR4_2CHM"/>
+<div class="absolute top-2 right-2 w-8 h-8 rounded-full bg-secondary border border-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-primary">verified</span>
+</div>
+</div>
+<div class="p-md">
+<h3 class="font-headline-md text-headline-md text-primary mb-xs">Taj Mahal</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">An ivory-white marble mausoleum on the right bank of the river Yamuna in Agra, a universally admired masterpiece.</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_8px_24px_rgba(10,25,47,0.04)] overflow-hidden lotus-corner relative group">
+<div class="h-1 w-full bg-secondary absolute top-0 left-0 z-10"></div>
+<div class="h-48 w-full bg-surface-variant relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A wide-angle, high-quality photograph of the Amber Fort in Jaipur during late afternoon. The imposing structure, built of pale yellow and pink sandstone, is bathed in warm, golden hour sunlight. The intricate defensive walls wind up the rugged hillside. The mood is historic and majestic, emphasizing grand Indian architecture in a refined, high-end travel style." src="https://lh3.googleusercontent.com/aida/AEtjO1WrckajU2LfFdt5ddpZpjQJ5omKxrBM9wiU1D1EPPD4hJ_PeA6mHQTStVaqwSGPVc87Ocd1XXn5uwY3DYO-QBuyb3wFqW_FzJFFoz4snUPmnfxXFgw33GPaWcv8EAqDwj8vQE1CSFYHfL0uV1gkr1Z39Qty64_zuZyspG2e7sj7qDC5z4o1-UgUxy4ZAtYVXBxrBx7-d5tr-nASfBLe1Dqhw1I1d-t32qa3dMNfpIaQhcZSK-F_EgA3mz0"/>
+</div>
+<div class="p-md">
+<h3 class="font-headline-md text-headline-md text-primary mb-xs">Amber Fort</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Known for its artistic style elements, the fort overlooks Maota Lake, which is the main source of water for the Amer Palace.</p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_8px_24px_rgba(10,25,47,0.04)] overflow-hidden lotus-corner relative group">
+<div class="h-48 w-full bg-surface-variant relative overflow-hidden flex items-center justify-center">
+<span class="material-symbols-outlined text-[48px] text-surface-dim">image</span>
+</div>
+<div class="p-md">
+<h3 class="font-headline-md text-headline-md text-primary mb-xs">Hawa Mahal</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">The Palace of Winds, built from red and pink sandstone, designed to allow royal ladies to observe everyday street life.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-tertiary-container dark:bg-tertiary-container text-on-tertiary-container dark:text-tertiary-fixed font-body-md text-body-md relative w-full border-t-4 border-secondary py-xl px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-md">
+<div class="font-headline-md text-headline-md text-secondary">Vihara</div>
+<nav class="flex gap-4">
+<a class="text-on-tertiary-container/80 hover:text-secondary-fixed transition-colors font-label-caps text-label-caps" href="#">About</a>
+<a class="text-on-tertiary-container/80 hover:text-secondary-fixed transition-colors font-label-caps text-label-caps" href="#">Heritage Guide</a>
+<a class="text-on-tertiary-container/80 hover:text-secondary-fixed transition-colors font-label-caps text-label-caps" href="#">Support</a>
+<a class="text-on-tertiary-container/80 hover:text-secondary-fixed transition-colors font-label-caps text-label-caps" href="#">Privacy</a>
+</nav>
+<div class="text-sm">© 2024 Vihara Heritage Travel. All rights reserved.</div>
+</footer>
+<!-- BottomNavBar (Hidden on Desktop) -->
+<nav class="md:hidden bg-surface dark:bg-surface-container text-secondary dark:text-secondary-fixed font-label-caps text-label-caps fixed bottom-0 w-full rounded-t-full border-t border-secondary/30 shadow-[0_-8px_24px_rgba(10,25,47,0.04)] z-50 flex justify-around items-center px-margin-mobile pb-6 pt-3">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-inverse-surface rounded-xl px-3 py-1" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span>Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim bg-secondary-container/20 rounded-xl px-3 py-1 scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">travel_explore</span>
+<span>Trips</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-inverse-surface rounded-xl px-3 py-1" href="#">
+<span class="material-symbols-outlined">favorite</span>
+<span>Saved</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-inverse-surface rounded-xl px-3 py-1" href="#">
+<span class="material-symbols-outlined">person_outline</span>
+<span>Profile</span>
+</a>
+</nav>
+<script>
+        function switchTab(tabId, element) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+                content.classList.remove('block');
+            });
+            // Show selected tab content
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById(tabId).classList.add('block');
+
+            // Update tab styles
+            document.querySelectorAll('nav button').forEach(btn => {
+                btn.classList.remove('tab-active');
+                btn.classList.add('tab-inactive');
+            });
+            element.classList.remove('tab-inactive');
+            element.classList.add('tab-active');
+        }
+    </script>
+</body></html>

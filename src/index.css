@@ -1,0 +1,10 @@
+/* Root CSS Reset for VIHARA */
+@import './styles/vihara-theme.css';
+@import './styles/stitch-homepage.css';
+
+html, body, #root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}

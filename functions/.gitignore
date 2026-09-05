@@ -1,0 +1,15 @@
+# Node dependencies
+node_modules/
+
+# Local environment variables and secrets (DO NOT COMMIT)
+.env
+.env.local
+.env.*.local
+.runtimeconfig.json
+
+# Firebase logs and cache
+firebase-debug.log
+firebase-debug.*.log
+firestore-debug.log
+ui-debug.log
+.firebase/

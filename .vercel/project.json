@@ -1,0 +1,16 @@
+{
+  "projectId": "prj_mhYRtNKk0wCH4t8U4EnaykIwdrWa",
+  "orgId": "team_By7oUP7AeNFc2bEGTAkrd7Xm",
+  "projectName": "vihara-heritage",
+  "settings": {
+    "createdAt": 1787925002067,
+    "framework": "vite",
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": null,
+    "outputDirectory": null,
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "24.x"
+  }
+}

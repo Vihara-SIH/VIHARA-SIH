@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vihara - Select Travel Categories</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Inter:wght@400;500&amp;family=Kalam:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#000000",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#b9c7e4",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#2e1500",
+                        "surface-container-low": "#f4f4ef",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#dadad5",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#ffe088",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#c66d00",
+                        "inverse-on-surface": "#f1f1ec",
+                        "surface-tint": "#515f78",
+                        "on-primary-fixed": "#0d1c32",
+                        "on-primary-container": "#76849f",
+                        "secondary": "#735c00",
+                        "surface-container-highest": "#e3e3de",
+                        "background": "#fafaf5",
+                        "tertiary-fixed-dim": "#ffb77a",
+                        "inverse-surface": "#2f312e",
+                        "surface-variant": "#e3e3de",
+                        "on-background": "#1a1c19",
+                        "on-tertiary-fixed": "#2e1500",
+                        "surface-container": "#eeeee9",
+                        "surface-container-high": "#e8e8e3",
+                        "primary-container": "#0d1c32",
+                        "primary": "#000000",
+                        "on-secondary-fixed-variant": "#574500",
+                        "on-primary-fixed-variant": "#39475f",
+                        "primary-fixed": "#d6e3ff",
+                        "on-surface": "#1a1c19",
+                        "surface": "#fafaf5",
+                        "secondary-fixed-dim": "#e9c349",
+                        "tertiary-fixed": "#ffdcc2",
+                        "primary-fixed-dim": "#b9c7e4",
+                        "secondary-container": "#fed65b",
+                        "surface-bright": "#fafaf5",
+                        "on-secondary-fixed": "#241a00",
+                        "on-tertiary-fixed-variant": "#6d3a00",
+                        "outline-variant": "#c5c6cd",
+                        "outline": "#75777e",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#44474d",
+                        "on-secondary-container": "#745c00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "lg": "48px",
+                        "xl": "80px",
+                        "margin-mobile": "20px",
+                        "gutter": "24px",
+                        "base": "8px",
+                        "sm": "12px",
+                        "margin-desktop": "64px",
+                        "md": "24px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Montserrat"],
+                        "label-caps": ["Montserrat"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "caption": ["Inter"],
+                        "kalam": ["Kalam"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .category-card.selected {
+            border-color: #D4AF37; /* Antique Gold */
+            background-color: rgba(254, 214, 91, 0.1); /* Soft secondary-container */
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+        }
+        .category-card.selected .check-icon {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen flex flex-col relative overflow-x-hidden">
+<!-- Ambient Background -->
+<div class="fixed inset-0 z-0 opacity-20 pointer-events-none" data-alt="A sweeping, cinematic landscape of ancient Indian temple ruins at golden hour, soft warm light catching intricate stone carvings, deep shadows adding mystery and depth, high-end travel editorial style, serene and culturally rich atmosphere." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCMTIAvAuc9Kv4ltdj5q-5853Ggx4VegBZc1q1AdKeoPtLsQ4vcyCKWefOpApWpq6nVxfS4NmpoMbha2Nx5NjHfLmSqgKo5bn5RFhYyjRwnq8-XBJ23Mr_a95yOZufwSgGKnDfTo5wqN_epIKkGJ8r8Vu0tpHq2EuG5RnGZ8CTULaSRP0mHqLa5p9wKdNPc36NsK9CRoDysumRmGHqltPE8v1GPDo0gFyA_vcJFtkI7c5mZ_Xkebziw'); background-size: cover; background-position: center; filter: blur(4px);"></div>
+<div class="fixed inset-0 z-0 bg-gradient-to-b from-surface/90 via-surface/80 to-surface pointer-events-none"></div>
+<!-- TopNavBar -->
+<header class="bg-surface/80 dark:bg-surface/80 backdrop-blur-md fixed top-0 w-full border-b border-secondary/30 shadow-sm z-50">
+<!-- Motif Border -->
+<div class="h-1 w-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0Ij48cGF0aCBkPSJNMCAyaDIwTDEwIDBsMTAgMnoiIGZpbGw9IiM3MzVjMDAiIGZpbGwtb3BhY2l0eT0iLjMiLz48L3N2Zz4=')] bg-repeat-x"></div>
+<div class="flex justify-between items-center px-margin-desktop py-4 max-w-7xl mx-auto w-full z-50">
+<a class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary tracking-tight" href="#">Vihara</a>
+<div class="hidden md:flex gap-8 items-center">
+<!-- Transactional Page: Nav hidden per instructions, but keeping login -->
+<a class="text-on-surface-variant hover:text-secondary transition-colors duration-200 font-label-caps text-label-caps uppercase" href="#">Login</a>
+</div>
+<!-- Mobile Menu Icon (Hidden on desktop) -->
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">menu</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow relative z-10 pt-32 pb-xl px-margin-mobile md:px-margin-desktop flex flex-col items-center justify-center min-h-screen">
+<div class="max-w-4xl w-full text-center mb-12">
+<p class="font-kalam text-secondary text-2xl md:text-3xl mb-4 italic">Discover your path...</p>
+<h1 class="font-display-lg-mobile md:font-display-lg text-primary mb-6">What calls to you?</h1>
+<p class="font-body-lg text-on-surface-variant max-w-2xl mx-auto">Select the experiences that resonate with your spirit to help us curate your perfect heritage journey.</p>
+</div>
+<!-- Bento Grid Selection -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-gutter max-w-7xl w-full mb-16">
+<!-- Spiritual Column -->
+<div class="flex flex-col bg-surface-container-lowest/60 backdrop-blur-md rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm">
+<div class="p-6 border-b border-outline-variant/30 flex justify-between items-center">
+<h2 class="font-kalam text-2xl text-secondary">Spiritual</h2>
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</div>
+<ul class="p-6 flex flex-col gap-4">
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">Temples</li>
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">Ashrams</li>
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">Pilgrimage Sites</li>
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">Spiritual Towns</li>
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">Yoga &amp; Meditation</li>
+</ul>
+</div>
+<!-- Adventure Column -->
+<div class="flex flex-col bg-surface-container-lowest/60 backdrop-blur-md rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm">
+<div class="p-6 border-b border-outline-variant/30 flex justify-between items-center">
+<h2 class="font-kalam text-2xl text-secondary">Adventure</h2>
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</div>
+<ul class="p-6 flex flex-col gap-4">
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">Trekking</li>
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">Camping</li>
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">River Rafting</li>
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">Paragliding</li>
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">Wildlife Safari</li>
+</ul>
+</div>
+<!-- Heritage Column -->
+<div class="flex flex-col bg-surface-container-lowest/60 backdrop-blur-md rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm">
+<div class="p-6 border-b border-outline-variant/30 flex justify-between items-center">
+<h2 class="font-kalam text-2xl text-secondary">Heritage</h2>
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</div>
+<ul class="p-6 flex flex-col gap-4">
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">Forts</li>
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">Palaces</li>
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">Historical Monuments</li>
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">UNESCO Sites</li>
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">Heritage Walks</li>
+</ul>
+</div>
+<!-- Nature Column -->
+<div class="flex flex-col bg-surface-container-lowest/60 backdrop-blur-md rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm">
+<div class="p-6 border-b border-outline-variant/30 flex justify-between items-center">
+<h2 class="font-kalam text-2xl text-secondary">Nature</h2>
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</div>
+<ul class="p-6 flex flex-col gap-4">
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">Hills &amp; Valleys</li>
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">Waterfalls</li>
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">Beaches</li>
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">National Parks</li>
+<li class="font-headline-md text-body-md text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">Lakes</li>
+</ul>
+</div>
+</div>
+<!-- CTA Section -->
+<div class="w-full max-w-md mx-auto text-center sticky bottom-8 z-20">
+<button class="w-full bg-[#D4AF37] text-primary-container font-label-caps text-label-caps uppercase py-4 px-8 rounded-lg shadow-[0_16px_48px_rgba(10,25,47,0.12)] hover:bg-secondary transition-colors duration-300 hover:text-white flex items-center justify-center gap-2 group">
+                PLAN MY TRIP
+                <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" style="font-variation-settings: 'FILL' 0;">arrow_forward</span>
+</button>
+<p class="mt-4 font-caption text-caption text-on-surface-variant">You can always adjust these later.</p>
+</div>
+</main>
+<!-- Suppressed Footer for Transactional Flow -->
+</body></html>

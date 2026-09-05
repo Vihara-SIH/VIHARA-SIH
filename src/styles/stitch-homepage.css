@@ -1,0 +1,109 @@
+/* VIHARA Stitch Homepage & Core Design System */
+
+@keyframes kenBurns {
+  0% { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.1) translate(-2%, -2%); }
+}
+
+@keyframes revealLetter {
+  0% {
+    opacity: 0;
+    transform: translateY(28px) scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-letter {
+  opacity: 0;
+  display: inline-block;
+  animation: revealLetter 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.logo-flow-transition {
+  transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ken-burns {
+  animation: kenBurns 20s infinite alternate linear;
+}
+
+.slide {
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.overlay-gradient {
+  background: linear-gradient(to bottom, rgba(13, 28, 50, 0.2), rgba(13, 28, 50, 0.6));
+  mix-blend-mode: multiply;
+}
+
+.saffron-tint {
+  background-color: rgba(254, 214, 91, 0.1);
+  mix-blend-mode: overlay;
+}
+
+.glow-gold {
+  text-shadow: 0 0 14px rgba(212, 175, 55, 0.8), 0 0 28px rgba(212, 175, 55, 0.4);
+  transition: text-shadow 2s ease-in;
+}
+
+.glass-panel {
+  background: rgba(13, 28, 50, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.glass-btn {
+  background: rgba(13, 28, 50, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  transition: all 0.3s ease;
+}
+
+.glass-btn:hover {
+  border-color: #D4AF37;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Clean Print / PDF Download Styles */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+  header, nav, button, .no-print {
+    display: none !important;
+  }
+  .shadow-sm, .shadow-md, .shadow-lg, .shadow-2xl {
+    box-shadow: none !important;
+  }
+  .rounded-3xl, .rounded-2xl {
+    border-radius: 8px !important;
+  }
+  .border {
+    border-color: #e5e7eb !important;
+  }
+}

@@ -1,0 +1,1123 @@
+/* ==========================================================================
+   VIHARA DESIGN SYSTEM & STYLES (Smart India Hackathon)
+   Exact Google Stitch Visual Theme Preservation
+   ========================================================================== */
+
+:root {
+  --vihara-bg-canvas: #F8F3E8;
+  --vihara-bg-card: #FAF6EE;
+  --vihara-bg-card-hover: #F3EBDD;
+  --vihara-surface: #FFFFFF;
+  
+  --vihara-green-primary: #1E3A2F;
+  --vihara-green-hover: #162B23;
+  --vihara-green-light: #3D5A4E;
+  --vihara-green-subtle: #EBF3EF;
+
+  --vihara-gold-primary: #C59B4B;
+  --vihara-gold-dark: #A57D33;
+  --vihara-gold-light: #F0DFC0;
+  
+  --vihara-marigold: #E68A2E;
+  --vihara-marigold-dark: #C46816;
+
+  --vihara-text-primary: #1E3A2F;
+  --vihara-text-secondary: #4A5B53;
+  --vihara-text-muted: #798B82;
+
+  --vihara-border-subtle: #DECDB2;
+  --vihara-border-focus: #C59B4B;
+
+  --font-logo: 'Playfair Display', serif;
+  --font-script: 'Alex Brush', 'Great Vibes', cursive;
+  --font-heading: 'Plus Jakarta Sans', 'Playfair Display', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+
+  --shadow-sm: 0 2px 8px rgba(30, 58, 47, 0.05);
+  --shadow-md: 0 6px 20px rgba(30, 58, 47, 0.08);
+  --shadow-lg: 0 12px 35px rgba(30, 58, 47, 0.12);
+  --shadow-dropdown: 0 10px 30px rgba(25, 45, 35, 0.15);
+}
+
+/* Reset & Global */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: var(--vihara-bg-canvas);
+  color: var(--vihara-text-primary);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Base Container */
+.vihara-app-wrapper {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--vihara-bg-canvas);
+  overflow-x: hidden;
+}
+
+/* Navigation Bar */
+.vihara-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 3.5rem;
+  z-index: 50;
+  position: relative;
+  background: transparent;
+}
+
+.vihara-brand-logo {
+  display: flex;
+  align-items: baseline;
+  text-decoration: none;
+  color: var(--vihara-green-primary);
+  user-select: none;
+  letter-spacing: 0.15em;
+}
+
+.vihara-logo-v {
+  font-family: var(--font-script);
+  font-size: 3.2rem;
+  line-height: 0.8;
+  color: #143528;
+  margin-right: -0.05em;
+  font-weight: 700;
+  transform: translateY(2px);
+}
+
+.vihara-logo-rest {
+  font-family: var(--font-logo);
+  font-size: 1.65rem;
+  letter-spacing: 0.28em;
+  font-weight: 600;
+  color: var(--vihara-green-primary);
+}
+
+.vihara-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.vihara-nav-item {
+  position: relative;
+}
+
+.vihara-nav-link {
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--vihara-text-primary);
+  cursor: pointer;
+  padding: 0.5rem 0.2rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  position: relative;
+}
+
+.vihara-nav-link:hover {
+  color: var(--vihara-gold-dark);
+}
+
+.vihara-nav-link.active {
+  color: var(--vihara-gold-dark);
+  font-weight: 600;
+}
+
+.vihara-nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2.5px;
+  background-color: var(--vihara-gold-primary);
+  border-radius: 2px;
+}
+
+.vihara-nav-auth {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.vihara-btn-nav-signin {
+  padding: 0.45rem 1.25rem;
+  background: transparent;
+  border: 1.5px solid var(--vihara-green-primary);
+  color: var(--vihara-green-primary);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vihara-btn-nav-signin:hover {
+  background: var(--vihara-green-primary);
+  color: #FFFFFF;
+}
+
+.vihara-user-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--vihara-bg-card);
+  border: 1px solid var(--vihara-border-subtle);
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+}
+
+.vihara-avatar-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--vihara-green-primary);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.vihara-user-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--vihara-green-primary);
+}
+
+.vihara-btn-logout {
+  background: none;
+  border: none;
+  color: var(--vihara-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+
+.vihara-btn-logout:hover {
+  color: #C0392B;
+}
+
+/* Top Notification Toast */
+.vihara-top-toast-wrapper {
+  position: fixed;
+  top: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  animation: slideDownToast 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  max-width: 90%;
+  width: auto;
+}
+
+@keyframes slideDownToast {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.vihara-top-toast {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: #FFFFFF;
+  border: 1.5px solid var(--vihara-gold-primary);
+  padding: 0.85rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+}
+
+.vihara-toast-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--vihara-green-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vihara-toast-btn {
+  background: var(--vihara-green-primary);
+  color: #FFFFFF;
+  border: none;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.vihara-toast-btn:hover {
+  background: var(--vihara-green-hover);
+}
+
+.vihara-toast-close {
+  background: none;
+  border: none;
+  color: var(--vihara-text-muted);
+  cursor: pointer;
+  display: flex;
+  padding: 2px;
+}
+
+/* Main View Layout */
+.vihara-main-content {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem 14rem 2rem;
+  z-index: 10;
+  min-height: calc(100vh - 120px);
+}
+
+/* Floral Vines (Side margins) */
+.vihara-floral-vine {
+  position: absolute;
+  top: 10%;
+  width: 140px;
+  height: 520px;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.95;
+}
+
+.vine-left {
+  left: 1.5rem;
+}
+
+.vine-right {
+  right: 1.5rem;
+}
+
+/* Architectural Landscape Background at Bottom */
+.vihara-monuments-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 360px;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.vihara-monuments-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Central Mughal Arch Frame */
+.vihara-arch-container {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  min-height: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 6.5rem 3rem 4rem 3rem;
+  z-index: 10;
+}
+
+.vihara-arch-backdrop-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* TRIP PLANNING - PAGE 1 & PAGE 2 HEADERS */
+.vihara-section-heading {
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  font-weight: 500;
+  color: var(--vihara-green-primary);
+  text-align: center;
+  margin-bottom: 0.85rem;
+  letter-spacing: -0.01em;
+}
+
+.vihara-page2-title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--vihara-green-primary);
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.vihara-floral-divider {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+/* Form Controls (Page 1) */
+.vihara-form-group {
+  width: 100%;
+  max-width: 440px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.vihara-form-label {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--vihara-green-primary);
+  text-align: center;
+  margin-bottom: 0.85rem;
+}
+
+.vihara-input-box {
+  width: 100%;
+  background: var(--vihara-bg-card);
+  border: 1px solid var(--vihara-border-subtle);
+  border-radius: 12px;
+  padding: 0.95rem 1.25rem;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--vihara-text-primary);
+  box-shadow: var(--shadow-sm);
+  outline: none;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.vihara-input-box:focus {
+  border-color: var(--vihara-gold-primary);
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(197, 155, 75, 0.18);
+}
+
+.vihara-input-box::placeholder {
+  color: #8C9993;
+}
+
+/* Multi-Select Destination Dropdown */
+.vihara-dest-dropdown-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.vihara-dest-trigger {
+  width: 100%;
+  background: var(--vihara-bg-card);
+  border: 1px solid var(--vihara-border-subtle);
+  border-radius: 12px;
+  padding: 0.95rem 1.25rem;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--vihara-text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+  user-select: none;
+  text-align: left;
+}
+
+.vihara-dest-trigger:hover,
+.vihara-dest-trigger.open {
+  border-color: var(--vihara-gold-primary);
+  background: #FFFFFF;
+}
+
+.vihara-dest-trigger-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 0.5rem;
+}
+
+.vihara-dest-placeholder {
+  color: #8C9993;
+}
+
+.vihara-chevron-icon {
+  color: var(--vihara-green-primary);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.vihara-chevron-icon.rotated {
+  transform: rotate(180deg);
+}
+
+.vihara-dest-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #FFFFFF;
+  border: 1px solid var(--vihara-border-subtle);
+  border-radius: 12px;
+  box-shadow: var(--shadow-dropdown);
+  z-index: 100;
+  max-height: 280px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fadeInDown 0.15s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.vihara-dest-search-bar {
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--vihara-border-subtle);
+  background: var(--vihara-bg-card);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vihara-dest-search-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--vihara-text-primary);
+  outline: none;
+}
+
+.vihara-dest-list {
+  overflow-y: auto;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.vihara-dest-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  font-size: 0.95rem;
+  color: var(--vihara-text-primary);
+}
+
+.vihara-dest-item:hover {
+  background: var(--vihara-green-subtle);
+}
+
+.vihara-dest-item.selected {
+  background: #F3EBDD;
+  font-weight: 500;
+}
+
+/* Custom Checkbox */
+.vihara-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #8C9993;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.vihara-checkbox.checked {
+  background: var(--vihara-green-primary);
+  border-color: var(--vihara-green-primary);
+}
+
+.vihara-dest-badge-count {
+  background: var(--vihara-gold-primary);
+  color: #FFFFFF;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  margin-left: 0.5rem;
+}
+
+/* Primary Button "Plan My Trip →" */
+.vihara-btn-primary {
+  width: 100%;
+  max-width: 440px;
+  background: var(--vihara-green-primary);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 12px;
+  padding: 1.05rem 2rem;
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(30, 58, 47, 0.2);
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.vihara-btn-primary:hover {
+  background: var(--vihara-green-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(30, 58, 47, 0.25);
+}
+
+.vihara-btn-primary:active {
+  transform: translateY(0);
+}
+
+.vihara-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* TRIP PLANNING - PAGE 2 CATEGORY CARDS */
+.vihara-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 2.5rem;
+}
+
+.vihara-category-card {
+  background: var(--vihara-bg-card);
+  border: 1px solid var(--vihara-border-subtle);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+.vihara-category-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--vihara-gold-primary);
+}
+
+.vihara-category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.15rem 1.25rem;
+  cursor: pointer;
+  user-select: none;
+  background: var(--vihara-bg-card);
+  border-bottom: 1px solid rgba(222, 205, 178, 0.4);
+}
+
+.vihara-category-title {
+  font-family: var(--font-script);
+  font-size: 2.25rem;
+  font-weight: 500;
+  color: var(--vihara-green-primary);
+  line-height: 1;
+}
+
+.vihara-category-body {
+  padding: 1rem 1.25rem 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  background: var(--vihara-bg-card);
+}
+
+.vihara-subcategory-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--vihara-text-primary);
+  user-select: none;
+  transition: color 0.15s ease;
+}
+
+.vihara-subcategory-item:hover {
+  color: var(--vihara-gold-dark);
+}
+
+.vihara-subcategory-item.checked {
+  font-weight: 600;
+  color: var(--vihara-green-primary);
+}
+
+.vihara-category-card.collapsed .vihara-category-body {
+  display: none;
+}
+
+.vihara-category-card.collapsed .vihara-category-header {
+  border-bottom: none;
+}
+
+/* Category card badge */
+.vihara-cat-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--vihara-green-subtle);
+  color: var(--vihara-green-primary);
+  padding: 2px 6px;
+  border-radius: 9999px;
+  margin-left: auto;
+  margin-right: 0.5rem;
+}
+
+/* Page 2 CTA Container */
+.vihara-page2-cta-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Validation Alert */
+.vihara-alert-box {
+  width: 100%;
+  max-width: 440px;
+  padding: 0.75rem 1rem;
+  background: #FDEDEC;
+  border: 1px solid #F5B7B1;
+  color: #78281F;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  animation: fadeInDown 0.2s ease;
+}
+
+/* Back Link */
+.vihara-back-btn {
+  background: none;
+  border: none;
+  color: var(--vihara-text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: color 0.2s;
+}
+
+.vihara-back-btn:hover {
+  color: var(--vihara-green-primary);
+}
+
+/* ==========================================================================
+   HOMEPAGE 4 FEATURE CARDS
+   ========================================================================== */
+
+.vihara-hero-section {
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto 3rem auto;
+}
+
+.vihara-hero-tagline {
+  font-family: var(--font-script);
+  font-size: 2.5rem;
+  color: var(--vihara-gold-dark);
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.vihara-hero-title {
+  font-family: var(--font-logo);
+  font-size: 2.75rem;
+  font-weight: 700;
+  color: var(--vihara-green-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.vihara-hero-subtitle {
+  font-size: 1.15rem;
+  color: var(--vihara-text-secondary);
+  line-height: 1.6;
+}
+
+.vihara-features-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.vihara-feature-card {
+  background: var(--vihara-bg-card);
+  border: 1px solid var(--vihara-border-subtle);
+  border-radius: 18px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.vihara-feature-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--vihara-gold-primary);
+  box-shadow: var(--shadow-lg);
+  background: #FFFFFF;
+}
+
+.vihara-feature-icon-wrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--vihara-green-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--vihara-green-primary);
+  margin-bottom: 1.25rem;
+  transition: background 0.2s;
+}
+
+.vihara-feature-card:hover .vihara-feature-icon-wrapper {
+  background: var(--vihara-gold-light);
+  color: var(--vihara-gold-dark);
+}
+
+.vihara-feature-title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--vihara-green-primary);
+  margin-bottom: 0.5rem;
+}
+
+.vihara-feature-desc {
+  font-size: 0.9rem;
+  color: var(--vihara-text-secondary);
+  line-height: 1.45;
+  margin-bottom: 1.25rem;
+}
+
+.vihara-feature-cta {
+  margin-top: auto;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--vihara-gold-dark);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* ==========================================================================
+   AUTHENTICATION MODAL
+   ========================================================================== */
+
+.vihara-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(18, 32, 25, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1.5rem;
+}
+
+.vihara-auth-card {
+  background: var(--vihara-bg-card);
+  border: 1.5px solid var(--vihara-gold-primary);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 440px;
+  padding: 2.25rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: scaleUp 0.25s ease-out;
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.vihara-modal-close-btn {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: none;
+  border: none;
+  color: var(--vihara-text-muted);
+  cursor: pointer;
+  display: flex;
+  padding: 4px;
+}
+
+.vihara-auth-header {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.vihara-auth-title {
+  font-family: var(--font-logo);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--vihara-green-primary);
+  margin-bottom: 0.35rem;
+}
+
+.vihara-auth-subtitle {
+  font-size: 0.95rem;
+  color: var(--vihara-text-secondary);
+}
+
+.vihara-auth-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--vihara-border-subtle);
+  margin-bottom: 1.5rem;
+}
+
+.vihara-auth-tab {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 0.75rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--vihara-text-muted);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.vihara-auth-tab.active {
+  color: var(--vihara-green-primary);
+  font-weight: 600;
+}
+
+.vihara-auth-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2.5px;
+  background: var(--vihara-gold-primary);
+}
+
+.vihara-form-field {
+  margin-bottom: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: left;
+}
+
+.vihara-field-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--vihara-text-primary);
+}
+
+.vihara-field-input {
+  width: 100%;
+  background: #FFFFFF;
+  border: 1px solid var(--vihara-border-subtle);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--vihara-text-primary);
+  outline: none;
+  transition: border 0.2s;
+}
+
+.vihara-field-input:focus {
+  border-color: var(--vihara-gold-primary);
+}
+
+/* ==========================================================================
+   SAVED ITINERARY SUMMARY CARD (Success State)
+   ========================================================================== */
+
+.vihara-itinerary-card {
+  background: #FFFFFF;
+  border: 1.5px solid var(--vihara-gold-primary);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 650px;
+  padding: 2.5rem;
+  box-shadow: var(--shadow-lg);
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.vihara-success-badge {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #E8F5E9;
+  color: #2E7D32;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem auto;
+}
+
+.vihara-itinerary-title {
+  font-family: var(--font-logo);
+  font-size: 1.85rem;
+  color: var(--vihara-green-primary);
+  margin-bottom: 0.5rem;
+}
+
+.vihara-itinerary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  text-align: left;
+  margin: 1.5rem 0;
+  background: var(--vihara-bg-card);
+  padding: 1.25rem;
+  border-radius: 12px;
+}
+
+.vihara-itinerary-item-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--vihara-text-muted);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.vihara-itinerary-item-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--vihara-green-primary);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN BREAKPOINTS
+   ========================================================================== */
+
+@media (max-width: 992px) {
+  .vihara-categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .vihara-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .vihara-floral-vine {
+    display: none;
+  }
+  .vihara-navbar {
+    padding: 1.25rem 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .vihara-navbar {
+    padding: 1rem 1.25rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .vihara-nav-links {
+    gap: 1.25rem;
+    overflow-x: auto;
+    width: 100%;
+    padding-bottom: 0.25rem;
+  }
+  .vihara-categories-grid {
+    grid-template-columns: 1fr;
+  }
+  .vihara-features-grid {
+    grid-template-columns: 1fr;
+  }
+  .vihara-arch-container {
+    padding: 4.5rem 1.25rem 2.5rem 1.25rem;
+    min-height: auto;
+  }
+  .vihara-section-heading {
+    font-size: 1.25rem;
+  }
+  .vihara-itinerary-grid {
+    grid-template-columns: 1fr;
+  }
+  .vihara-monuments-container {
+    height: 220px;
+  }
+}
