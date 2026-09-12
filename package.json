@@ -1,7 +1,8 @@
 {
   "name": "vihara",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "VIHARA - Smart Heritage Tourism & Cultural Journey Platform",
   "type": "module",
   "scripts": {
     "dev": "vite",
