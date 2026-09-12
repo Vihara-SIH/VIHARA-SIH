@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { TripProvider, useTrip } from './context/TripContext';
 import { StaysProvider, useStays } from './context/StaysContext';
+import { EventsProvider, useEvents } from './context/EventsContext';
 import { Navbar } from './components/Navbar';
 import { TopNotification } from './components/TopNotification';
 import { AuthModal } from './components/AuthModal';
@@ -20,7 +21,8 @@ function MainApplication() {
   const { isAuthenticated, triggerAuthGate, pendingTargetView, setPendingTargetView } = useAuth();
   const { activeStep, setActiveStep, resetTripState } = useTrip();
   const stays = useStays();
-  const [currentView, setCurrentView] = useState('home'); // 'home' | 'trip-planning' | 'near-me' | 'event-bookings' | 'stays-travel' | 'my-bookings'
+  const events = useEvents();
+  const [currentView, setCurrentView] = useState('home'); // 'home' | 'trip-planning' | 'near-me' | 'event-bookings' | 'stays-travel' | 'my-bookings' | 'my-events'
 
   // Auto-navigate to pending target view after successful login
   React.useEffect(() => {
@@ -28,6 +30,9 @@ function MainApplication() {
       if (pendingTargetView === 'my-bookings') {
         stays?.navigateToStage('my-bookings');
         setCurrentView('stays-travel');
+      } else if (pendingTargetView === 'my-events') {
+        events?.setActiveStage('my-events');
+        setCurrentView('event-bookings');
       } else {
         setCurrentView(pendingTargetView);
       }
@@ -63,6 +68,12 @@ function MainApplication() {
     if (view === 'my-bookings') {
       stays?.navigateToStage('my-bookings');
       setCurrentView('stays-travel');
+      return;
+    }
+
+    if (view === 'my-events') {
+      events?.setActiveStage('my-events');
+      setCurrentView('event-bookings');
       return;
     }
 
@@ -121,7 +132,12 @@ function MainApplication() {
       case 'near-me':
         return <NearMe onBack={() => setCurrentView('home')} />;
       case 'event-bookings':
-        return <EventBookings onBack={() => setCurrentView('home')} />;
+        return (
+          <EventBookings
+            onBack={() => setCurrentView('home')}
+            onNavigateToTrip={() => handleNavigate('trip-planning')}
+          />
+        );
       case 'stays-travel':
         return (
           <StaysAndTravel
@@ -184,7 +200,9 @@ export function App() {
     <AuthProvider>
       <TripProvider>
         <StaysProvider>
-          <MainApplication />
+          <EventsProvider>
+            <MainApplication />
+          </EventsProvider>
         </StaysProvider>
       </TripProvider>
     </AuthProvider>

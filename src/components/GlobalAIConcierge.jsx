@@ -14,18 +14,20 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { useTrip } from '../context/TripContext';
 import { useStays } from '../context/StaysContext';
+import { useEvents } from '../context/EventsContext';
 import { sendChatMessage } from '../services/chatService';
 
 export function GlobalAIConcierge({ currentView = 'home' }) {
   const { isAuthenticated, userProfile, user } = useAuth();
   const trip = useTrip();
   const stays = useStays();
+  const events = useEvents();
 
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
       sender: 'bot',
-      text: 'Namaste! 🙏 I am your VIHARA AI Concierge. I have full context of your itinerary, budget, and luxury stays. How may I assist your journey?'
+      text: 'Namaste! 🙏 I am your VIHARA AI Concierge. I have full context of your itinerary, budget, luxury stays, and cultural events. How may I assist your journey?'
     }
   ]);
   const [inputMessage, setInputMessage] = useState('');
@@ -40,8 +42,18 @@ export function GlobalAIConcierge({ currentView = 'home' }) {
 
   // Context-aware dynamic suggestions
   const getDynamicPromptSuggestions = () => {
-    const dest = stays?.searchParams?.destination || trip?.selectedDestinations?.[0] || 'Goa';
-    const hotelName = stays?.selectedHotel?.name || 'Heritage Goa Retreat';
+    const dest = stays?.searchParams?.destination || events?.selectedCity || trip?.selectedDestinations?.[0] || 'Hyderabad';
+    const hotelName = stays?.selectedHotel?.name || 'Taj Falaknuma Palace';
+    const eventName = events?.selectedEvent?.title || 'Sacred Echoes: Sufi Mehfil';
+
+    if (currentView === 'event-bookings') {
+      return [
+        `How does ${eventName} fit my Day 2 itinerary?`,
+        `What is the dress code and protocol for ${eventName}?`,
+        `How far is ${events?.selectedEvent?.venue || 'Chowmahalla Palace'} from my stay?`,
+        `Recommend cultural food trails and mehfils in ${dest}`
+      ];
+    }
 
     if (currentView === 'stays-travel') {
       return [
@@ -63,9 +75,9 @@ export function GlobalAIConcierge({ currentView = 'home' }) {
 
     return [
       `Help me plan a luxury heritage trip to ${dest}`,
-      `What is the best season to visit ${dest}?`,
-      `How does VIHARA Smart Match optimize routes?`,
-      `Show me Portuguese havelis and palace hotels`
+      `What cultural events are happening this weekend in ${dest}?`,
+      `How does VIHARA Smart Match optimize routes and stays?`,
+      `Show me palace hotels and live Sufi baithaks`
     ];
   };
 
@@ -79,17 +91,19 @@ export function GlobalAIConcierge({ currentView = 'home' }) {
     setIsLoading(true);
 
     // Build rich ecosystem context
-    const tripDest = trip?.selectedDestinations?.join(', ') || 'Goa';
+    const tripDest = trip?.selectedDestinations?.join(', ') || 'Hyderabad';
     const tripBudget = trip?.userSelectedBudget || 35000;
-    const tripAttractions = trip?.placeCards?.map(p => p.placeName || p.title).join(', ') || 'Vagator Beach, Fort Aguada, Panjim';
+    const tripAttractions = trip?.placeCards?.map(p => p.placeName || p.title).join(', ') || 'Charminar, Golconda Fort, Chowmahalla Palace';
     const hotel = stays?.selectedHotel;
-    const booking = stays?.currentBooking;
+    const hotelBooking = stays?.currentBooking;
+    const activeEvent = events?.selectedEvent;
+    const latestEventBooking = events?.activeBooking || events?.userBookings?.[0];
 
     const contextPrefix = `[Ecosystem Context]
 Current Page: ${currentView}
-Active Trip: Destination=${tripDest}, Dates=${trip?.startDate || '15 Oct'} to ${trip?.endDate || '19 Oct'}, Travelers=${trip?.numberOfTravelers || 2}, Total Budget=₹${tripBudget}, Planned Sights=[${tripAttractions}]
-Active Stays Context: Destination=${stays?.searchParams?.destination || tripDest}, Selected Stay=${hotel?.name || 'Heritage Goa Retreat & Villas'} (₹${hotel?.pricePerNight || 4800}/night, Smart Match: ${hotel?.smartMatchScore || 94}%), Selected Room=${stays?.selectedRoom?.name || 'Deluxe Suite'}
-Latest Booking: Reference=${booking?.bookingId || 'None yet'}, Hotel=${booking?.hotel?.name || 'None'}
+Active Trip: Destination=${tripDest}, Dates=${trip?.startDate || '14 Sep'} to ${trip?.endDate || '17 Sep'}, Travelers=${trip?.numberOfTravelers || 2}, Total Budget=₹${tripBudget}, Planned Sights=[${tripAttractions}]
+Active Stays Context: Destination=${stays?.searchParams?.destination || tripDest}, Selected Stay=${hotel?.name || 'Taj Falaknuma Palace'} (₹${hotel?.pricePerNight || 12500}/night, Smart Match: ${hotel?.smartMatchScore || 96}%), Selected Room=${stays?.selectedRoom?.name || 'Nizami Suite'}
+Active Events Context: City=${events?.selectedCity || tripDest}, Selected Event=${activeEvent?.title || 'Sacred Echoes Sufi Night'} (${activeEvent?.venue}, ₹${activeEvent?.priceStarting}), Latest Booked Event=${latestEventBooking?.eventTitle || 'None yet'} (Ref: ${latestEventBooking?.bookingReference || 'N/A'}, Pass: ${latestEventBooking?.tier || 'N/A'})
 User Question: ${textToSend.trim()}`;
 
     try {

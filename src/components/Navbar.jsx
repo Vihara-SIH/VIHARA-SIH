@@ -74,7 +74,7 @@ export const Navbar = ({ currentView, onNavigate }) => {
               currentView === 'event-bookings' ? 'text-[#735c00] font-semibold border-b-2 border-[#735c00] pb-0.5' : ''
             }`}
           >
-            Experiences
+            Cultural Events
           </button>
           <button
             onClick={() => handleNavClick('stays-travel')}
@@ -131,7 +131,17 @@ export const Navbar = ({ currentView, onNavigate }) => {
                     className="w-full text-left px-4 py-2 text-xs font-medium text-gray-700 hover:bg-[#fafaf5] flex items-center gap-2"
                   >
                     <Bookmark className="w-4 h-4 text-[#b45309]" />
-                    My Bookings
+                    My Stays & Bookings
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                      handleNavClick('my-events');
+                    }}
+                    className="w-full text-left px-4 py-2 text-xs font-medium text-gray-700 hover:bg-[#fafaf5] flex items-center gap-2"
+                  >
+                    <Bookmark className="w-4 h-4 text-[#c2410c]" />
+                    My Reserved Events
                   </button>
                   <button
                     onClick={() => {
@@ -198,7 +208,7 @@ export const Navbar = ({ currentView, onNavigate }) => {
             onClick={() => handleNavClick('event-bookings')}
             className="block w-full text-left py-2 text-sm font-medium text-gray-800"
           >
-            Experiences
+            Cultural Events
           </button>
           <button
             onClick={() => handleNavClick('stays-travel')}
@@ -206,6 +216,22 @@ export const Navbar = ({ currentView, onNavigate }) => {
           >
             Stays & Travel
           </button>
+          {isAuthenticated && (
+            <>
+              <button
+                onClick={() => handleNavClick('my-bookings')}
+                className="block w-full text-left py-2 text-sm font-medium text-[#735c00]"
+              >
+                My Stays & Bookings
+              </button>
+              <button
+                onClick={() => handleNavClick('my-events')}
+                className="block w-full text-left py-2 text-sm font-medium text-[#c2410c]"
+              >
+                My Reserved Events
+              </button>
+            </>
+          )}
         </div>
       )}
     </header>

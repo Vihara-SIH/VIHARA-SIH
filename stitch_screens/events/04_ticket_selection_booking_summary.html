@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"surface-tint":"#ac3400","inverse-primary":"#ffb59d","on-background":"#1e1b19","on-secondary-fixed":"#00201d","surface":"#fff8f5","inverse-surface":"#33302d","surface-variant":"#e9e1dd","error":"#ba1a1a","on-secondary":"#ffffff","surface-container-high":"#eee7e3","error-container":"#ffdad6","outline":"#8d7168","on-primary-fixed":"#390c00","on-primary-fixed-variant":"#832600","surface-container-lowest":"#ffffff","outline-variant":"#e1bfb5","primary-fixed":"#ffdbd0","tertiary-container":"#a65900","inverse-on-surface":"#f7efeb","surface-container-highest":"#e9e1dd","secondary-fixed-dim":"#80d5cb","on-error-container":"#93000a","on-primary":"#ffffff","on-secondary-fixed-variant":"#00504a","on-primary-container":"#ffece7","surface-bright":"#fff8f5","secondary":"#006a63","on-tertiary-container":"#ffede1","secondary-fixed":"#9cf2e8","primary-container":"#c2410c","surface-dim":"#e0d8d5","on-tertiary-fixed":"#2f1500","on-surface":"#1e1b19","surface-container":"#f4ece8","tertiary-fixed-dim":"#ffb77d","on-surface-variant":"#59413a","on-secondary-container":"#006f67","primary":"#9b2f00","background":"#fff8f5","tertiary":"#824500","surface-container-low":"#faf2ee","on-tertiary":"#ffffff","on-tertiary-fixed-variant":"#6e3900","primary-fixed-dim":"#ffb59d","on-error":"#ffffff","secondary-container":"#99efe5","tertiary-fixed":"#ffdcc3"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter-mobile":"1rem","space-lg":"1.5rem","margin-mobile":"1.25rem","space-xs":"0.25rem","margin":"3rem","space-sm":"0.5rem","gutter":"1.5rem","space-xl":"2.5rem","space-md":"1rem"},"fontFamily":{"headline-md":["Playfair Display"],"label-md":["Plus Jakarta Sans"],"headline-lg-mobile":["Playfair Display"],"display-lg":["Playfair Display"],"title-md":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"headline-sm":["Playfair Display"],"display-lg-mobile":["Playfair Display"],"body-sm":["Plus Jakarta Sans"],"title-lg":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"headline-lg":["Playfair Display"],"label-sm":["Plus Jakarta Sans"]},"fontSize":{"headline-md":["28px",{"lineHeight":"36px","letterSpacing":"-0.005em","fontWeight":"600"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.06em","fontWeight":"600"}],"headline-lg-mobile":["30px",{"lineHeight":"36px","letterSpacing":"0em","fontWeight":"600"}],"display-lg":["56px",{"lineHeight":"64px","letterSpacing":"-0.02em","fontWeight":"600"}],"title-md":["16px",{"lineHeight":"24px","letterSpacing":"0em","fontWeight":"600"}],"body-lg":["18px",{"lineHeight":"28px","letterSpacing":"0em","fontWeight":"400"}],"headline-sm":["22px",{"lineHeight":"30px","letterSpacing":"0em","fontWeight":"600"}],"display-lg-mobile":["38px",{"lineHeight":"44px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-sm":["13px",{"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"400"}],"title-lg":["18px",{"lineHeight":"26px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-md":["15px",{"lineHeight":"24px","letterSpacing":"0em","fontWeight":"400"}],"headline-lg":["40px",{"lineHeight":"48px","letterSpacing":"-0.01em","fontWeight":"600"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.08em","fontWeight":"700"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-[1320px] mx-auto px-margin flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><a class="flex items-center gap-space-sm" href="#"><img alt="VIHARA Brand Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WKhU6jn5cMDbDgZddTFJYceFsrHCU3-UvWxfdVO-xAP7uXS6u3789AJfau7paTIEVHWtkQffycI5RirtPMxmssRRie7C8MfZhi9H12Pd25Yt1Hu3N8JHjWRQHcOgrLFF9x7B-jPSw0DLEBBhGIHSda-01KWshVuhLWDzSGTArwLjGVogGEVLiboYOjsumH64jn4_KHVnhVR6IGYPQmUjQHfj_FPmawe7qgEGN_De1blqIDUgvZ_zzO"/><span class="font-headline-md text-headline-md text-on-surface tracking-tight hidden sm:inline-block">VIHARA</span></a><nav class="hidden xl:flex items-center gap-space-sm" data-active-classes="bg-primary-container text-on-primary rounded-full px-space-md py-space-xs font-title-md text-title-md"><a class="text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs font-title-md text-title-md transition-colors" data-path="trip-planner" href="#">Trip Planner</a><a class="text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs font-title-md text-title-md transition-colors" data-path="stays-and-travel" href="#">Stays &amp; Travel</a><a aria-current="page" class="transition-colors bg-primary-container text-on-primary rounded-full px-space-md py-space-xs font-title-md text-title-md" data-path="events-nearby" href="#">Events Nearby</a><a class="text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs font-title-md text-title-md transition-colors" data-path="ai-concierge" href="#">AI Concierge</a><a class="text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs font-title-md text-title-md transition-colors" data-path="saved-and-itinerary" href="#">Saved &amp; Itinerary</a></nav></div><div class="flex items-center gap-space-sm"><button class="hidden md:flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-full shadow-[0_1px_4px_-1px_rgba(28,25,23,0.04)] hover:bg-surface-container transition-colors" type="button"><span class="material-symbols-outlined text-[18px] text-primary">location_on</span><span class="font-label-md text-label-md text-on-surface">Hyderabad, TS</span><span class="material-symbols-outlined text-[16px] text-outline">keyboard_arrow_down</span></button><div class="hidden lg:flex items-center gap-space-xs bg-surface-container-low px-space-sm py-space-xs rounded-full"><div class="w-2 h-2 rounded-full bg-secondary ring-2 ring-secondary/30 animate-pulse"></div><span class="font-label-sm text-label-sm text-on-surface">Active Trip Mode</span></div><button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant hover:text-on-surface" type="button"><span class="material-symbols-outlined text-[20px]">search</span></button><div class="flex items-center gap-space-xs pl-space-xs"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><span class="hidden sm:inline font-title-md text-title-md text-on-surface">Arjun K.</span></div></div></div></header><main class="w-full pt-20 bg-surface"><div class="flex flex-col w-full">
+<!-- Progress Stepper & Navigation Header -->
+<section class="w-full bg-surface-container-low py-space-md shadow-sm">
+<div class="max-w-[1320px] mx-auto px-margin flex flex-col md:flex-row md:items-center md:justify-between gap-space-md">
+<!-- Back Navigation & Breadcrumb -->
+<div class="flex items-center gap-space-sm">
+<a class="inline-flex items-center gap-space-xs text-on-surface-variant hover:text-primary transition-colors font-title-md text-title-md group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
+<span>Back to Event Details</span>
+</a>
+<span class="text-outline-variant">•</span>
+<button class="text-secondary font-label-md text-label-md underline hover:text-on-surface transition-colors" type="button">Change Event</button>
+</div>
+<!-- Linear Stepper -->
+<div class="flex items-center gap-space-xs sm:gap-space-sm">
+<!-- Step 1 -->
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-label-sm text-label-sm shadow-sm">1</div>
+<span class="font-title-md text-title-md text-primary hidden lg:inline">Tickets</span>
+</div>
+<div class="w-6 h-[2px] bg-primary"></div>
+<!-- Step 2 -->
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-label-sm text-label-sm shadow-sm">2</div>
+<span class="font-title-md text-title-md text-primary hidden lg:inline">Attendees</span>
+</div>
+<div class="w-6 h-[2px] bg-primary"></div>
+<!-- Step 3 -->
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-sm text-label-sm shadow-sm ring-4 ring-primary-fixed/40">3</div>
+<span class="font-title-md text-title-md text-on-surface font-bold">Review</span>
+</div>
+<div class="w-6 h-[2px] bg-surface-variant"></div>
+<!-- Step 4 -->
+<div class="flex items-center gap-space-xs opacity-60">
+<div class="w-7 h-7 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-label-sm text-label-sm">4</div>
+<span class="font-title-md text-title-md text-on-surface-variant hidden lg:inline">Payment</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Content Layout -->
+<div class="max-w-[1320px] mx-auto px-margin py-space-xl w-full">
+<!-- Compact Event Summary Card -->
+<div class="w-full bg-surface-container-lowest rounded-xl p-space-lg shadow-sm mb-space-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-space-lg">
+<div class="flex flex-col sm:flex-row items-start sm:items-center gap-space-md min-w-0">
+<div class="w-24 h-24 sm:w-28 sm:h-28 rounded-lg overflow-hidden flex-shrink-0 relative shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Atmospheric twilight baithak at Qutb Shahi Tombs with warm oil lamps illuminating ancient stone arches, Persian carpets on flagstone courtyard, and silhouettes of musicians under the dusk sky in rich terracotta, saffron, and amber tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZHsd6jWq2HFiFD9KZZiImnyQ2iq1HELn3mwjtbUjiiQU3ULem9mvqaKOW3ubbiU95bE9FOlPxn3GrefpPpFcGO4VKEML0l7GW_UR5efv9JaORUWiRMGKbhPGPEaVinvjaFIAmwdjOA9NjO5R6Ar3zFIs6EAUnPeaUUqwrRo2BPmRMaeckHoXy9etCBFXwxvA6C3uSO97WmMuI17JWYUlZga3-d9LBaKyBi4lSLqTIwecI2WY76xM"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+</div>
+<div class="flex flex-col gap-space-xs min-w-0">
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-space-sm py-0.5 rounded-full uppercase tracking-wider">Classical &amp; Sufi Mehfil</span>
+<span class="bg-secondary/10 text-secondary font-label-sm text-label-sm px-space-sm py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified</span> Heritage Verified
+            </span>
+</div>
+<h1 class="font-headline-sm text-headline-sm text-on-surface truncate">Sacred Echoes: Live Sufi &amp; Qawwali Night</h1>
+<div class="flex flex-wrap items-center text-on-surface-variant font-body-sm text-body-sm gap-y-1 gap-x-space-md">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[18px]">calendar_today</span> Sat, 14 Sep 2024 • 7:30 PM – 10:00 PM
+            </span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[18px]">door_front</span> Doors open 6:45 PM
+            </span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[18px]">location_on</span> Ibrahim Bagh, Qutb Shahi Tombs, Hyderabad
+            </span>
+</div>
+</div>
+</div>
+<!-- Itinerary Synchronization Ribbon -->
+<div class="flex-shrink-0 bg-surface-container-low px-space-md py-space-sm rounded-lg flex items-center gap-space-sm self-stretch md:self-auto">
+<span class="material-symbols-outlined text-secondary text-[22px]">event_repeat</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-bold tracking-wide">Itinerary Linked</span>
+<span class="font-body-sm text-body-sm text-on-surface font-semibold">Synchronized with Day 2 (Taj Falaknuma Stay)</span>
+</div>
+</div>
+</div>
+<!-- Two-Column Checkout Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- LEFT COLUMN: Tickets, Attendees, Logistics (65% / 8 Cols) -->
+<div class="lg:col-span-8 flex flex-col gap-space-xl">
+<!-- STEP 1: CHOOSE YOUR TICKETS -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg md:p-space-xl shadow-sm flex flex-col gap-space-lg">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-primary uppercase tracking-widest font-bold">Step 1 of 3</span>
+<span class="text-on-surface-variant font-body-sm text-body-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">info</span> All seating on traditional carpets
+              </span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">1. Select Experience Tier</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Seating is traditionally arranged on Persian carpets and hand-embroidered bolsters under stone vaulted heritage canopies.</p>
+</div>
+<!-- Tier Cards Rail -->
+<div class="flex flex-col gap-space-md">
+<!-- Tier 1: Dastarkhan Baithak -->
+<div class="tier-card bg-surface-container-low rounded-xl p-space-lg flex flex-col sm:flex-row sm:items-center justify-between gap-space-md transition-all shadow-sm">
+<div class="flex flex-col gap-space-xs flex-1">
+<div class="flex items-center gap-space-sm">
+<h3 class="font-title-lg text-title-lg text-on-surface">Dastarkhan Baithak</h3>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm px-space-xs py-0.5 rounded">Standard Access</span>
+<span class="bg-error-container text-on-error-container font-label-sm text-label-sm px-space-xs py-0.5 rounded animate-pulse">Only 6 spots remaining</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-xl">Floor seating with ivory velvet bolster support, traditional attar &amp; jasmine welcome, and complimentary earthen kulhad tea with Osmania biscuits.</p>
+<div class="font-title-md text-title-md text-primary font-bold mt-1">₹899 <span class="font-body-sm text-body-sm text-on-surface-variant font-normal">/ guest</span></div>
+</div>
+<!-- Quantity Selector -->
+<div class="flex items-center gap-space-sm flex-shrink-0 bg-surface-container-lowest p-space-xs rounded-lg shadow-sm">
+<button class="w-9 h-9 rounded-lg bg-surface-container hover:bg-surface-variant text-on-surface flex items-center justify-center transition-colors" onclick="adjustQty('t1', -1)" type="button">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<span class="font-title-lg text-title-lg w-8 text-center text-on-surface font-bold" id="qty-t1">2</span>
+<button class="w-9 h-9 rounded-lg bg-primary text-on-primary hover:bg-primary-container flex items-center justify-center transition-colors" onclick="adjustQty('t1', 1)" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+</div>
+<!-- Tier 2: Royal Diwan Front Row -->
+<div class="tier-card bg-surface-container-low rounded-xl p-space-lg flex flex-col sm:flex-row sm:items-center justify-between gap-space-md transition-all shadow-sm">
+<div class="flex flex-col gap-space-xs flex-1">
+<div class="flex items-center gap-space-sm">
+<h3 class="font-title-lg text-title-lg text-on-surface">Royal Diwan Front Row</h3>
+<span class="bg-secondary/15 text-secondary font-label-sm text-label-sm px-space-xs py-0.5 rounded font-bold">Heritage Patron</span>
+<span class="bg-surface-variant text-on-surface-variant font-label-sm text-label-sm px-space-xs py-0.5 rounded">Few remaining</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-xl">Front row elevation with cushioned diwan seating, direct unhindered acoustic immersion, private tea service, and bilingual commemorative lyric manuscript.</p>
+<div class="font-title-md text-title-md text-primary font-bold mt-1">₹1,450 <span class="font-body-sm text-body-sm text-on-surface-variant font-normal">/ guest</span></div>
+</div>
+<!-- Quantity Selector -->
+<div class="flex items-center gap-space-sm flex-shrink-0 bg-surface-container-lowest p-space-xs rounded-lg shadow-sm">
+<button class="w-9 h-9 rounded-lg bg-surface-container hover:bg-surface-variant text-on-surface flex items-center justify-center transition-colors" onclick="adjustQty('t2', -1)" type="button">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<span class="font-title-lg text-title-lg w-8 text-center text-on-surface font-bold" id="qty-t2">0</span>
+<button class="w-9 h-9 rounded-lg bg-primary text-on-primary hover:bg-primary-container flex items-center justify-center transition-colors" onclick="adjustQty('t2', 1)" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+</div>
+<!-- Tier 3: Baithak & Curator's Heritage Walk -->
+<div class="tier-card bg-surface-container-low rounded-xl p-space-lg flex flex-col sm:flex-row sm:items-center justify-between gap-space-md transition-all shadow-sm">
+<div class="flex flex-col gap-space-xs flex-1">
+<div class="flex items-center gap-space-sm">
+<h3 class="font-title-lg text-title-lg text-on-surface">Baithak &amp; Curator's Heritage Walk</h3>
+<span class="bg-tertiary text-on-tertiary font-label-sm text-label-sm px-space-xs py-0.5 rounded">Full Evening</span>
+<span class="bg-surface-variant text-on-surface-variant font-label-sm text-label-sm px-space-xs py-0.5 rounded">4 spots left</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-xl">5:30 PM private guided architectural twilight walk of Qutb Shahi tombs by a conservation architect, followed by prime Diwan seating for the baithak.</p>
+<div class="font-title-md text-title-md text-primary font-bold mt-1">₹2,200 <span class="font-body-sm text-body-sm text-on-surface-variant font-normal">/ guest</span></div>
+</div>
+<!-- Quantity Selector -->
+<div class="flex items-center gap-space-sm flex-shrink-0 bg-surface-container-lowest p-space-xs rounded-lg shadow-sm">
+<button class="w-9 h-9 rounded-lg bg-surface-container hover:bg-surface-variant text-on-surface flex items-center justify-center transition-colors" onclick="adjustQty('t3', -1)" type="button">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<span class="font-title-lg text-title-lg w-8 text-center text-on-surface font-bold" id="qty-t3">0</span>
+<button class="w-9 h-9 rounded-lg bg-primary text-on-primary hover:bg-primary-container flex items-center justify-center transition-colors" onclick="adjustQty('t3', 1)" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Guidelines Collapsible Drawer -->
+<details class="group bg-surface-container p-space-md rounded-xl transition-all cursor-pointer">
+<summary class="flex items-center justify-between font-title-md text-title-md text-on-surface list-none">
+<span class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">policy</span>
+                Ticket guidelines, dress code &amp; cancellation policy
+              </span>
+<span class="material-symbols-outlined text-outline group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="pt-space-md grid grid-cols-1 sm:grid-cols-3 gap-space-md text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex flex-col gap-1">
+<strong class="text-on-surface font-title-md">Cancellation</strong>
+<span>100% full refund up to 24 hours prior to 7:30 PM, 14 Sep. Non-refundable thereafter.</span>
+</div>
+<div class="flex flex-col gap-1">
+<strong class="text-on-surface font-title-md">Sanctuary Etiquette</strong>
+<span>Modest Indian or smart casual attire recommended. Footwear is removed at the carpet perimeter.</span>
+</div>
+<div class="flex flex-col gap-1">
+<strong class="text-on-surface font-title-md">Age &amp; Acoustics</strong>
+<span>Suitable for ages 10+. Unamplified acoustic performance; mobile devices on absolute silent mode.</span>
+</div>
+</div>
+</details>
+</div>
+<!-- STEP 2: WHO'S ATTENDING (ATTENDEE DETAILS) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg md:p-space-xl shadow-sm flex flex-col gap-space-lg">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-md text-label-md text-primary uppercase tracking-widest font-bold">Step 2 of 3</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">2. Guest &amp; Attendee Details</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Tickets, digital gate passes, and entry QR cards will be synchronized directly to your VIHARA account and sent via WhatsApp &amp; Email.</p>
+</div>
+<!-- Account Prefill Banner -->
+<div class="bg-secondary/10 px-space-md py-space-sm rounded-lg flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+<span class="font-body-sm text-body-sm text-secondary font-semibold">Primary guest details prefilled from your VIHARA Patron Account</span>
+</div>
+<button class="text-primary hover:underline font-label-md text-label-md" type="button">Edit Profile</button>
+</div>
+<!-- Guest 1: Primary Guest -->
+<div class="bg-surface-container-low p-space-lg rounded-xl flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-sm text-label-sm font-bold">1</span>
+<h3 class="font-title-lg text-title-lg text-on-surface">Primary Guest (Lead Traveler)</h3>
+</div>
+<span class="bg-surface text-on-surface-variant font-label-sm text-label-sm px-space-sm py-0.5 rounded shadow-sm">Ticket Holder #1</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Full Legal Name</label>
+<input class="h-12 px-space-md rounded-lg bg-surface font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" type="text" value="Arjun Krishnamurthy"/>
+</div>
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Email Address (For QR Delivery)</label>
+<input class="h-12 px-space-md rounded-lg bg-surface font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" type="email" value="arjun.k@vihara.travel"/>
+</div>
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface font-semibold">WhatsApp Number (For Gate Passes)</label>
+<div class="flex">
+<span class="h-12 px-space-md bg-surface-variant flex items-center justify-center rounded-l-lg font-body-md text-body-md text-on-surface-variant">+91</span>
+<input class="flex-1 h-12 px-space-md rounded-r-lg bg-surface font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" type="tel" value="98401 23890"/>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Complimentary Chai &amp; Refreshment Preference</label>
+<select class="h-12 px-space-md rounded-lg bg-surface font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm">
+<option selected="">Traditional Irani Chai &amp; Osmania Biscuits</option>
+<option>Cardamom &amp; Rose Sherbet (Caffeine-free)</option>
+<option>Sugar-free Sulaimani Spiced Tea</option>
+<option>Pure Spring Water Only</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Guest 2: Accompanied Guest -->
+<div class="bg-surface-container-low p-space-lg rounded-xl flex flex-col gap-space-md" id="guest-2-card">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="w-6 h-6 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-label-sm text-label-sm font-bold">2</span>
+<h3 class="font-title-lg text-title-lg text-on-surface">Guest 2 (Accompanied Guest)</h3>
+</div>
+<span class="bg-surface text-on-surface-variant font-label-sm text-label-sm px-space-sm py-0.5 rounded shadow-sm">Ticket Holder #2</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Full Legal Name</label>
+<input class="h-12 px-space-md rounded-lg bg-surface font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" type="text" value="Radhika Krishnamurthy"/>
+</div>
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface font-semibold">WhatsApp Number (Optional)</label>
+<div class="flex">
+<span class="h-12 px-space-md bg-surface-variant flex items-center justify-center rounded-l-lg font-body-md text-body-md text-on-surface-variant">+91</span>
+<input class="flex-1 h-12 px-space-md rounded-r-lg bg-surface font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" placeholder="Mobile for duplicate pass" type="tel" value="98401 99120"/>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs md:col-span-2">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Seating or Accessibility Accommodations</label>
+<input class="h-12 px-space-md rounded-lg bg-surface font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" placeholder="e.g., Needs low stool back support instead of flat floor bolster, quiet seating corner" type="text"/>
+</div>
+</div>
+</div>
+<!-- Quick Save Checkbox -->
+<label class="flex items-center gap-space-sm cursor-pointer select-none">
+<input checked="" class="w-5 h-5 rounded accent-primary text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface">Save attendee information to my <strong>VIHARA Family &amp; Group Directory</strong> for future fast checkout</span>
+</label>
+</div>
+<!-- STEP 3: TRIP CONTEXT & ITINERARY ALIGNMENT -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg md:p-space-xl shadow-sm flex flex-col gap-space-lg">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-md text-label-md text-primary uppercase tracking-widest font-bold">Curated Seamless Flow</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">3. Day 2 Itinerary Alignment</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">VIHARA connects your experiences with real-time transit calculation, eliminating travel friction.</p>
+</div>
+<!-- Timeline Preview Ribbon -->
+<div class="bg-surface-container-low p-space-lg rounded-xl flex flex-col gap-space-md">
+<div class="flex items-center justify-between flex-wrap gap-space-sm">
+<span class="font-title-md text-title-md text-on-surface font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[20px]">route</span>
+                Saturday, 14 Sep • Optimal Evening Path
+              </span>
+<span class="bg-secondary/10 text-secondary font-label-sm text-label-sm px-space-sm py-0.5 rounded-full font-bold">
+                Zero Backtrack Detour (+0.6 km)
+              </span>
+</div>
+<!-- Horizontal Journey Timeline -->
+<div class="grid grid-cols-1 sm:grid-cols-4 gap-space-sm relative pt-space-xs">
+<!-- Stop 1 -->
+<div class="flex flex-col bg-surface p-space-md rounded-lg shadow-sm">
+<span class="font-label-sm text-label-sm text-outline uppercase font-bold">4:30 PM</span>
+<span class="font-title-md text-title-md text-on-surface mt-1 truncate">Chowmahalla</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Private Audio Tour</span>
+</div>
+<!-- Stop 2 -->
+<div class="flex flex-col bg-surface p-space-md rounded-lg shadow-sm">
+<span class="font-label-sm text-label-sm text-outline uppercase font-bold">6:00 PM</span>
+<span class="font-title-md text-title-md text-on-surface mt-1 truncate">Jewel of Nizam</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Hyderabadi Dastarkhan</span>
+</div>
+<!-- Stop 3 (This Event) -->
+<div class="flex flex-col bg-primary-fixed p-space-md rounded-lg shadow-md relative ring-2 ring-primary">
+<div class="absolute -top-2 right-2 bg-primary text-on-primary font-label-sm text-label-sm px-1.5 py-0.5 rounded-full">Booked Now</div>
+<span class="font-label-sm text-label-sm text-on-primary-fixed uppercase font-bold">7:30 PM</span>
+<span class="font-title-md text-title-md text-on-primary-fixed font-bold mt-1 truncate">Sufi Baithak</span>
+<span class="font-body-sm text-body-sm text-on-primary-fixed-variant">Qutb Shahi Tombs</span>
+</div>
+<!-- Stop 4 -->
+<div class="flex flex-col bg-surface p-space-md rounded-lg shadow-sm">
+<span class="font-label-sm text-label-sm text-outline uppercase font-bold">10:20 PM</span>
+<span class="font-title-md text-title-md text-on-surface mt-1 truncate">Taj Falaknuma</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Return to Residence</span>
+</div>
+</div>
+<!-- Logistics Subnote -->
+<div class="flex items-center gap-space-sm pt-space-xs text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">local_taxi</span>
+<span>Chauffeur cab transfer pre-coordinated via VIHARA Concierge. Complimentary heritage valet available at Gate 2.</span>
+</div>
+</div>
+<!-- Consent Checkboxes -->
+<div class="flex flex-col gap-space-sm pt-space-xs">
+<label class="flex items-start gap-space-sm cursor-pointer select-none">
+<input checked="" class="w-5 h-5 mt-0.5 rounded accent-primary text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface">
+                I agree to the <strong>Heritage Sanctuary Protocols</strong> (respectful quietude during live acoustic sets, no footwear on Persian carpets, and strictly non-flash photography).
+              </span>
+</label>
+<label class="flex items-start gap-space-sm cursor-pointer select-none">
+<input checked="" class="w-5 h-5 mt-0.5 rounded accent-primary text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface">
+                I accept VIHARA's <strong>24-Hour Free Cancellation &amp; Immediate Reschedule Guarantee</strong>.
+              </span>
+</label>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: STICKY BOOKING SUMMARY PANEL (35% / 4 Cols) -->
+<div class="lg:col-span-4 sticky top-24 flex flex-col gap-space-lg">
+<!-- Summary Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-xl flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-xs">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Booking Summary</h2>
+<span class="bg-secondary/10 text-secondary font-label-sm text-label-sm px-space-sm py-0.5 rounded-full font-bold">2 Guests</span>
+</div>
+<!-- Itemized Breakdown -->
+<div class="flex flex-col gap-space-sm font-body-md text-body-md text-on-surface-variant pt-space-xs">
+<div class="flex items-center justify-between text-on-surface">
+<span id="summary-tier-label">2 × Dastarkhan Baithak</span>
+<span class="font-semibold text-on-surface" id="summary-tier-price">₹1,798</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant text-sm">
+<span class="flex items-center gap-1">
+                Cultural Preservation Fund (5%)
+                <span class="material-symbols-outlined text-[14px] text-outline cursor-help" title="Directly supports the restoration of the Qutb Shahi Tombs complex">help</span>
+</span>
+<span id="summary-fund">₹90</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant text-sm">
+<span>GST &amp; Heritage Surcharge (18% on fees)</span>
+<span id="summary-gst">₹16</span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant text-sm">
+<span>Transparent Service Fee</span>
+<span>₹45</span>
+</div>
+<!-- Divider via background block -->
+<div class="h-[1px] w-full bg-surface-variant my-space-xs"></div>
+<div class="flex items-center justify-between font-title-md text-title-md text-on-surface">
+<span>Subtotal</span>
+<span id="summary-subtotal">₹1,949</span>
+</div>
+</div>
+<!-- Promo Code Input & Privilege Pill -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex gap-space-xs">
+<div class="relative flex-1">
+<input class="w-full h-11 px-space-md rounded-lg bg-surface-container-low font-body-sm text-body-sm uppercase font-semibold text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" id="promo-input" type="text" value="VIHARAHYD10"/>
+</div>
+<button class="h-11 px-space-md rounded-lg bg-secondary text-on-secondary font-title-md text-title-md hover:bg-secondary/90 transition-colors shadow-sm" onclick="togglePromo()" type="button">
+                Applied
+              </button>
+</div>
+<div class="bg-secondary/15 text-secondary px-space-sm py-space-xs rounded-lg flex items-center justify-between text-sm" id="promo-badge">
+<span class="flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[16px]">local_offer</span>
+                Autumn Heritage Privilege (-10%)
+              </span>
+<span class="font-bold">-₹195</span>
+</div>
+</div>
+<!-- Final Payable Amount -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex items-baseline justify-between mt-space-xs">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider font-bold">Total Payable</span>
+<span class="text-xs text-secondary font-semibold">All taxes &amp; sanctuary fees included</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-display-lg text-[32px] leading-8 text-primary font-bold" id="final-total">₹1,754</span>
+<span class="line-through text-xs text-outline">₹1,949</span>
+</div>
+</div>
+<!-- Zero Hidden Fees Pledge -->
+<div class="flex items-center justify-center gap-1 text-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[15px] text-secondary">verified_user</span>
+<span>No hidden fees • Direct Telangana master-artist payout</span>
+</div>
+<!-- TRIP BUDGET INTELLIGENCE (VIHARA EXCLUSIVE FEATURE) -->
+<div class="bg-surface-container p-space-md rounded-xl flex flex-col gap-space-sm mt-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-primary font-bold flex items-center gap-1 uppercase tracking-wide">
+<span class="material-symbols-outlined text-[18px]">query_stats</span>
+                Trip Budget Intelligence
+              </span>
+<span class="bg-secondary/20 text-secondary font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold" id="budget-status-pill">
+                Within Budget ✓
+              </span>
+</div>
+<div class="flex flex-col gap-1 text-xs text-on-surface-variant">
+<div class="flex justify-between">
+<span>Day 2 Cultural Allocation:</span>
+<span class="font-semibold text-on-surface">₹2,500</span>
+</div>
+<div class="flex justify-between">
+<span>Already Spent (Chowmahalla audio tour):</span>
+<span>₹450</span>
+</div>
+<div class="flex justify-between font-semibold text-primary">
+<span>This Mehfil Reservation:</span>
+<span id="budget-booking-amt">₹1,754</span>
+</div>
+<div class="flex justify-between font-bold text-secondary pt-1">
+<span>Remaining Evening Buffer:</span>
+<span id="budget-buffer">₹296</span>
+</div>
+</div>
+<!-- Visual Budget Progress Meter -->
+<div class="w-full bg-surface-variant h-2 rounded-full overflow-hidden flex">
+<div class="bg-outline w-[18%]" title="Chowmahalla: ₹450"></div>
+<div class="bg-primary w-[70%]" id="budget-bar" title="This Booking: ₹1,754"></div>
+<div class="bg-secondary/40 flex-1" title="Remaining: ₹296"></div>
+</div>
+</div>
+<!-- PRIMARY CTA BUTTON -->
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<button class="w-full h-14 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-title-lg text-title-lg shadow-lg hover:shadow-xl transition-all flex flex-col items-center justify-center" type="button">
+<div class="flex items-center gap-space-xs font-bold">
+<span>Continue to Secure Payment</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</div>
+<span class="text-[11px] opacity-90 font-normal">Instant calendar sync &amp; WhatsApp pass delivery</span>
+</button>
+</div>
+<!-- Trust Badges Under CTA -->
+<div class="grid grid-cols-3 gap-space-xs text-center pt-space-xs">
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[20px] text-outline">lock</span>
+<span class="text-[11px] leading-tight text-on-surface-variant">256-bit Bank Encryption</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[20px] text-outline">account_balance</span>
+<span class="text-[11px] leading-tight text-on-surface-variant">Telangana Heritage Trust</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[20px] text-outline">event_available</span>
+<span class="text-[11px] leading-tight text-on-surface-variant">Free 24h Cancellation</span>
+</div>
+</div>
+</div>
+<!-- Concierge Help Support Card -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[22px]">support_agent</span>
+</div>
+<div class="flex flex-col text-sm">
+<span class="font-title-md text-title-md text-on-surface">Questions regarding the Mehfil?</span>
+<span class="text-on-surface-variant font-body-sm">Ask your personal AI Concierge or speak with the Ibrahim Bagh on-site curator.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Simulator Switcher for Prototype Review -->
+<section class="w-full bg-surface-container-highest py-space-md mt-space-xl">
+<div class="max-w-[1320px] mx-auto px-margin flex flex-col md:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm text-on-surface-variant font-label-md text-label-md uppercase font-bold">
+<span class="material-symbols-outlined text-primary text-[20px]">tune</span>
+<span>Prototype State Simulator:</span>
+</div>
+<div class="flex flex-wrap items-center gap-space-xs">
+<button class="px-space-md py-1 rounded-full bg-on-surface text-surface text-xs font-semibold shadow-sm hover:opacity-90 transition-opacity" onclick="setPreset('standard')" type="button">
+          Standard (2 Guests)
+        </button>
+<button class="px-space-md py-1 rounded-full bg-surface-container hover:bg-surface text-on-surface text-xs font-semibold shadow-sm transition-colors" onclick="setPreset('single')" type="button">
+          Single Guest
+        </button>
+<button class="px-space-md py-1 rounded-full bg-surface-container hover:bg-surface text-on-surface text-xs font-semibold shadow-sm transition-colors" onclick="setPreset('patron')" type="button">
+          Royal Diwan (Patron)
+        </button>
+<button class="px-space-md py-1 rounded-full bg-surface-container hover:bg-surface text-on-surface text-xs font-semibold shadow-sm transition-colors" onclick="setPreset('overbudget')" type="button">
+          Over-Budget Warning
+        </button>
+</div>
+</div>
+</section>
+<!-- Client-side Interactive Calculations -->
+<script>
+    const prices = { t1: 899, t2: 1450, t3: 2200 };
+    let counts = { t1: 2, t2: 0, t3: 0 };
+    let promoActive = true;
+
+    function updateSummary() {
+      const q1 = counts.t1;
+      const q2 = counts.t2;
+      const q3 = counts.t3;
+      const totalGuests = q1 + q2 + q3;
+
+      document.getElementById('qty-t1').textContent = q1;
+      document.getElementById('qty-t2').textContent = q2;
+      document.getElementById('qty-t3').textContent = q3;
+
+      // Label
+      let mainDesc = [];
+      if (q1 > 0) mainDesc.push(`${q1} × Dastarkhan Baithak`);
+      if (q2 > 0) mainDesc.push(`${q2} × Royal Diwan`);
+      if (q3 > 0) mainDesc.push(`${q3} × Heritage Walk`);
+      document.getElementById('summary-tier-label').textContent = mainDesc.join(', ') || '0 Tickets Selected';
+
+      const rawBase = (q1 * prices.t1) + (q2 * prices.t2) + (q3 * prices.t3);
+      document.getElementById('summary-tier-price').textContent = '₹' + rawBase.toLocaleString('en-IN');
+
+      const fund = Math.round(rawBase * 0.05);
+      const gst = Math.round(rawBase * 0.01);
+      const service = rawBase > 0 ? 45 : 0;
+      const subtotal = rawBase + fund + gst + service;
+
+      document.getElementById('summary-fund').textContent = '₹' + fund.toLocaleString('en-IN');
+      document.getElementById('summary-gst').textContent = '₹' + gst.toLocaleString('en-IN');
+      document.getElementById('summary-subtotal').textContent = '₹' + subtotal.toLocaleString('en-IN');
+
+      const discount = promoActive ? Math.round(rawBase * 0.1) : 0;
+      const finalAmt = Math.max(0, subtotal - discount);
+
+      document.getElementById('final-total').textContent = '₹' + finalAmt.toLocaleString('en-IN');
+      document.getElementById('budget-booking-amt').textContent = '₹' + finalAmt.toLocaleString('en-IN');
+
+      // Guest 2 Card visibility toggle
+      const g2Card = document.getElementById('guest-2-card');
+      if (g2Card) {
+        g2Card.style.display = totalGuests > 1 ? 'flex' : 'none';
+      }
+
+      // Budget Calculation
+      const day2Total = 2500;
+      const spentPrevious = 450;
+      const remaining = day2Total - spentPrevious - finalAmt;
+      const bufferElem = document.getElementById('budget-buffer');
+      const statusPill = document.getElementById('budget-status-pill');
+      const budgetBar = document.getElementById('budget-bar');
+
+      if (remaining >= 0) {
+        bufferElem.textContent = '₹' + remaining.toLocaleString('en-IN');
+        bufferElem.className = 'font-bold text-secondary';
+        statusPill.textContent = 'Within Budget ✓';
+        statusPill.className = 'bg-secondary/20 text-secondary font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold';
+        budgetBar.style.width = Math.min(80, Math.round((finalAmt / day2Total) * 100)) + '%';
+        budgetBar.className = 'bg-primary';
+      } else {
+        bufferElem.textContent = '-₹' + Math.abs(remaining).toLocaleString('en-IN') + ' (Exceeds buffer)';
+        bufferElem.className = 'font-bold text-error';
+        statusPill.textContent = 'Exceeds Planned Budget';
+        statusPill.className = 'bg-error-container text-on-error-container font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold';
+        budgetBar.style.width = '82%';
+        budgetBar.className = 'bg-error';
+      }
+    }
+
+    function adjustQty(tier, delta) {
+      counts[tier] = Math.max(0, counts[tier] + delta);
+      if (counts.t1 === 0 && counts.t2 === 0 && counts.t3 === 0) {
+        counts[tier] = 1; // Minimum 1 ticket
+      }
+      updateSummary();
+    }
+
+    function togglePromo() {
+      promoActive = !promoActive;
+      const badge = document.getElementById('promo-badge');
+      if (badge) badge.style.display = promoActive ? 'flex' : 'none';
+      updateSummary();
+    }
+
+    function setPreset(type) {
+      if (type === 'standard') {
+        counts = { t1: 2, t2: 0, t3: 0 };
+        promoActive = true;
+      } else if (type === 'single') {
+        counts = { t1: 1, t2: 0, t3: 0 };
+        promoActive = true;
+      } else if (type === 'patron') {
+        counts = { t1: 0, t2: 2, t3: 0 };
+        promoActive = true;
+      } else if (type === 'overbudget') {
+        counts = { t1: 0, t2: 0, t3: 3 };
+        promoActive = false;
+      }
+      const badge = document.getElementById('promo-badge');
+      if (badge) badge.style.display = promoActive ? 'flex' : 'none';
+      updateSummary();
+    }
+
+    // Initial setup run
+    updateSummary();
+  </script>
+</div></main><footer class="w-full bg-surface-container-low pt-space-xl pb-space-lg shadow-[0_-1px_8px_rgba(0,0,0,0.02)]"><div class="max-w-[1320px] mx-auto px-margin"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-gutter mb-space-xl"><div class="lg:col-span-2 flex flex-col gap-space-md"><div class="flex items-center gap-space-sm"><img alt="VIHARA Brand Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WKhU6jn5cMDbDgZddTFJYceFsrHCU3-UvWxfdVO-xAP7uXS6u3789AJfau7paTIEVHWtkQffycI5RirtPMxmssRRie7C8MfZhi9H12Pd25Yt1Hu3N8JHjWRQHcOgrLFF9x7B-jPSw0DLEBBhGIHSda-01KWshVuhLWDzSGTArwLjGVogGEVLiboYOjsumH64jn4_KHVnhVR6IGYPQmUjQHfj_FPmawe7qgEGN_De1blqIDUgvZ_zzO"/><span class="font-headline-sm text-headline-sm text-on-surface">VIHARA</span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-md">An elevated, culture-forward travel ecosystem honoring India's living traditions, architectural marvels, and bespoke hospitality.</p><div class="flex flex-col gap-space-xs"><span class="font-label-md text-label-md text-on-surface uppercase">Curatorial Letter</span><div class="flex max-w-sm gap-space-xs"><input class="flex-1 h-12 px-space-md rounded-lg bg-surface font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="Enter your email for slow travel journals" type="email"/><button class="h-12 px-space-lg rounded-lg bg-primary-container text-on-primary font-title-md text-title-md hover:bg-primary transition-colors" type="button">Subscribe</button></div></div></div><div class="flex flex-col gap-space-sm"><span class="font-title-md text-title-md text-on-surface">Discover</span><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="trip-planner" href="#">Trip Planning</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="events-nearby" href="#">Events Nearby</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="stays-and-travel" href="#">Heritage Stays</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="saved-and-itinerary" href="#">Curated Journeys</a></div><div class="flex flex-col gap-space-sm"><span class="font-title-md text-title-md text-on-surface">Intelligence</span><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="ai-concierge" href="#">AI Concierge</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Active Trip Companion</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Regional Almanac</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Artisan Archives</a></div><div class="flex flex-col gap-space-sm"><span class="font-title-md text-title-md text-on-surface">Integrity</span><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">About VIHARA</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Safety &amp; Transparency</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Cultural Preservation Fund</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Editorial Standards</a></div></div><div class="pt-space-md flex flex-col md:flex-row items-center justify-between gap-space-sm bg-surface-container px-space-lg py-space-md rounded-xl"><span class="font-body-sm text-body-sm text-on-surface-variant">© 2024 VIHARA Experiences Pvt. Ltd. Crafted with cultural heritage respect. Made in India.</span><div class="flex items-center gap-space-md"><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Privacy Policy</a><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Terms of Hospitality</a><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Local Community Pledges</a></div></div></div></footer></body></html>

@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"surface-tint":"#ac3400","inverse-primary":"#ffb59d","on-background":"#1e1b19","on-secondary-fixed":"#00201d","surface":"#fff8f5","inverse-surface":"#33302d","surface-variant":"#e9e1dd","error":"#ba1a1a","on-secondary":"#ffffff","surface-container-high":"#eee7e3","error-container":"#ffdad6","outline":"#8d7168","on-primary-fixed":"#390c00","on-primary-fixed-variant":"#832600","surface-container-lowest":"#ffffff","outline-variant":"#e1bfb5","primary-fixed":"#ffdbd0","tertiary-container":"#a65900","inverse-on-surface":"#f7efeb","surface-container-highest":"#e9e1dd","secondary-fixed-dim":"#80d5cb","on-error-container":"#93000a","on-primary":"#ffffff","on-secondary-fixed-variant":"#00504a","on-primary-container":"#ffece7","surface-bright":"#fff8f5","secondary":"#006a63","on-tertiary-container":"#ffede1","secondary-fixed":"#9cf2e8","primary-container":"#c2410c","surface-dim":"#e0d8d5","on-tertiary-fixed":"#2f1500","on-surface":"#1e1b19","surface-container":"#f4ece8","tertiary-fixed-dim":"#ffb77d","on-surface-variant":"#59413a","on-secondary-container":"#006f67","primary":"#9b2f00","background":"#fff8f5","tertiary":"#824500","surface-container-low":"#faf2ee","on-tertiary":"#ffffff","on-tertiary-fixed-variant":"#6e3900","primary-fixed-dim":"#ffb59d","on-error":"#ffffff","secondary-container":"#99efe5","tertiary-fixed":"#ffdcc3"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter-mobile":"1rem","space-lg":"1.5rem","margin-mobile":"1.25rem","space-xs":"0.25rem","margin":"3rem","space-sm":"0.5rem","gutter":"1.5rem","space-xl":"2.5rem","space-md":"1rem"},"fontFamily":{"headline-md":["Playfair Display"],"label-md":["Plus Jakarta Sans"],"headline-lg-mobile":["Playfair Display"],"display-lg":["Playfair Display"],"title-md":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"headline-sm":["Playfair Display"],"display-lg-mobile":["Playfair Display"],"body-sm":["Plus Jakarta Sans"],"title-lg":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"headline-lg":["Playfair Display"],"label-sm":["Plus Jakarta Sans"]},"fontSize":{"headline-md":["28px",{"lineHeight":"36px","letterSpacing":"-0.005em","fontWeight":"600"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.06em","fontWeight":"600"}],"headline-lg-mobile":["30px",{"lineHeight":"36px","letterSpacing":"0em","fontWeight":"600"}],"display-lg":["56px",{"lineHeight":"64px","letterSpacing":"-0.02em","fontWeight":"600"}],"title-md":["16px",{"lineHeight":"24px","letterSpacing":"0em","fontWeight":"600"}],"body-lg":["18px",{"lineHeight":"28px","letterSpacing":"0em","fontWeight":"400"}],"headline-sm":["22px",{"lineHeight":"30px","letterSpacing":"0em","fontWeight":"600"}],"display-lg-mobile":["38px",{"lineHeight":"44px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-sm":["13px",{"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"400"}],"title-lg":["18px",{"lineHeight":"26px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-md":["15px",{"lineHeight":"24px","letterSpacing":"0em","fontWeight":"400"}],"headline-lg":["40px",{"lineHeight":"48px","letterSpacing":"-0.01em","fontWeight":"600"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.08em","fontWeight":"700"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-[1320px] mx-auto px-margin flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><a class="flex items-center gap-space-sm" href="#"><img alt="VIHARA Brand Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WKhU6jn5cMDbDgZddTFJYceFsrHCU3-UvWxfdVO-xAP7uXS6u3789AJfau7paTIEVHWtkQffycI5RirtPMxmssRRie7C8MfZhi9H12Pd25Yt1Hu3N8JHjWRQHcOgrLFF9x7B-jPSw0DLEBBhGIHSda-01KWshVuhLWDzSGTArwLjGVogGEVLiboYOjsumH64jn4_KHVnhVR6IGYPQmUjQHfj_FPmawe7qgEGN_De1blqIDUgvZ_zzO"/><span class="font-headline-md text-headline-md text-on-surface tracking-tight hidden sm:inline-block">VIHARA</span></a><nav class="hidden xl:flex items-center gap-space-sm" data-active-classes="bg-primary-container text-on-primary rounded-full px-space-md py-space-xs font-title-md text-title-md"><a class="text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs font-title-md text-title-md transition-colors" data-path="trip-planner" href="#">Trip Planner</a><a class="text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs font-title-md text-title-md transition-colors" data-path="stays-and-travel" href="#">Stays &amp; Travel</a><a aria-current="page" class="transition-colors bg-primary-container text-on-primary rounded-full px-space-md py-space-xs font-title-md text-title-md" data-path="events-nearby" href="#">Events Nearby</a><a class="text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs font-title-md text-title-md transition-colors" data-path="ai-concierge" href="#">AI Concierge</a><a class="text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs font-title-md text-title-md transition-colors" data-path="saved-and-itinerary" href="#">Saved &amp; Itinerary</a></nav></div><div class="flex items-center gap-space-sm"><button class="hidden md:flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-full shadow-[0_1px_4px_-1px_rgba(28,25,23,0.04)] hover:bg-surface-container transition-colors" type="button"><span class="material-symbols-outlined text-[18px] text-primary">location_on</span><span class="font-label-md text-label-md text-on-surface">Hyderabad, TS</span><span class="material-symbols-outlined text-[16px] text-outline">keyboard_arrow_down</span></button><div class="hidden lg:flex items-center gap-space-xs bg-surface-container-low px-space-sm py-space-xs rounded-full"><div class="w-2 h-2 rounded-full bg-secondary ring-2 ring-secondary/30 animate-pulse"></div><span class="font-label-sm text-label-sm text-on-surface">Active Trip Mode</span></div><button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant hover:text-on-surface" type="button"><span class="material-symbols-outlined text-[20px]">search</span></button><div class="flex items-center gap-space-xs pl-space-xs"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><span class="hidden sm:inline font-title-md text-title-md text-on-surface">Arjun K.</span></div></div></div></header><main class="w-full pt-20 bg-surface"><div class="flex flex-col w-full">
+<!-- Interactive Prototype Flow Controller -->
+<aside aria-label="Prototype State Switcher" class="w-full bg-inverse-surface text-inverse-on-surface py-space-sm px-space-md shadow-md sticky top-20 z-40">
+<div class="max-w-[1320px] mx-auto flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[18px] text-primary-fixed">tune</span>
+<span class="font-label-md text-label-md tracking-wider uppercase text-primary-fixed">Phase 5 Prototype State:</span>
+</div>
+<div class="flex flex-wrap items-center gap-1.5" id="flow-nav">
+<button class="px-3 py-1 rounded-full text-xs font-title-md transition-all bg-primary text-on-primary" data-state-btn="checkout" onclick="switchViewState('checkout')" type="button">1. Payment Checkout</button>
+<button class="px-3 py-1 rounded-full text-xs font-title-md transition-all bg-surface-variant/20 hover:bg-surface-variant/30 text-inverse-on-surface" data-state-btn="processing" onclick="switchViewState('processing')" type="button">2. Processing</button>
+<button class="px-3 py-1 rounded-full text-xs font-title-md transition-all bg-surface-variant/20 hover:bg-surface-variant/30 text-inverse-on-surface" data-state-btn="confirmed" onclick="switchViewState('confirmed')" type="button">3. Confirmed &amp; QR Pass</button>
+<button class="px-3 py-1 rounded-full text-xs font-title-md transition-all bg-surface-variant/20 hover:bg-surface-variant/30 text-inverse-on-surface" data-state-btn="synced" onclick="switchViewState('synced')" type="button">4. Synced Itinerary</button>
+<button class="px-3 py-1 rounded-full text-xs font-title-md transition-all bg-surface-variant/20 hover:bg-surface-variant/30 text-inverse-on-surface" data-state-btn="dashboard" onclick="switchViewState('dashboard')" type="button">5. My Events Dashboard</button>
+<button class="px-3 py-1 rounded-full text-xs font-title-md transition-all bg-surface-variant/20 hover:bg-surface-variant/30 text-inverse-on-surface" data-state-btn="failed" onclick="switchViewState('failed')" type="button">6. Payment Failure</button>
+</div>
+</div>
+</aside>
+<!-- Main Canvas Container -->
+<div class="w-full max-w-[1320px] mx-auto px-space-md sm:px-margin py-space-lg lg:py-space-xl">
+<!-- VIEW 1: SECURE CHECKOUT (PAYMENT STAGE) -->
+<section class="w-full flex flex-col gap-space-lg transition-opacity duration-300" id="view-checkout">
+<!-- Stepper Header -->
+<div class="w-full bg-surface-container-low rounded-xl p-space-md lg:p-space-lg shadow-sm">
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-space-sm pb-space-sm border-b border-surface-variant/60">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold">Step 4 of 4 • Final Allocation</span>
+<h1 class="font-headline-md text-headline-md text-on-surface mt-0.5">Secure Sanctuary Payment</h1>
+</div>
+<div class="flex items-center gap-space-xs bg-surface-container px-space-sm py-1 rounded-full w-fit">
+<span class="material-symbols-outlined text-[16px] text-secondary">lock</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">256-bit Bank-Grade Encryption</span>
+</div>
+</div>
+<!-- Progress steps -->
+<div class="grid grid-cols-4 gap-2 pt-space-md text-center">
+<div class="flex flex-col items-center gap-1">
+<div class="w-7 h-7 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-label-sm">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface hidden sm:inline">1. Tickets</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-7 h-7 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-label-sm">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface hidden sm:inline">2. Guests</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-7 h-7 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-label-sm">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface hidden sm:inline">3. Review</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-7 h-7 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-label-sm ring-4 ring-primary/10">4</div>
+<span class="font-label-sm text-label-sm text-primary font-bold hidden sm:inline">4. Payment</span>
+</div>
+</div>
+</div>
+<!-- Main Layout Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Left: Payment Form (7 Cols) -->
+<div class="lg:col-span-7 flex flex-col gap-space-lg">
+<!-- Payment Method Selector Tabs -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<h2 class="font-title-lg text-title-lg text-on-surface">Select Payment Method</h2>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary/10 px-2 py-0.5 rounded-full font-semibold">Zero Surcharge Gateway</span>
+</div>
+<!-- Tabs -->
+<div class="grid grid-cols-3 gap-space-xs bg-surface-container-low p-1 rounded-lg">
+<button class="py-2.5 px-3 rounded-md font-title-md text-title-md transition-all bg-surface-container-lowest shadow-sm text-primary flex items-center justify-center gap-1.5" id="tab-upi" onclick="setPaymentTab('upi')" type="button">
+<span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>
+<span>UPI Instant</span>
+</button>
+<button class="py-2.5 px-3 rounded-md font-title-md text-title-md transition-all text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5" id="tab-card" onclick="setPaymentTab('card')" type="button">
+<span class="material-symbols-outlined text-[18px]">credit_card</span>
+<span>Card</span>
+</button>
+<button class="py-2.5 px-3 rounded-md font-title-md text-title-md transition-all text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5" id="tab-netbanking" onclick="setPaymentTab('netbanking')" type="button">
+<span class="material-symbols-outlined text-[18px]">account_balance</span>
+<span>Net Banking</span>
+</button>
+</div>
+<!-- Pane: UPI -->
+<div class="flex flex-col gap-space-md pt-space-xs" id="pane-upi">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md uppercase text-on-surface-variant" for="upi-id-input">Enter Virtual Payment Address (VPA)</label>
+<div class="flex gap-2">
+<div class="relative flex-1">
+<input class="w-full h-12 px-space-md rounded-lg bg-surface-container-low font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20" id="upi-id-input" placeholder="yourname@bank" type="text" value="arjun.krishna@okhdfcbank"/>
+<span class="material-symbols-outlined text-[18px] text-secondary absolute right-3 top-3.5">verified</span>
+</div>
+<button class="px-space-md h-12 rounded-lg bg-surface-container font-title-md text-title-md text-on-surface hover:bg-surface-container-high transition-colors" type="button">Verify</button>
+</div>
+<span class="font-body-sm text-body-sm text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">check_circle</span>
+                  Verified: Arjun Krishnamurthy (HDFC Bank Ltd.)
+                </span>
+</div>
+<!-- Quick App Chips -->
+<div class="flex flex-col gap-2">
+<span class="font-label-sm text-label-sm uppercase text-outline">Or instant pay via UPI Apps:</span>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+<button class="p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-all flex items-center gap-2 text-left group" type="button">
+<div class="w-7 h-7 rounded-full bg-surface flex items-center justify-center text-primary font-bold text-xs shadow-xs">G</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface leading-tight">Google Pay</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Tap to trigger</span>
+</div>
+</button>
+<button class="p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-all flex items-center gap-2 text-left" type="button">
+<div class="w-7 h-7 rounded-full bg-[#5f259f] text-white flex items-center justify-center font-bold text-xs">पे</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface leading-tight">PhonePe</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Auto link</span>
+</div>
+</button>
+<button class="p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-all flex items-center gap-2 text-left" type="button">
+<div class="w-7 h-7 rounded-full bg-[#002e6e] text-[#00b9f5] flex items-center justify-center font-bold text-xs">P</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface leading-tight">Paytm UPI</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Fast checkout</span>
+</div>
+</button>
+<button class="p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-all flex items-center gap-2 text-left" type="button">
+<div class="w-7 h-7 rounded-full bg-inverse-surface text-on-primary flex items-center justify-center font-bold text-xs">CR</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface leading-tight">CRED Pay</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Members only</span>
+</div>
+</button>
+</div>
+</div>
+</div>
+<!-- Pane: Cards (Hidden initially) -->
+<div class="hidden flex-col gap-space-md pt-space-xs" id="pane-card">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md uppercase text-on-surface-variant">Card Number</label>
+<div class="relative">
+<input class="w-full h-12 px-space-md rounded-lg bg-surface-container-low font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20" type="text" value="•••• •••• •••• 9012"/>
+<span class="material-symbols-outlined text-[20px] text-outline absolute right-3 top-3.5">credit_card</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-space-md">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md uppercase text-on-surface-variant">Expiry Date</label>
+<input class="w-full h-12 px-space-md rounded-lg bg-surface-container-low font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20" type="text" value="08 / 28"/>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md uppercase text-on-surface-variant">CVV</label>
+<div class="relative">
+<input class="w-full h-12 px-space-md rounded-lg bg-surface-container-low font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20" type="password" value="•••"/>
+<span class="material-symbols-outlined text-[18px] text-outline absolute right-3 top-3.5 cursor-pointer">visibility</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md uppercase text-on-surface-variant">Cardholder Full Name</label>
+<input class="w-full h-12 px-space-md rounded-lg bg-surface-container-low font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20" type="text" value="Arjun Krishnamurthy"/>
+</div>
+</div>
+<!-- Pane: Net Banking -->
+<div class="hidden flex-col gap-space-md pt-space-xs" id="pane-netbanking">
+<span class="font-label-md text-label-md uppercase text-on-surface-variant">Popular Heritage &amp; Scheduled Banks</span>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+<button class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-all flex flex-col items-center text-center gap-1" type="button">
+<span class="font-title-md text-title-md text-on-surface">HDFC Bank</span>
+<span class="font-label-sm text-label-sm text-secondary">Preferred</span>
+</button>
+<button class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-all flex flex-col items-center text-center gap-1" type="button">
+<span class="font-title-md text-title-md text-on-surface">ICICI Bank</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Instant Net</span>
+</button>
+<button class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-all flex flex-col items-center text-center gap-1" type="button">
+<span class="font-title-md text-title-md text-on-surface">SBI</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">All branches</span>
+</button>
+<button class="p-3 rounded-lg bg-surface-container-low hover:bg-surface-container transition-all flex flex-col items-center text-center gap-1" type="button">
+<span class="font-title-md text-title-md text-on-surface">Axis Bank</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Fast gateway</span>
+</button>
+</div>
+</div>
+<!-- Guarantee Strip -->
+<div class="flex items-center gap-space-sm bg-surface-container-low p-space-sm rounded-lg mt-space-xs">
+<span class="material-symbols-outlined text-[20px] text-secondary shrink-0">verified_user</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">VIHARA Guaranteed: Complete refund within 2 hours if cancellation is initiated 24 hours before the event bell.</p>
+</div>
+<!-- Agreement -->
+<label class="flex items-start gap-space-sm pt-space-xs cursor-pointer">
+<input checked="" class="mt-1 w-4 h-4 rounded text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                I agree to the Ibrahim Bagh Sanctuary protocol (shoes removed at baithak threshold, silence observed during raag alaap) and VIHARA's 24-Hour Free Cancellation Policy.
+              </span>
+</label>
+<!-- Checkout CTAs -->
+<div class="flex flex-col sm:flex-row items-center gap-space-md pt-space-sm">
+<button class="w-full sm:flex-1 h-12 rounded-lg bg-primary-container text-on-primary font-title-md text-title-md hover:bg-primary transition-all flex items-center justify-center gap-2 shadow-md" onclick="startPaymentSimulation()" type="button">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+<span>Pay ₹1,771 • Authorize Reservation</span>
+</button>
+<button class="w-full sm:w-auto px-space-lg h-12 rounded-lg bg-surface-container font-title-md text-title-md text-on-surface hover:bg-surface-container-high transition-colors" type="button">
+                ← Back to Review
+              </button>
+</div>
+</div>
+<!-- Trust Badges Strip -->
+<div class="grid grid-cols-3 gap-space-sm text-center">
+<div class="bg-surface-container-low p-3 rounded-lg flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[20px] text-primary">security</span>
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">RBI Compliant</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-xs">Tokenized storage</span>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[20px] text-secondary">volunteer_activism</span>
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Heritage Trust</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-xs">5% to master artisans</span>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[20px] text-tertiary">support_agent</span>
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">24/7 Concierge</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-xs">Priority travel line</span>
+</div>
+</div>
+</div>
+<!-- Right: Order Summary & Itinerary Sync Preview (5 Cols Sticky) -->
+<div class="lg:col-span-5 flex flex-col gap-space-md lg:sticky lg:top-36">
+<!-- Booking Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-sm border-b border-surface-variant/40">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold">Booking Details</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">CODE: VH-HYD-771</span>
+</div>
+<!-- Event mini-spread -->
+<div class="flex gap-space-md items-start">
+<img class="w-20 h-20 rounded-lg object-cover shrink-0 shadow-xs" data-alt="Intimate candlelit open-air Sufi baithak within Ibrahim Bagh Qutb Shahi Tombs Hyderabad at dusk with musicians playing sarangi and harmonium under warm terracotta architectural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA68csCzhJqQCZ8Rqp6xHe7u5gNAUg9mnnvSpn5SWmOmaAxyppkf0muS3rb0MWakjjVmE2-a3aA8zXYv5cVXbSm68Zpo5OlpKkM8EGZqSLN9NNfHzM4GG8Dhcmj339Ph4qACyGwmELgiPlHLLRi-ddCs0AdG1DlLI75S-tMYFLt_n--RD0NbV6haF7CAj5RpjMDg5yuJmhaQW64TiqJGWGZ25jAyluaoX4fpfZofviNWVEZQP23u3A"/>
+<div class="flex flex-col gap-0.5">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold">Sacred Sufi &amp; Qawwali Night</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface leading-tight">Echoes of the Deccan</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[15px] text-primary">calendar_today</span>
+                  Sat, 14 Sep • 7:30 PM – 10:00 PM
+                </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-outline">pin_drop</span>
+                  Ibrahim Bagh Amphitheatre, Qutb Shahi
+                </span>
+</div>
+</div>
+<!-- Seating & Guests -->
+<div class="bg-surface-container-low p-space-md rounded-lg flex flex-col gap-2">
+<div class="flex justify-between items-center text-sm">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Tier &amp; Placement:</span>
+<span class="font-title-md text-title-md text-on-surface">Dastarkhan Baithak (Row B, 14 &amp; 15)</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Allocated Guests:</span>
+<span class="font-title-md text-title-md text-on-surface">Arjun K. &amp; Radhika K. (2 Guests)</span>
+</div>
+</div>
+<!-- Line Items Breakdown -->
+<div class="flex flex-col gap-2 pt-space-xs text-sm border-t border-surface-variant/40">
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">2x Dastarkhan Baithak Passes</span>
+<span class="font-title-md text-title-md text-on-surface">₹1,798</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+                  Cultural Heritage Preservation (5%)
+                  <span class="material-symbols-outlined text-[14px] text-outline" title="Directed to Golconda Artisan &amp; Folk Fund">info</span>
+</span>
+<span class="font-title-md text-title-md text-on-surface">₹90</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">GST &amp; Municipal Cultural Levies</span>
+<span class="font-title-md text-title-md text-on-surface">₹18</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Zero-Commission Transparent Fee</span>
+<span class="font-title-md text-title-md text-on-surface">₹45</span>
+</div>
+<div class="flex justify-between items-center text-secondary">
+<span class="font-body-md text-body-md font-medium">Coupon VIHARAHYD10 applied</span>
+<span class="font-title-md text-title-md font-bold">- ₹195</span>
+</div>
+<div class="pt-2 mt-2 border-t border-surface-variant/40 flex justify-between items-baseline">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Total Payable</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">All taxes &amp; seat cushions included</span>
+</div>
+<span class="font-headline-md text-headline-md text-primary font-bold">₹1,771</span>
+</div>
+</div>
+</div>
+<!-- Trip Alignment Bento Card -->
+<div class="bg-surface-container rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm border border-outline-variant/30">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-secondary">alt_route</span>
+<span class="font-label-sm text-label-sm uppercase font-bold text-secondary">Route Harmony Active</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Day 2 of Hyderabad Trip</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-snug">
+              Fits effortlessly into your scheduled evening: <strong>4:30 PM</strong> Chowmahalla Palace → <strong>6:00 PM</strong> Dinner at Jewel of Nizam → <strong>7:30 PM</strong> Qawwali Baithak → <strong>10:20 PM</strong> Taj Falaknuma.
+            </p>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-secondary font-semibold">Zero Backtrack (+0.6 km)</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Day Activity Buffer: <strong>₹279</strong></span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- VIEW 2: PAYMENT PROCESSING SIMULATION -->
+<section class="hidden w-full min-h-[500px] flex-col items-center justify-center py-space-xl text-center" id="view-processing">
+<div class="max-w-md w-full bg-surface-container-lowest rounded-2xl p-space-xl shadow-xl flex flex-col items-center gap-space-md relative overflow-hidden">
+<!-- Ambient animated ring -->
+<div class="w-24 h-24 rounded-full border-4 border-surface-container-high border-t-primary animate-spin flex items-center justify-center">
+<span class="material-symbols-outlined text-[32px] text-primary">temple_hindu</span>
+</div>
+<div class="flex flex-col gap-1 mt-2">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold">Authorizing Transaction</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Securing Your Sanctuary Cushions</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Connecting with Ibrahim Bagh Sanctuary Custodians &amp; National NPCI Gateway. Please do not refresh or tap back.</p>
+</div>
+<div class="w-full bg-surface-container-low p-space-sm rounded-lg flex items-center justify-between text-xs text-on-surface-variant">
+<span class="font-mono">Ref: VHR-TXN-882194</span>
+<span class="text-secondary font-semibold flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+            Verifying UPI PIN Handshake
+          </span>
+</div>
+<button class="mt-2 text-xs text-on-surface-variant underline hover:text-primary" onclick="switchViewState('confirmed')" type="button">
+          [Click here to expedite simulation to Confirmed Pass]
+        </button>
+</div>
+</section>
+<!-- VIEW 3: BOOKING CONFIRMED & DIGITAL QR TICKET -->
+<section class="hidden w-full flex-col gap-space-lg transition-opacity duration-300" id="view-confirmed">
+<!-- Celebratory Header Strip -->
+<div class="w-full bg-gradient-to-r from-primary-container via-primary to-tertiary text-on-primary rounded-2xl p-space-lg sm:p-space-xl shadow-lg relative overflow-hidden">
+<div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-space-md">
+<div class="flex flex-col gap-1 max-w-2xl">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[24px] text-primary-fixed">verified</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-primary-fixed font-bold">Sanctuary Reservation Secured</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-primary">Experience Formally Confirmed!</h1>
+<p class="font-body-lg text-body-lg text-primary-fixed leading-relaxed">
+              Your evening with the hereditary qawwals is seamlessly confirmed and woven into your Hyderabad calendar. An SMS with gate passes has been dispatched to +91 98490 •••••.
+            </p>
+</div>
+<!-- Booking ID Pill -->
+<div class="bg-surface-container-lowest/15 backdrop-blur-md px-space-lg py-space-md rounded-xl flex flex-col gap-1 shrink-0">
+<span class="font-label-sm text-label-sm text-primary-fixed uppercase tracking-wider">Pass Confirmation No.</span>
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-sm text-headline-sm text-on-primary font-mono tracking-wider" id="booking-id-val">VH-EVT-8K42P7</span>
+<button class="w-8 h-8 rounded-full bg-surface/20 hover:bg-surface/30 flex items-center justify-center transition-colors" onclick="copyBookingId()" title="Copy Pass ID" type="button">
+<span class="material-symbols-outlined text-[16px] text-on-primary">content_copy</span>
+</button>
+</div>
+<span class="text-[11px] text-primary-fixed-dim">Instant Gate Recognition Valid</span>
+</div>
+</div>
+</div>
+<!-- Center Digital Heritage Ticket Card -->
+<div class="max-w-4xl mx-auto w-full">
+<div class="bg-surface-container-lowest rounded-2xl shadow-xl overflow-hidden relative">
+<!-- Ticket Top Ribbon -->
+<div class="bg-surface-container-high px-space-lg py-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold">VIHARA HERITAGE PASS</span>
+<span class="text-outline-variant">•</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">IBRAHIM BAGH ENTRY CARD</span>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-secondary/15 text-secondary font-label-sm text-label-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+              PAID IN FULL (₹1,771)
+            </span>
+</div>
+<!-- Ticket Main Body -->
+<div class="p-space-lg sm:p-space-xl grid grid-cols-1 md:grid-cols-12 gap-space-xl items-center relative">
+<!-- Left Info (8 Cols) -->
+<div class="md:col-span-8 flex flex-col gap-space-md">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold">Classical Sufi Mehfil • Deccan Raga Series</span>
+<h2 class="font-display-lg-mobile md:font-headline-lg text-display-lg-mobile md:text-headline-lg text-on-surface mt-1 leading-tight">
+                  Sacred Echoes: Live Sufi &amp; Qawwali Night
+                </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+                  Ensemble: Warsi Brothers (Eighth-generation royal qawwals of the Nizam's court)
+                </p>
+</div>
+<!-- Ticket Key Parameters Grid -->
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-space-md bg-surface-container-low p-space-md rounded-xl">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline uppercase font-semibold">Date &amp; Evening</span>
+<span class="font-title-md text-title-md text-on-surface font-semibold mt-0.5">Sat, 14 Sep 2024</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Gate opens 6:45 PM</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline uppercase font-semibold">Performance</span>
+<span class="font-title-md text-title-md text-on-surface font-semibold mt-0.5">7:30 – 10:00 PM</span>
+<span class="font-body-sm text-body-sm text-secondary font-medium">Under the Moonlit Domes</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline uppercase font-semibold">Cushions Reserved</span>
+<span class="font-title-md text-title-md text-primary font-bold mt-0.5">Row B • 14, 15</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Dastarkhan Baithak</span>
+</div>
+<div class="flex flex-col sm:col-span-2">
+<span class="font-label-sm text-label-sm text-outline uppercase font-semibold">Venue &amp; Entry Point</span>
+<span class="font-title-md text-title-md text-on-surface font-semibold mt-0.5">Ibrahim Bagh Amphitheatre</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Gate 2 Valet &amp; Golf Cart Shuttle Available</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline uppercase font-semibold">Primary Patron</span>
+<span class="font-title-md text-title-md text-on-surface font-semibold mt-0.5">Arjun K.</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">+ Radhika K. (2 total)</span>
+</div>
+</div>
+<!-- Cultural Etiquette Micro-Notice -->
+<div class="flex items-center gap-space-sm text-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] text-tertiary">spa</span>
+<span>Traditional Indian attire welcomed. Organic jasmine garlands and chilled rose sherbet served upon arrival.</span>
+</div>
+</div>
+<!-- Ticket Perforated Divider (Hidden on mobile) -->
+<div class="hidden md:block absolute right-[32%] top-0 bottom-0 w-[1px] border-r-2 border-dashed border-outline-variant/60 pointer-events-none"></div>
+<!-- Right QR & Verification (4 Cols) -->
+<div class="md:col-span-4 flex flex-col items-center justify-center text-center gap-space-sm bg-surface-container-low/50 p-space-md rounded-xl">
+<span class="font-label-sm text-label-sm text-primary font-bold uppercase tracking-wider">Fast-Track Gate Scan</span>
+<!-- Mock High-Density QR -->
+<div class="w-44 h-44 bg-surface-container-lowest p-3 rounded-xl shadow-md flex items-center justify-center">
+<svg class="w-full h-full text-on-surface" fill="currentColor" viewbox="0 0 100 100">
+<!-- QR Finder Pattern Top-Left -->
+<path d="M5 5 h30 v30 h-30 z M10 10 v20 h20 v-20 z M15 15 h10 v10 h-10 z"></path>
+<!-- QR Finder Pattern Top-Right -->
+<path d="M65 5 h30 v30 h-30 z M70 10 v20 h20 v-20 z M75 15 h10 v10 h-10 z"></path>
+<!-- QR Finder Pattern Bottom-Left -->
+<path d="M5 65 h30 v30 h-30 z M10 70 v20 h20 v-20 z M15 75 h10 v10 h-10 z"></path>
+<!-- Decorative Data Bits -->
+<rect height="6" width="6" x="42" y="8"></rect>
+<rect height="12" width="6" x="52" y="8"></rect>
+<rect height="6" width="16" x="42" y="20"></rect>
+<rect height="6" width="8" x="12" y="42"></rect>
+<rect height="14" width="6" x="24" y="42"></rect>
+<rect height="8" width="6" x="36" y="34"></rect>
+<rect height="8" width="8" x="46" y="34"></rect>
+<rect height="14" width="6" x="58" y="34"></rect>
+<rect height="6" width="14" x="68" y="42"></rect>
+<rect height="14" width="6" x="86" y="42"></rect>
+<rect height="10" width="10" x="42" y="48"></rect>
+<rect height="4" width="6" x="6" y="58"></rect>
+<rect height="6" width="12" x="18" y="56"></rect>
+<rect height="16" width="6" x="42" y="64"></rect>
+<rect height="6" width="12" x="52" y="64"></rect>
+<rect height="12" width="8" x="70" y="58"></rect>
+<rect height="6" width="10" x="82" y="64"></rect>
+<rect height="14" width="6" x="52" y="76"></rect>
+<rect height="6" width="16" x="64" y="76"></rect>
+<rect height="14" width="6" x="86" y="76"></rect>
+<rect height="6" width="12" x="64" y="88"></rect>
+</svg>
+</div>
+<div class="flex flex-col">
+<span class="font-mono text-xs text-on-surface font-semibold">TICKET ID: VHR-0914-BAITHAK-1415</span>
+<span class="font-label-sm text-label-sm text-outline mt-0.5">Keep ready at Gate 2 Usher Desk</span>
+</div>
+<div class="flex items-center gap-1 text-[11px] text-secondary font-semibold">
+<span class="material-symbols-outlined text-[14px]">shield_with_heart</span>
+                Heritage Trust Verified Pass
+              </div>
+</div>
+</div>
+<!-- Bottom Actions Strip -->
+<div class="bg-surface-container px-space-lg py-space-md flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex flex-wrap items-center gap-2">
+<button class="px-space-md py-2.5 rounded-lg bg-surface-container-lowest hover:bg-surface-container-high transition-colors font-title-md text-title-md text-on-surface flex items-center gap-1.5 shadow-xs" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">download</span>
+<span>Download PDF Pass</span>
+</button>
+<button class="px-space-md py-2.5 rounded-lg bg-surface-container-lowest hover:bg-surface-container-high transition-colors font-title-md text-title-md text-on-surface flex items-center gap-1.5 shadow-xs" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">calendar_add_on</span>
+<span>Add to Apple / Google Calendar</span>
+</button>
+<button class="px-space-md py-2.5 rounded-lg bg-surface-container-lowest hover:bg-surface-container-high transition-colors font-title-md text-title-md text-on-surface flex items-center gap-1.5 shadow-xs" type="button">
+<span class="material-symbols-outlined text-[18px] text-[#25D366]">chat</span>
+<span>Send WhatsApp Pass</span>
+</button>
+</div>
+<button class="px-space-lg py-2.5 rounded-lg bg-primary text-on-primary font-title-md text-title-md hover:bg-primary-container transition-all flex items-center gap-2 shadow-sm" onclick="switchViewState('synced')" type="button">
+<span>View Itinerary Sync</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- VIEW 4: ADD TO TRIP ITINERARY (SYNCED VIEW) -->
+<section class="hidden w-full flex-col gap-space-lg transition-opacity duration-300" id="view-synced">
+<!-- Top Ecosystem Breadcrumb -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-primary">hub</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Ecosystem Synchronization</h2>
+</div>
+<div class="flex items-center gap-1 bg-surface-container px-3 py-1 rounded-full text-xs font-title-md text-on-surface-variant">
+<span>Active Journey:</span>
+<strong class="text-on-surface">Hyderabad Heritage Odyssey (12–15 Sep)</strong>
+</div>
+</div>
+<!-- Sync Status Big Hero Card -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg sm:p-space-xl shadow-md flex flex-col gap-space-lg">
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-space-md pb-space-md border-b border-surface-variant/50">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-secondary/15 text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[28px]">sync_saved_locally</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold">Synchronized Automatically</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Day 2 (Saturday, 14 Sep) Evening Anchor Secured</h3>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 rounded-full bg-surface-container font-label-md text-label-md text-on-surface">Trip Budget Left: <strong>₹279</strong></span>
+<span class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-md text-label-md font-bold">Optimal Sequence</span>
+</div>
+</div>
+<!-- Visual Timeline of Day 2 with newly injected event -->
+<div class="flex flex-col gap-space-md">
+<span class="font-label-md text-label-md uppercase tracking-wider text-outline">Day 2 Seamless Flow Timeline</span>
+<div class="relative pl-6 space-y-6 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-outline-variant/60">
+<!-- Stop 1: Afternoon -->
+<div class="relative flex items-start gap-space-md">
+<div class="absolute -left-6 top-1 w-4 h-4 rounded-full bg-surface-variant border-2 border-surface"></div>
+<div class="bg-surface-container-low p-space-md rounded-xl flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div>
+<span class="font-label-sm text-label-sm text-outline uppercase">4:30 PM • Architecture &amp; History</span>
+<h4 class="font-title-md text-title-md text-on-surface">Chowmahalla Palace Khilwat Tour</h4>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Pre-booked guide included</span>
+</div>
+</div>
+<!-- Stop 2: Dinner -->
+<div class="relative flex items-start gap-space-md">
+<div class="absolute -left-6 top-1 w-4 h-4 rounded-full bg-surface-variant border-2 border-surface"></div>
+<div class="bg-surface-container-low p-space-md rounded-xl flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div>
+<span class="font-label-sm text-label-sm text-outline uppercase">6:00 PM • Fine Dining</span>
+<h4 class="font-title-md text-title-md text-on-surface">Hyderabadi Dawat at Jewel of Nizam</h4>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Table for 2 reserved</span>
+</div>
+</div>
+<!-- Stop 3: Newly Added Event Highlight -->
+<div class="relative flex items-start gap-space-md">
+<div class="absolute -left-6 top-1 w-4 h-4 rounded-full bg-primary ring-4 ring-primary/20"></div>
+<div class="bg-surface-container p-space-md rounded-xl flex-1 shadow-sm border border-primary/20 flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm bg-primary text-on-primary px-2 py-0.5 rounded-full font-bold uppercase">Newly Added</span>
+<span class="font-label-sm text-label-sm text-primary font-bold uppercase">7:30 PM – 10:00 PM</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface mt-1">Live Sufi &amp; Qawwali Night • Ibrahim Bagh</h4>
+<span class="font-body-sm text-body-sm text-on-surface-variant">2x Dastarkhan Baithak (Row B • Cushions 14 &amp; 15) • Gate 2 Valet pre-notified</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-space-md py-2 rounded-lg bg-surface-container-lowest hover:bg-surface-container-high transition-colors font-title-md text-title-md text-on-surface shadow-xs" onclick="switchViewState('confirmed')" type="button">View Pass</button>
+</div>
+</div>
+</div>
+<!-- Stop 4: Night Retreat -->
+<div class="relative flex items-start gap-space-md">
+<div class="absolute -left-6 top-1 w-4 h-4 rounded-full bg-surface-variant border-2 border-surface"></div>
+<div class="bg-surface-container-low p-space-md rounded-xl flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div>
+<span class="font-label-sm text-label-sm text-outline uppercase">10:20 PM • Royal Stay</span>
+<h4 class="font-title-md text-title-md text-on-surface">Return to Taj Falaknuma Palace</h4>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Heritage Cab Chauffeur standby</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Concierge Intelligence Ripple Card -->
+<div class="bg-surface-container-high p-space-lg rounded-xl flex flex-col md:flex-row items-start gap-space-md">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[22px]">smart_toy</span>
+</div>
+<div class="flex-1 flex flex-col gap-1.5">
+<div class="flex items-center gap-2">
+<span class="font-title-md text-title-md text-on-surface">VIHARA Travel AI Concierge:</span>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary/10 px-2 py-0.5 rounded-full font-semibold">Proactive Adjustment</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+              “Arjun, to guarantee you arrive relaxed before the 7:30 PM alaap, I have shifted your chauffeur pickup from Jewel of Nizam to <strong>6:55 PM</strong>. Shall I also arrange late-night Irani Chai and Bun Maska at Shah Ghouse on your drive back to Taj Falaknuma?”
+            </p>
+<div class="flex flex-wrap items-center gap-2 pt-2">
+<button class="px-space-md py-1.5 rounded-full bg-primary text-on-primary font-title-md text-title-md hover:bg-primary-container transition-colors text-xs" type="button">
+                Confirm 6:55 PM Pickup Adjustment
+              </button>
+<button class="px-space-md py-1.5 rounded-full bg-surface-container font-title-md text-title-md text-on-surface hover:bg-surface-container-highest transition-colors text-xs" type="button">
+                Add Shah Ghouse Chai Stop (+20m)
+              </button>
+<button class="px-space-md py-1.5 rounded-full bg-surface-container font-title-md text-title-md text-on-surface hover:bg-surface-container-highest transition-colors text-xs" type="button">
+                Inquire Dress Code
+              </button>
+</div>
+</div>
+</div>
+<!-- Trip Switcher Pill Strip -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-space-xs">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm uppercase text-outline">Other Itineraries in Your Account:</span>
+<button class="px-3 py-1 rounded-full bg-surface-container-low hover:bg-surface-container font-title-md text-title-md text-on-surface-variant text-xs" type="button">Hampi Monsoon Trail (16–18 Sep)</button>
+<button class="px-3 py-1 rounded-full bg-surface-container-low hover:bg-surface-container font-title-md text-title-md text-on-surface-variant text-xs" type="button">South Goa Heritage (19–22 Sep)</button>
+</div>
+<button class="font-title-md text-title-md text-primary hover:underline flex items-center gap-1" onclick="switchViewState('dashboard')" type="button">
+<span>Go to My Events Dashboard</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+<!-- VIEW 5: "MY EVENTS" PERSONAL DASHBOARD -->
+<section class="hidden w-full flex-col gap-space-lg transition-opacity duration-300" id="view-dashboard">
+<!-- Dashboard Top Banner -->
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-space-md">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold">Patron Account • Arjun Krishnamurthy</span>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">My Reserved Cultural Experiences</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-space-md py-2.5 rounded-lg bg-primary-container text-on-primary font-title-md text-title-md hover:bg-primary transition-colors flex items-center gap-2 shadow-xs" type="button">
+<span class="material-symbols-outlined text-[18px]">explore</span>
+<span>Explore More Events Nearby</span>
+</button>
+</div>
+</div>
+<!-- Tab Controller (Upcoming / Completed / Cancelled) -->
+<div class="flex gap-2 border-b border-surface-variant/60 pb-1">
+<button class="px-space-md py-2 font-title-md text-title-md text-primary border-b-2 border-primary font-bold flex items-center gap-1.5" id="dash-tab-upcoming" onclick="switchDashboardTab('upcoming')" type="button">
+<span>Upcoming Reservations</span>
+<span class="w-5 h-5 rounded-full bg-primary/15 text-primary text-xs flex items-center justify-center font-bold">1</span>
+</button>
+<button class="px-space-md py-2 font-title-md text-title-md text-on-surface-variant hover:text-on-surface flex items-center gap-1.5" id="dash-tab-completed" onclick="switchDashboardTab('completed')" type="button">
+<span>Completed Journeys</span>
+<span class="w-5 h-5 rounded-full bg-surface-container text-on-surface-variant text-xs flex items-center justify-center">2</span>
+</button>
+<button class="px-space-md py-2 font-title-md text-title-md text-on-surface-variant hover:text-on-surface flex items-center gap-1.5" id="dash-tab-cancelled" onclick="switchDashboardTab('cancelled')" type="button">
+<span>Refunded / Cancelled</span>
+<span class="w-5 h-5 rounded-full bg-surface-container text-on-surface-variant text-xs flex items-center justify-center">1</span>
+</button>
+</div>
+<!-- DASHBOARD TAB 1: UPCOMING -->
+<div class="flex flex-col gap-space-md" id="dash-pane-upcoming">
+<!-- Live Countdown Alert Pill -->
+<div class="bg-surface-container-low p-space-sm sm:px-space-md rounded-xl flex flex-wrap items-center justify-between gap-space-xs text-xs">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-body-md text-body-md text-on-surface">Next Experience in: <strong>2 Days, 4 Hours, 18 Mins</strong></span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-semibold">Dress code reminder sent to WhatsApp</span>
+</div>
+<!-- Upcoming Event Card 1 (Active Sacred Echoes) -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm hover:shadow-md transition-shadow flex flex-col lg:flex-row gap-space-lg items-start">
+<img class="w-full lg:w-64 h-52 rounded-xl object-cover shrink-0 shadow-xs" data-alt="Traditional Indian Sufi singers seated on Persian carpets with harmonium and tabla inside historic Golconda monument stone pavilion illuminated by warm torches" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdQX-3ENP-8J-xfZsYq3HGFMcVxnZPxVn9OpeWUiOwAzfHJnM4Mj6C8zVR7NngFJcO7Qmncltc7ashFIZlvZHWwHLUyNbN8U6uuNIehCozZWhYqftbdY3zdyGHSZqQtyRhrR9cTk6tKw5zbxeVN1kz2e8TG4lD7KZIuDT3iKs7daLgCF_acYJBSiXDb-pN1Rm2W8JEjh15wJHjVxidn5cumHru8F-JvT0cJxLnXHNEmVr856uAUJk"/>
+<div class="flex-1 flex flex-col justify-between gap-space-md">
+<div>
+<div class="flex flex-wrap items-center justify-between gap-2 pb-1">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm font-bold uppercase">CONFIRMED PASS</span>
+<span class="font-mono text-xs text-outline font-semibold">VH-EVT-8K42P7</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary/10 px-2 py-0.5 rounded-full font-semibold">Free Cancellation available until Fri 13 Sep, 7:30 PM</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-1">Sacred Echoes: Live Sufi &amp; Qawwali Night</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">Ibrahim Bagh Amphitheatre, Qutb Shahi Tombs Complex, Hyderabad</p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-sm mt-space-md bg-surface-container-low p-space-sm rounded-lg text-sm">
+<div>
+<span class="font-label-sm text-label-sm text-outline uppercase">Date</span>
+<p class="font-title-md text-title-md text-on-surface font-semibold">Sat, 14 Sep</p>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-outline uppercase">Time</span>
+<p class="font-title-md text-title-md text-on-surface font-semibold">7:30 – 10:00 PM</p>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-outline uppercase">Guests &amp; Tier</span>
+<p class="font-title-md text-title-md text-on-surface font-semibold">2 Guests • Baithak</p>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-outline uppercase">Paid Subtotal</span>
+<p class="font-title-md text-title-md text-primary font-bold">₹1,771 (UPI)</p>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-space-xs border-t border-surface-variant/40">
+<div class="flex flex-wrap items-center gap-2">
+<button class="px-space-md py-2 rounded-lg bg-primary-container text-on-primary font-title-md text-title-md hover:bg-primary transition-colors flex items-center gap-1.5 shadow-xs" onclick="switchViewState('confirmed')" type="button">
+<span class="material-symbols-outlined text-[18px]">qr_code_2</span>
+<span>View QR Ticket</span>
+</button>
+<button class="px-space-md py-2 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors font-title-md text-title-md text-on-surface flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">directions</span>
+<span>Gate 2 Directions</span>
+</button>
+<button class="px-space-md py-2 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors font-title-md text-title-md text-on-surface flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[18px] text-outline">calendar_month</span>
+<span>Calendar</span>
+</button>
+</div>
+<!-- Cancel reservation trigger -->
+<button class="font-title-md text-title-md text-error hover:underline text-xs flex items-center gap-1" onclick="openCancelModal()" type="button">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span>Manage / Cancel Reservation</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- DASHBOARD TAB 2: COMPLETED (Hidden by default) -->
+<div class="hidden flex-col gap-space-md" id="dash-pane-completed">
+<!-- Completed Card 1 -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col lg:flex-row gap-space-lg items-start opacity-90">
+<img class="w-full lg:w-60 h-44 rounded-xl object-cover shrink-0" data-alt="Traditional Urdu storyteller performing Dastangoi under centuries-old Charminar gateway arches with warm glowing lanterns and attentive audience" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCt8NrdV8gTlc84AQiU_DLhatywfRr_Q-7gfe4Rp3gYG7JKaVr47lSPR2uptOsMJypI0WYYqx6klfXizy6QrkvGrbIRK_CxLxONj95_0Lx_fHIcxwLQ_4ZJKZygEP35u-vJYH4Pz_x2P4gglOpfJGw0aB4zuKqEyR0JQhX9lfJb41BhpNbufxXPkGlLZCBtDkj0U4Z9WmWN7PRUdW18SOl7Pxe_kFe7cZssPJVVXeV0LgEOnPzY2fs"/>
+<div class="flex-1 flex flex-col justify-between gap-space-sm">
+<div>
+<div class="flex items-center justify-between">
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm uppercase font-semibold">ATTENDED • AUG 2024</span>
+<span class="font-mono text-xs text-outline">VH-EVT-71089</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mt-1">Deccani Dastangoi at Old City Heritage Gate</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Stories of Tilism-e-Hoshruba by Ustad Farooqi. 2 Guests • ₹1,200.</p>
+</div>
+<div class="flex items-center gap-space-sm pt-space-xs">
+<button class="px-space-md py-2 rounded-lg bg-surface-container hover:bg-surface-container-high font-title-md text-title-md text-on-surface text-xs" type="button">View Performance Summary</button>
+<button class="px-space-md py-2 rounded-lg bg-surface-container hover:bg-surface-container-high font-title-md text-title-md text-primary text-xs" type="button">Book Similar Experience</button>
+</div>
+</div>
+</div>
+<!-- Completed Card 2 -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col lg:flex-row gap-space-lg items-start opacity-90">
+<img class="w-full lg:w-60 h-44 rounded-xl object-cover shrink-0" data-alt="Master Bidriware craftsman in silver inlay workshop in Bidar demonstrating chiseled metal engraving to guests" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDo7RKU8EnC2q3F5u3sOucPEHFxy4p878KQw5vISXO7QXJO4wqLZA1vzFSwyi3_Wn90mpmMXcK38uU5HeAF8SqLkJtq-Mai9GD_R_Z_sOe2VWG4YXjoz7hcfystnrhdehBocQhMEmTBUttsFSqBfAxGDtlMnXRPUeAlaZihbOIbJrXke_BaLBH49SvjL5n0uodZNuAzALT5D92-YWo9PQXGB5Q8kp4Nzpb3qy1FD-qUXOA74tinr3E"/>
+<div class="flex-1 flex flex-col justify-between gap-space-sm">
+<div>
+<div class="flex items-center justify-between">
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm uppercase font-semibold">ATTENDED • JUL 2024</span>
+<span class="font-mono text-xs text-outline">VH-EVT-65490</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mt-1">Secret Bidriware Inlay Masterclass</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Private studio session with National Awardee artisans. 1 Guest • ₹2,400.</p>
+</div>
+<div class="flex items-center gap-space-sm pt-space-xs">
+<button class="px-space-md py-2 rounded-lg bg-surface-container hover:bg-surface-container-high font-title-md text-title-md text-on-surface text-xs" type="button">View Artisan Certificate</button>
+</div>
+</div>
+</div>
+</div>
+<!-- DASHBOARD TAB 3: CANCELLED (Hidden by default) -->
+<div class="hidden flex-col gap-space-md" id="dash-pane-cancelled">
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col lg:flex-row gap-space-lg items-start">
+<div class="w-full lg:w-60 h-44 rounded-xl bg-surface-container flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[48px]">event_busy</span>
+</div>
+<div class="flex-1 flex flex-col justify-between gap-space-sm">
+<div>
+<div class="flex items-center justify-between">
+<span class="px-2.5 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm uppercase font-semibold">CANCELLED • FULLY REFUNDED</span>
+<span class="font-mono text-xs text-outline">VH-EVT-59123</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mt-1">Taramati Baradari Open-Air Jugalbandi</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Cancelled by patron 48h in advance. ₹1,450 successfully refunded to original UPI VPA on 12 Aug 2024.</p>
+</div>
+<div class="flex items-center gap-space-sm pt-space-xs">
+<span class="text-xs font-mono text-secondary">Refund ARN: 489102839102 (Settled)</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- VIEW 6: PAYMENT FAILURE EDGE STATE -->
+<section class="hidden w-full flex-col items-center justify-center py-space-xl" id="view-failed">
+<div class="max-w-xl w-full bg-surface-container-lowest rounded-2xl p-space-xl shadow-xl flex flex-col gap-space-lg">
+<div class="flex items-start gap-space-md">
+<div class="w-12 h-12 rounded-full bg-error-container text-error flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[28px]">error</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-error font-bold">Transaction Incomplete</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Payment Could Not Be Processed</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+              Your issuing bank declined the UPI mandate authorization (Error: NPCI VPA Timeout / Exceeded Limit). No funds were deducted from your bank account.
+            </p>
+</div>
+</div>
+<!-- Seat hold timer alert -->
+<div class="bg-surface-container-high p-space-md rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-tertiary">timer</span>
+<span class="font-title-md text-title-md text-on-surface">Seats Held For:</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-primary font-mono font-bold" id="hold-timer">09:44</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Your 2 Dastarkhan Baithak cushions (Row B, Seats 14 &amp; 15) remain reserved under your name for the next 9 minutes while you try another method.
+        </p>
+<!-- Recovery Options -->
+<div class="flex flex-col gap-2 pt-space-xs">
+<button class="w-full h-12 rounded-lg bg-primary-container text-on-primary font-title-md text-title-md hover:bg-primary transition-colors flex items-center justify-center gap-2" onclick="switchViewState('checkout')" type="button">
+<span class="material-symbols-outlined text-[20px]">refresh</span>
+<span>Retry with Another UPI App or Card</span>
+</button>
+<button class="w-full h-12 rounded-lg bg-surface-container font-title-md text-title-md text-on-surface hover:bg-surface-container-high transition-colors" onclick="setPaymentTab('card'); switchViewState('checkout');" type="button">
+            Pay with Credit / Debit Card Instead
+          </button>
+<a class="text-center font-title-md text-title-md text-secondary hover:underline pt-1 text-xs" href="#">
+            Connect with 24/7 VIHARA Priority Concierge (+91 800-VIHARA)
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- MODAL: CANCEL RESERVATION / REFUND FLOW (Interactive) -->
+<div class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-space-md" id="cancel-modal">
+<div class="bg-surface-container-lowest max-w-lg w-full rounded-2xl p-space-xl shadow-2xl flex flex-col gap-space-md relative">
+<button class="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface" onclick="closeCancelModal()" type="button">
+<span class="material-symbols-outlined text-[22px]">close</span>
+</button>
+<div class="flex items-center gap-2 text-error">
+<span class="material-symbols-outlined text-[24px]">cancel</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Cancel Event Reservation?</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+        You are requesting cancellation for <strong>Sacred Echoes: Live Sufi &amp; Qawwali Night</strong> on Sat 14 Sep.
+      </p>
+<!-- Refund Breakdown Box -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-2 text-sm">
+<div class="flex justify-between items-center text-on-surface-variant">
+<span>Total Paid (VH-EVT-8K42P7):</span>
+<span class="font-semibold text-on-surface">₹1,771</span>
+</div>
+<div class="flex justify-between items-center text-secondary font-medium">
+<span>24-Hour Sanctuary Policy Refund:</span>
+<span>100% Refundable</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant text-xs">
+<span>Preservation Fund Retention:</span>
+<span>₹0</span>
+</div>
+<div class="border-t border-surface-variant/60 pt-2 flex justify-between items-center font-title-md text-title-md text-on-surface">
+<span>Amount Credited to UPI:</span>
+<span class="text-primary font-bold">₹1,771</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-outline text-xs">
+        Refund will be returned to your HDFC VPA (arjun.krishna@okhdfcbank) in approximately 2 hours. Your evening itinerary block will automatically be released for open leisure.
+      </p>
+<div class="flex flex-col sm:flex-row items-center gap-space-sm pt-space-xs">
+<button class="w-full sm:flex-1 h-12 rounded-lg bg-error text-on-error font-title-md text-title-md hover:bg-error/90 transition-colors" onclick="executeCancellation()" type="button">
+          Confirm Cancellation &amp; Refund
+        </button>
+<button class="w-full sm:w-auto px-space-lg h-12 rounded-lg bg-surface-container text-on-surface font-title-md text-title-md hover:bg-surface-container-high transition-colors" onclick="closeCancelModal()" type="button">
+          Keep My Reservation
+        </button>
+</div>
+</div>
+</div>
+<!-- Micro-interaction JavaScript -->
+<script>
+    function switchViewState(stateName) {
+      // Hide all states
+      const views = ['checkout', 'processing', 'confirmed', 'synced', 'dashboard', 'failed'];
+      views.forEach(v => {
+        const el = document.getElementById('view-' + v);
+        if (el) {
+          el.classList.add('hidden');
+          el.classList.remove('flex');
+        }
+      });
+
+      // Update prototype nav active states
+      const buttons = document.querySelectorAll('#flow-nav button');
+      buttons.forEach(btn => {
+        const target = btn.getAttribute('data-state-btn');
+        if (target === stateName) {
+          btn.className = "px-3 py-1 rounded-full text-xs font-title-md transition-all bg-primary text-on-primary";
+        } else {
+          btn.className = "px-3 py-1 rounded-full text-xs font-title-md transition-all bg-surface-variant/20 hover:bg-surface-variant/30 text-inverse-on-surface";
+        }
+      });
+
+      // Show selected state
+      const targetView = document.getElementById('view-' + stateName);
+      if (targetView) {
+        targetView.classList.remove('hidden');
+        targetView.classList.add('flex');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function setPaymentTab(tabName) {
+      const panes = ['upi', 'card', 'netbanking'];
+      panes.forEach(p => {
+        const paneEl = document.getElementById('pane-' + p);
+        const tabEl = document.getElementById('tab-' + p);
+        if (p === tabName) {
+          paneEl.classList.remove('hidden');
+          paneEl.classList.add('flex');
+          tabEl.className = "py-2.5 px-3 rounded-md font-title-md text-title-md transition-all bg-surface-container-lowest shadow-sm text-primary flex items-center justify-center gap-1.5";
+        } else {
+          paneEl.classList.add('hidden');
+          paneEl.classList.remove('flex');
+          tabEl.className = "py-2.5 px-3 rounded-md font-title-md text-title-md transition-all text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5";
+        }
+      });
+    }
+
+    function startPaymentSimulation() {
+      switchViewState('processing');
+      setTimeout(() => {
+        switchViewState('confirmed');
+      }, 2600);
+    }
+
+    function copyBookingId() {
+      const idText = document.getElementById('booking-id-val').innerText;
+      navigator.clipboard.writeText(idText).then(() => {
+        alert("Booking ID copied to clipboard: " + idText);
+      }).catch(() => {
+        alert("Booking ID: " + idText);
+      });
+    }
+
+    function switchDashboardTab(tab) {
+      const tabs = ['upcoming', 'completed', 'cancelled'];
+      tabs.forEach(t => {
+        const pane = document.getElementById('dash-pane-' + t);
+        const tabBtn = document.getElementById('dash-tab-' + t);
+        if (t === tab) {
+          pane.classList.remove('hidden');
+          pane.classList.add('flex');
+          tabBtn.className = "px-space-md py-2 font-title-md text-title-md text-primary border-b-2 border-primary font-bold flex items-center gap-1.5";
+        } else {
+          pane.classList.add('hidden');
+          pane.classList.remove('flex');
+          tabBtn.className = "px-space-md py-2 font-title-md text-title-md text-on-surface-variant hover:text-on-surface flex items-center gap-1.5";
+        }
+      });
+    }
+
+    function openCancelModal() {
+      const m = document.getElementById('cancel-modal');
+      m.classList.remove('hidden');
+      m.classList.add('flex');
+    }
+
+    function closeCancelModal() {
+      const m = document.getElementById('cancel-modal');
+      m.classList.add('hidden');
+      m.classList.remove('flex');
+    }
+
+    function executeCancellation() {
+      closeCancelModal();
+      switchViewState('dashboard');
+      switchDashboardTab('cancelled');
+    }
+
+    // Dynamic timer countdown for failed state
+    let timeLeft = 584; // 9:44
+    setInterval(() => {
+      const timerEl = document.getElementById('hold-timer');
+      if (timerEl && timeLeft > 0) {
+        timeLeft--;
+        const mins = Math.floor(timeLeft / 60);
+        const secs = timeLeft % 60;
+        timerEl.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      }
+    }, 1000);
+  </script>
+</div></main><footer class="w-full bg-surface-container-low pt-space-xl pb-space-lg shadow-[0_-1px_8px_rgba(0,0,0,0.02)]"><div class="max-w-[1320px] mx-auto px-margin"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-gutter mb-space-xl"><div class="lg:col-span-2 flex flex-col gap-space-md"><div class="flex items-center gap-space-sm"><img alt="VIHARA Brand Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WKhU6jn5cMDbDgZddTFJYceFsrHCU3-UvWxfdVO-xAP7uXS6u3789AJfau7paTIEVHWtkQffycI5RirtPMxmssRRie7C8MfZhi9H12Pd25Yt1Hu3N8JHjWRQHcOgrLFF9x7B-jPSw0DLEBBhGIHSda-01KWshVuhLWDzSGTArwLjGVogGEVLiboYOjsumH64jn4_KHVnhVR6IGYPQmUjQHfj_FPmawe7qgEGN_De1blqIDUgvZ_zzO"/><span class="font-headline-sm text-headline-sm text-on-surface">VIHARA</span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-md">An elevated, culture-forward travel ecosystem honoring India's living traditions, architectural marvels, and bespoke hospitality.</p><div class="flex flex-col gap-space-xs"><span class="font-label-md text-label-md text-on-surface uppercase">Curatorial Letter</span><div class="flex max-w-sm gap-space-xs"><input class="flex-1 h-12 px-space-md rounded-lg bg-surface font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="Enter your email for slow travel journals" type="email"/><button class="h-12 px-space-lg rounded-lg bg-primary-container text-on-primary font-title-md text-title-md hover:bg-primary transition-colors" type="button">Subscribe</button></div></div></div><div class="flex flex-col gap-space-sm"><span class="font-title-md text-title-md text-on-surface">Discover</span><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="trip-planner" href="#">Trip Planning</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="events-nearby" href="#">Events Nearby</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="stays-and-travel" href="#">Heritage Stays</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="saved-and-itinerary" href="#">Curated Journeys</a></div><div class="flex flex-col gap-space-sm"><span class="font-title-md text-title-md text-on-surface">Intelligence</span><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="ai-concierge" href="#">AI Concierge</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Active Trip Companion</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Regional Almanac</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Artisan Archives</a></div><div class="flex flex-col gap-space-sm"><span class="font-title-md text-title-md text-on-surface">Integrity</span><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">About VIHARA</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Safety &amp; Transparency</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Cultural Preservation Fund</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Editorial Standards</a></div></div><div class="pt-space-md flex flex-col md:flex-row items-center justify-between gap-space-sm bg-surface-container px-space-lg py-space-md rounded-xl"><span class="font-body-sm text-body-sm text-on-surface-variant">© 2024 VIHARA Experiences Pvt. Ltd. Crafted with cultural heritage respect. Made in India.</span><div class="flex items-center gap-space-md"><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Privacy Policy</a><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Terms of Hospitality</a><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Local Community Pledges</a></div></div></div></footer></body></html>

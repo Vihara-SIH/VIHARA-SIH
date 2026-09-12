@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"surface-tint":"#ac3400","inverse-primary":"#ffb59d","on-background":"#1e1b19","on-secondary-fixed":"#00201d","surface":"#fff8f5","inverse-surface":"#33302d","surface-variant":"#e9e1dd","error":"#ba1a1a","on-secondary":"#ffffff","surface-container-high":"#eee7e3","error-container":"#ffdad6","outline":"#8d7168","on-primary-fixed":"#390c00","on-primary-fixed-variant":"#832600","surface-container-lowest":"#ffffff","outline-variant":"#e1bfb5","primary-fixed":"#ffdbd0","tertiary-container":"#a65900","inverse-on-surface":"#f7efeb","surface-container-highest":"#e9e1dd","secondary-fixed-dim":"#80d5cb","on-error-container":"#93000a","on-primary":"#ffffff","on-secondary-fixed-variant":"#00504a","on-primary-container":"#ffece7","surface-bright":"#fff8f5","secondary":"#006a63","on-tertiary-container":"#ffede1","secondary-fixed":"#9cf2e8","primary-container":"#c2410c","surface-dim":"#e0d8d5","on-tertiary-fixed":"#2f1500","on-surface":"#1e1b19","surface-container":"#f4ece8","tertiary-fixed-dim":"#ffb77d","on-surface-variant":"#59413a","on-secondary-container":"#006f67","primary":"#9b2f00","background":"#fff8f5","tertiary":"#824500","surface-container-low":"#faf2ee","on-tertiary":"#ffffff","on-tertiary-fixed-variant":"#6e3900","primary-fixed-dim":"#ffb59d","on-error":"#ffffff","secondary-container":"#99efe5","tertiary-fixed":"#ffdcc3"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"gutter-mobile":"1rem","space-lg":"1.5rem","margin-mobile":"1.25rem","space-xs":"0.25rem","margin":"3rem","space-sm":"0.5rem","gutter":"1.5rem","space-xl":"2.5rem","space-md":"1rem"},"fontFamily":{"headline-md":["Playfair Display"],"label-md":["Plus Jakarta Sans"],"headline-lg-mobile":["Playfair Display"],"display-lg":["Playfair Display"],"title-md":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"headline-sm":["Playfair Display"],"display-lg-mobile":["Playfair Display"],"body-sm":["Plus Jakarta Sans"],"title-lg":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"headline-lg":["Playfair Display"],"label-sm":["Plus Jakarta Sans"]},"fontSize":{"headline-md":["28px",{"lineHeight":"36px","letterSpacing":"-0.005em","fontWeight":"600"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.06em","fontWeight":"600"}],"headline-lg-mobile":["30px",{"lineHeight":"36px","letterSpacing":"0em","fontWeight":"600"}],"display-lg":["56px",{"lineHeight":"64px","letterSpacing":"-0.02em","fontWeight":"600"}],"title-md":["16px",{"lineHeight":"24px","letterSpacing":"0em","fontWeight":"600"}],"body-lg":["18px",{"lineHeight":"28px","letterSpacing":"0em","fontWeight":"400"}],"headline-sm":["22px",{"lineHeight":"30px","letterSpacing":"0em","fontWeight":"600"}],"display-lg-mobile":["38px",{"lineHeight":"44px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-sm":["13px",{"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"400"}],"title-lg":["18px",{"lineHeight":"26px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-md":["15px",{"lineHeight":"24px","letterSpacing":"0em","fontWeight":"400"}],"headline-lg":["40px",{"lineHeight":"48px","letterSpacing":"-0.01em","fontWeight":"600"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.08em","fontWeight":"700"}]}}}};</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-20 max-w-[1320px] mx-auto px-margin flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><a class="flex items-center gap-space-sm" href="#"><img alt="VIHARA Brand Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WKhU6jn5cMDbDgZddTFJYceFsrHCU3-UvWxfdVO-xAP7uXS6u3789AJfau7paTIEVHWtkQffycI5RirtPMxmssRRie7C8MfZhi9H12Pd25Yt1Hu3N8JHjWRQHcOgrLFF9x7B-jPSw0DLEBBhGIHSda-01KWshVuhLWDzSGTArwLjGVogGEVLiboYOjsumH64jn4_KHVnhVR6IGYPQmUjQHfj_FPmawe7qgEGN_De1blqIDUgvZ_zzO"/><span class="font-headline-md text-headline-md text-on-surface tracking-tight hidden sm:inline-block">VIHARA</span></a><nav class="hidden xl:flex items-center gap-space-sm" data-active-classes="bg-primary-container text-on-primary rounded-full px-space-md py-space-xs font-title-md text-title-md"><a class="text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs font-title-md text-title-md transition-colors" data-path="trip-planner" href="#">Trip Planner</a><a class="text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs font-title-md text-title-md transition-colors" data-path="stays-and-travel" href="#">Stays &amp; Travel</a><a aria-current="page" class="transition-colors bg-primary-container text-on-primary rounded-full px-space-md py-space-xs font-title-md text-title-md" data-path="events-nearby" href="#">Events Nearby</a><a class="text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs font-title-md text-title-md transition-colors" data-path="ai-concierge" href="#">AI Concierge</a><a class="text-on-surface-variant hover:text-on-surface px-space-sm py-space-xs font-title-md text-title-md transition-colors" data-path="saved-and-itinerary" href="#">Saved &amp; Itinerary</a></nav></div><div class="flex items-center gap-space-sm"><button class="hidden md:flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-full shadow-[0_1px_4px_-1px_rgba(28,25,23,0.04)] hover:bg-surface-container transition-colors" type="button"><span class="material-symbols-outlined text-[18px] text-primary">location_on</span><span class="font-label-md text-label-md text-on-surface">Hyderabad, TS</span><span class="material-symbols-outlined text-[16px] text-outline">keyboard_arrow_down</span></button><div class="hidden lg:flex items-center gap-space-xs bg-surface-container-low px-space-sm py-space-xs rounded-full"><div class="w-2 h-2 rounded-full bg-secondary ring-2 ring-secondary/30 animate-pulse"></div><span class="font-label-sm text-label-sm text-on-surface">Active Trip Mode</span></div><button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant hover:text-on-surface" type="button"><span class="material-symbols-outlined text-[20px]">search</span></button><div class="flex items-center gap-space-xs pl-space-xs"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><span class="hidden sm:inline font-title-md text-title-md text-on-surface">Arjun K.</span></div></div></div></header><main class="w-full pt-20 bg-surface"><div class="flex flex-col w-full font-body-md text-on-surface">
+<!-- 1. HERO EDITORIAL SECTION -->
+<section class="w-full bg-surface relative overflow-hidden pb-space-xl pt-space-lg">
+<!-- Subtle architectural decorative background glow -->
+<div class="absolute -top-24 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute top-1/2 left-0 w-80 h-80 bg-secondary/5 rounded-full blur-3xl pointer-events-none"></div>
+<div class="max-w-[1320px] mx-auto px-margin">
+<!-- Mode Selector Pills in Hero -->
+<div class="flex flex-wrap items-center justify-between gap-space-md mb-space-lg pb-space-sm border-b-0">
+<div class="flex items-center gap-space-xs bg-surface-container-low p-1.5 rounded-full shadow-sm">
+<button class="flex items-center gap-space-xs bg-primary-container text-on-primary px-space-md py-space-xs rounded-full font-label-md text-label-md transition-all shadow-sm" id="mode-trip-btn" onclick="switchMode('trip')" type="button">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed animate-ping"></span>
+<span>Trip-Aware Radar</span>
+<span class="bg-primary/40 text-[10px] px-2 py-0.5 rounded-full font-label-sm">Hyderabad • 12–15 Sep</span>
+</button>
+<button class="flex items-center gap-space-xs text-on-surface-variant hover:text-on-surface px-space-md py-space-xs rounded-full font-label-md text-label-md transition-all" id="mode-local-btn" onclick="switchMode('local')" type="button">
+<span class="material-symbols-outlined text-[15px]">radar</span>
+<span>Independent Explorer (Local)</span>
+</button>
+</div>
+<div class="hidden sm:flex items-center gap-space-sm font-label-sm text-label-sm text-outline">
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Google Places Sync</span>
+<span>•</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-tertiary">bolt</span> Route Gap Optimization</span>
+</div>
+</div>
+<!-- Hero Typography & Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center">
+<div class="lg:col-span-7 flex flex-col gap-space-md">
+<div class="flex items-center gap-space-xs text-primary font-label-md text-label-md tracking-wider uppercase">
+<span class="material-symbols-outlined text-[16px] text-primary">explore</span>
+<span>VIHARA • EVENTS &amp; CULTURAL RADAR</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface tracking-tight leading-[1.08]">
+            See what’s happening <br/>
+<span class="relative inline-block text-primary-container">
+              around you
+              <svg class="absolute -bottom-2 left-0 w-full h-3 text-secondary" fill="none" preserveaspectratio="none" viewbox="0 0 240 12">
+<path d="M3 9C60 3 170 3 237 9" stroke="currentColor" stroke-linecap="round" stroke-width="3.5"></path>
+</svg>
+</span>
+            in India.
+          </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+            Discover bespoke mehfils, heritage trails, concerts, and spontaneous cultural gatherings — intelligently synchronized with your stay locations, daily route rhythm, and travel gaps.
+          </p>
+<div class="flex flex-wrap items-center gap-space-md pt-space-xs">
+<div class="flex items-center -space-x-2">
+<div class="w-9 h-9 rounded-full bg-surface-container-high ring-2 ring-surface flex items-center justify-center text-primary font-label-sm">HYD</div>
+<div class="w-9 h-9 rounded-full bg-secondary-fixed ring-2 ring-surface flex items-center justify-center text-on-secondary-fixed font-label-sm">BLR</div>
+<div class="w-9 h-9 rounded-full bg-tertiary-fixed ring-2 ring-surface flex items-center justify-center text-on-tertiary-fixed font-label-sm">GOA</div>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">38 Curated Gatherings This Weekend</span>
+<span class="font-body-sm text-body-sm text-outline">Across Banjara Hills, Old City, Hitec City &amp; Secunderabad</span>
+</div>
+</div>
+</div>
+<!-- Hero Visual Montage Card -->
+<div class="lg:col-span-5 relative">
+<div class="relative rounded-2xl overflow-hidden shadow-2xl bg-surface-container-high aspect-[5/4] group">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Atmospheric night photograph of an open-air Indian classical Sufi mehfil illuminated by warm brass oil lamps and fairy lights in a heritage courtyard with Persian archways, rich terracotta textiles, and musicians playing sitar and tabla before an engaged audience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmJ0NJv6qJOoZsePRdmPrgbe8lJ-fpsxy8_OetucAnirwlVv39Su1kRGVjV-1DPKRT54MA7UPN6L39LL9dF2Z6Ii3fp2GcCkd7tGWsuplMlB7EDos8d1eoBs5AZ5OZyu8oJf9NMXxcErLX3rHSmFKVGiITnEW6_4tLayiYrBCY82-vs-LDFg20RjNuTwCBEd94RNvRsQNB3IDyYyr8fl6dR-MU7gn6VkMHI34BDODPbjpTdAc0cPo"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/90 via-on-surface/30 to-transparent"></div>
+<!-- Live Badge Overlay -->
+<div class="absolute top-space-md left-space-md flex items-center gap-space-xs bg-surface/90 backdrop-blur-md px-space-md py-1 rounded-full shadow-md">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider">Tonight’s Highlight</span>
+</div>
+<div class="absolute bottom-space-md left-space-md right-space-md text-surface-container-lowest">
+<span class="bg-primary/90 text-on-primary font-label-sm text-label-sm px-space-sm py-0.5 rounded uppercase tracking-wider mb-2 inline-block">Sufi &amp; Qawwali</span>
+<h3 class="font-headline-sm text-headline-sm text-surface-container-lowest mb-1 leading-snug">Chowmahalla Palace Courtyard Mehfil</h3>
+<p class="font-body-sm text-body-sm text-surface-variant line-clamp-1">Nizami Brothers • Starts 8:00 PM • 3.2 km from your Banjara Hills stay</p>
+</div>
+</div>
+<!-- Secondary floating card ornament -->
+<div class="hidden sm:flex absolute -bottom-6 -left-8 bg-surface-container-lowest p-space-md rounded-xl shadow-xl items-center gap-space-md max-w-xs">
+<div class="w-12 h-12 rounded-lg bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed">
+<span class="material-symbols-outlined text-[24px]">map</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-bold">Route Compatibility</span>
+<span class="font-title-md text-title-md text-on-surface">Zero backtrack detour</span>
+<span class="font-body-sm text-body-sm text-outline">En route to Taj Falaknuma dinner</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. LOCATION-FIRST & GOOGLE PLACES SEARCH CARD -->
+<section class="w-full bg-surface-container-low py-space-xl relative z-20">
+<div class="max-w-[1320px] mx-auto px-margin -mt-10 lg:-mt-12">
+<div class="bg-surface-container-lowest rounded-2xl shadow-xl p-space-lg lg:p-space-xl flex flex-col gap-space-lg">
+<!-- Location Bar & Radius -->
+<div class="flex flex-wrap items-center justify-between gap-space-md pb-space-md border-b border-surface-container-high/40">
+<div class="flex flex-wrap items-center gap-space-md">
+<div class="flex items-center gap-space-sm bg-surface-container-low px-space-md py-space-xs rounded-xl">
+<span class="material-symbols-outlined text-primary text-[22px]">location_on</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-outline uppercase">Active Search Radius</span>
+<button class="flex items-center gap-1 font-title-md text-title-md text-on-surface hover:text-primary transition-colors text-left" onclick="openLocationModal()" type="button">
+<span id="current-location-label">Hyderabad, Telangana</span>
+<span class="material-symbols-outlined text-[16px] text-outline">tune</span>
+</button>
+</div>
+</div>
+<!-- Radius Quick Select -->
+<div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-full text-on-surface-variant font-label-md text-label-md">
+<button class="radius-btn px-space-sm py-1 rounded-full transition-colors hover:text-on-surface" onclick="setRadius('5km', this)" type="button">5 km</button>
+<button class="radius-btn px-space-sm py-1 rounded-full bg-on-surface text-surface transition-colors" onclick="setRadius('15km', this)" type="button">Within 15 km</button>
+<button class="radius-btn px-space-sm py-1 rounded-full transition-colors hover:text-on-surface" onclick="setRadius('30km', this)" type="button">30 km</button>
+</div>
+</div>
+<!-- Quick City Chips -->
+<div class="flex items-center gap-space-xs overflow-x-auto no-scrollbar py-1">
+<span class="font-label-sm text-label-sm text-outline uppercase mr-1">Hop To:</span>
+<button class="city-pill px-space-sm py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm" onclick="setCity('Hyderabad')" type="button">Hyderabad</button>
+<button class="city-pill px-space-sm py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors" onclick="setCity('Bengaluru')" type="button">Bengaluru</button>
+<button class="city-pill px-space-sm py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors" onclick="setCity('Goa')" type="button">Goa</button>
+<button class="city-pill px-space-sm py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors" onclick="setCity('Mumbai')" type="button">Mumbai</button>
+<button class="city-pill px-space-sm py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors" onclick="setCity('Jaipur')" type="button">Jaipur</button>
+<button class="city-pill px-space-sm py-1 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-colors" onclick="setCity('Varanasi')" type="button">Varanasi</button>
+</div>
+</div>
+<!-- Primary Search Input Bar -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md items-center">
+<div class="lg:col-span-9 relative">
+<span class="absolute left-space-md top-1/2 -translate-y-1/2 material-symbols-outlined text-outline text-[22px]">search</span>
+<input class="w-full h-14 pl-12 pr-space-md bg-surface-container-low rounded-xl font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" id="event-search-input" placeholder="Search live concerts, Sufi nights, Shilpakala theatre, standup, or heritage walks..." type="text"/>
+</div>
+<div class="lg:col-span-3">
+<button class="w-full h-14 bg-primary-container hover:bg-primary text-on-primary font-title-md text-title-md rounded-xl flex items-center justify-center gap-space-xs shadow-md transition-all" onclick="triggerSearch()" type="button">
+<span class="material-symbols-outlined text-[20px]">radar</span>
+<span>Explore Radar</span>
+</button>
+</div>
+</div>
+<!-- Category Horizontal Pills -->
+<div class="flex items-center gap-space-xs overflow-x-auto no-scrollbar pb-1 pt-1">
+<button class="category-chip shrink-0 h-9 px-space-md rounded-full bg-on-surface text-surface font-label-md text-label-md transition-all" onclick="filterCategory('all', this)" type="button">All Experiences</button>
+<button class="category-chip shrink-0 h-9 px-space-md rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" onclick="filterCategory('culture', this)" type="button">Indian Classical &amp; Sufi</button>
+<button class="category-chip shrink-0 h-9 px-space-md rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" onclick="filterCategory('music', this)" type="button">Live Music &amp; Indie</button>
+<button class="category-chip shrink-0 h-9 px-space-md rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" onclick="filterCategory('heritage', this)" type="button">Heritage Walks</button>
+<button class="category-chip shrink-0 h-9 px-space-md rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" onclick="filterCategory('comedy', this)" type="button">Standup &amp; Comedy</button>
+<button class="category-chip shrink-0 h-9 px-space-md rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" onclick="filterCategory('theatre', this)" type="button">Theatre &amp; Baithak</button>
+<button class="category-chip shrink-0 h-9 px-space-md rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" onclick="filterCategory('workshops', this)" type="button">Art &amp; Crafts</button>
+<button class="category-chip shrink-0 h-9 px-space-md rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" onclick="filterCategory('culinary', this)" type="button">Culinary &amp; Food Trails</button>
+<button class="category-chip shrink-0 h-9 px-space-md rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all" onclick="filterCategory('nightlife', this)" type="button">Nightlife &amp; Sessions</button>
+</div>
+<!-- Date Discovery Ribbon -->
+<div class="flex flex-wrap items-center justify-between gap-space-md pt-space-xs">
+<div class="flex flex-wrap items-center gap-space-xs font-label-md text-label-md">
+<span class="text-outline uppercase font-label-sm text-label-sm mr-1">When:</span>
+<button class="date-chip px-space-md py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface transition-colors" onclick="setDateFilter('today', this)" type="button">Today</button>
+<button class="date-chip px-space-md py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface transition-colors" onclick="setDateFilter('tomorrow', this)" type="button">Tomorrow</button>
+<button class="date-chip px-space-md py-1.5 rounded-lg bg-primary-container text-on-primary transition-colors" onclick="setDateFilter('weekend', this)" type="button">This Weekend</button>
+<button class="date-chip px-space-md py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface transition-colors" onclick="setDateFilter('next7', this)" type="button">Next 7 Days</button>
+<button class="date-chip px-space-md py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-outline hover:text-on-surface transition-colors flex items-center gap-1" onclick="showToast('Date range picker opened')" type="button">
+<span class="material-symbols-outlined text-[15px]">calendar_month</span>
+<span>Custom Date</span>
+</button>
+</div>
+<!-- Trip Sync Date Highlight -->
+<div class="flex items-center gap-space-xs bg-secondary/10 px-space-md py-1 rounded-full text-secondary">
+<span class="material-symbols-outlined text-[16px]">sync</span>
+<span class="font-label-sm text-label-sm font-semibold">Synchronized to Itinerary Dates (12–15 Sep)</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. TRIP-AWARE INTELLIGENCE SECTION ("Events that fit your trip") -->
+<section class="w-full bg-surface-container-low py-space-xl" id="trip-intelligence-container">
+<div class="max-w-[1320px] mx-auto px-margin flex flex-col gap-space-xl">
+<!-- Section Header with Intelligence Badge -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="bg-primary/10 text-primary px-space-sm py-0.5 rounded-full font-label-sm text-label-sm uppercase tracking-wider font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">electric_bolt</span> TRIP INTELLIGENCE ENGINE
+            </span>
+<span class="text-outline font-label-sm text-label-sm hidden sm:inline">• Realtime Route Matching</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Events that fit your journey</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+            Calculated around your confirmed stays at <strong class="text-on-surface">Taj Falaknuma &amp; Banjara Hills</strong>, accounting for scheduled sightseeing rest gaps and city traffic patterns.
+          </p>
+</div>
+<div class="flex items-center gap-space-sm self-start md:self-auto bg-surface-container-lowest p-space-xs rounded-xl shadow-sm">
+<label class="flex items-center gap-space-xs cursor-pointer select-none px-space-sm py-1">
+<input class="w-4 h-4 text-primary accent-primary rounded" id="gaps-only-toggle" onchange="toggleGapsOnly(this)" type="checkbox"/>
+<span class="font-label-md text-label-md text-on-surface">Show itinerary gaps only</span>
+</label>
+</div>
+</div>
+<!-- 3 Intelligent Trip-Matched Event Cards -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-lg">
+<!-- Card 1: Sacred Echoes Sufi Night -->
+<div class="trip-matched-card bg-surface-container-lowest rounded-2xl p-space-lg shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+<div class="flex flex-col gap-space-md">
+<div class="relative rounded-xl overflow-hidden aspect-[16/10] bg-surface-container-high">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Musicians performing at night at the Qutb Shahi Tombs amphitheatre in Hyderabad with ancient domes softly lit in warm gold, acoustic instruments including rubab, harmonium and tabla, with candles flickering in the foreground." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxMnV56K36tbVEA79NQMpt3W4sexoOB3Si3NbdbeBUGlBJA5oKtS27zD8yysS2joFwNfNtcSlBTNjkqEsX88kqJpHL3wDKnAkYzsAaqZL81F_HDrLhQtTJFxrqDqkpk4ZHvRsqE1zifZx5H1fVv3-E--frNpQr3KhJqm7ICXG8usBlfMTo040VJCsnU5fQyhN40tRGJIXxALFsaQ6MOZyPepBsy0iIIjcBMSh0X7SEYtiBTZ96q_0"/>
+<div class="absolute top-space-sm left-space-sm bg-secondary text-on-secondary px-space-sm py-1 rounded-full font-label-sm text-label-sm shadow-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+<span>96% VIHARA Match</span>
+</div>
+<button class="absolute top-space-sm right-space-sm w-8 h-8 rounded-full bg-surface/80 backdrop-blur hover:bg-surface text-on-surface flex items-center justify-center transition-colors" onclick="toggleBookmark(this)" type="button">
+<span class="material-symbols-outlined text-[18px]">bookmark_border</span>
+</button>
+</div>
+<!-- Match Context Pill -->
+<div class="bg-primary/5 p-space-sm rounded-lg flex items-start gap-space-xs text-primary font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[18px] text-primary shrink-0 mt-0.5">auto_awesome</span>
+<span><strong>Perfect after Day 2:</strong> 2.1 km from Chowmahalla Palace. Zero backtrack to hotel.</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Sufi &amp; Qawwali Mehfil</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">Sacred Echoes: Live Sufi &amp; Qawwali Night</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mt-1">An intimate twilight acoustic rendition of Amir Khusrau poetry in the open courtyard of the Royal Necropolis.</p>
+</div>
+<!-- Logistics Specs -->
+<div class="flex flex-col gap-space-xs pt-space-xs text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-secondary">calendar_today</span>
+<span class="font-semibold text-on-surface">Fri, 13 Sep • 7:30 PM – 10:00 PM</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-outline">pin_drop</span>
+<span>Qutb Shahi Tombs Amphitheatre (2.1 km)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-tertiary">local_taxi</span>
+<span>12 min cab from your dinner at Jewel of Nizam</span>
+</div>
+</div>
+</div>
+<div class="pt-space-md mt-space-md border-t border-surface-container/60 flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-outline">Starting at</span>
+<div class="font-title-lg text-title-lg text-on-surface">₹899 <span class="font-body-sm text-body-sm text-outline font-normal">/ guest</span></div>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="px-space-sm py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors" onclick="showEventDetail('Sacred Echoes: Live Sufi Night')" type="button">View</button>
+<button class="px-space-md py-2 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md shadow-sm transition-colors flex items-center gap-1" onclick="addToItinerary('Sacred Echoes: Live Sufi Night', 'Fri, 13 Sep 7:30 PM')" type="button">
+<span class="material-symbols-outlined text-[16px]">add_circle</span>
+<span>Add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2: Midnight Biryani Trail -->
+<div class="trip-matched-card bg-surface-container-lowest rounded-2xl p-space-lg shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+<div class="flex flex-col gap-space-md">
+<div class="relative rounded-xl overflow-hidden aspect-[16/10] bg-surface-container-high">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Nocturnal walking food trail through Hyderabad old city near illuminated Charminar, showing steaming degh brass cooking vessels with saffron biryani, traditional street vendors, and warm ambient market lantern light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEHETLxvbmM_sruQznVFal7OHP0NslR3J7zTIF6AvIoTgpsSAhPGm4p_Oa0jfVJ8Y7JyUBOCW0pnrwBbVz6jrfbYG-dxwg4cVCahvEAcBXKp4wlrCLZ410zcxUvZOBdJpvX0wo6Tm2Q-4FHlivGvxfww0KX7Z-JwjYSBsTrGz3VrvnO3qIR1RaqoI5p3WkAu_aiMRoGGVlAT5_f_vBf3i9R3m1Cgmpmp8qfTZrcoihciqeB0FKte0"/>
+<div class="absolute top-space-sm left-space-sm bg-secondary text-on-secondary px-space-sm py-1 rounded-full font-label-sm text-label-sm shadow-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+<span>92% VIHARA Match</span>
+</div>
+<button class="absolute top-space-sm right-space-sm w-8 h-8 rounded-full bg-surface/80 backdrop-blur hover:bg-surface text-on-surface flex items-center justify-center transition-colors" onclick="toggleBookmark(this)" type="button">
+<span class="material-symbols-outlined text-[18px]">bookmark_border</span>
+</button>
+</div>
+<!-- Match Context Pill -->
+<div class="bg-secondary/10 p-space-sm rounded-lg flex items-start gap-space-xs text-secondary font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[18px] text-secondary shrink-0 mt-0.5">nightlight</span>
+<span><strong>Free Evening Day 2:</strong> Fills your 8:00 PM open slot. Small group (6 spots left).</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Culinary &amp; Oral History</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">Deccani Heritage &amp; Midnight Biryani Trail</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mt-1">Curated by local culinary historian Yunus Lasania through secret alleyway deghs and irani chai stalls.</p>
+</div>
+<!-- Logistics Specs -->
+<div class="flex flex-col gap-space-xs pt-space-xs text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-secondary">calendar_today</span>
+<span class="font-semibold text-on-surface">Sat, 14 Sep • 8:00 PM – 11:30 PM</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-outline">pin_drop</span>
+<span>Old City Heritage Gate, Hyderabad</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-tertiary">hotel</span>
+<span>Route ends with pre-booked drop to Falaknuma</span>
+</div>
+</div>
+</div>
+<div class="pt-space-md mt-space-md border-t border-surface-container/60 flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-outline">All-inclusive</span>
+<div class="font-title-lg text-title-lg text-on-surface">₹1,250 <span class="font-body-sm text-body-sm text-outline font-normal">/ guest</span></div>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="px-space-sm py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors" onclick="showEventDetail('Deccani Heritage &amp; Midnight Biryani Trail')" type="button">View</button>
+<button class="px-space-md py-2 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md shadow-sm transition-colors flex items-center gap-1" onclick="addToItinerary('Deccani Midnight Biryani Trail', 'Sat, 14 Sep 8:00 PM')" type="button">
+<span class="material-symbols-outlined text-[16px]">add_circle</span>
+<span>Add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3: Acoustic Baithak & Indie Fusion -->
+<div class="trip-matched-card bg-surface-container-lowest rounded-2xl p-space-lg shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+<div class="flex flex-col gap-space-md">
+<div class="relative rounded-xl overflow-hidden aspect-[16/10] bg-surface-container-high">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Cozy indie music lounge in Jubilee Hills Hyderabad with singer-songwriter playing acoustic guitar beside a sarangi player under ambient warm Edison bulb chandeliers and lush tropical planters." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzhP1Uh6rHaCtyC-PPEK0ZSQ99nZcJoYV9yoCoA68g01flkF64cXgCqM1gvEmUIBd_JCFtS06JqkHUSjkd95GBXDS-4Ftzy6HK1bWa5BvnVHCJwZYvH-MMVxHV0KBlnp8cUnvFt1xOTBfCAxPyzr1XfqL33fyvQ-KclXE7euP9mD1F5jT5ITphqdgZccE-s60lsy_PFRF4qhCFAGnq6V0SLFdGIOew-xOU91oN4M6n-Jpcnb2yioA"/>
+<div class="absolute top-space-sm left-space-sm bg-secondary text-on-secondary px-space-sm py-1 rounded-full font-label-sm text-label-sm shadow-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+<span>88% VIHARA Match</span>
+</div>
+<button class="absolute top-space-sm right-space-sm w-8 h-8 rounded-full bg-surface/80 backdrop-blur hover:bg-surface text-on-surface flex items-center justify-center transition-colors" onclick="toggleBookmark(this)" type="button">
+<span class="material-symbols-outlined text-[18px]">bookmark_border</span>
+</button>
+</div>
+<!-- Match Context Pill -->
+<div class="bg-tertiary/10 p-space-sm rounded-lg flex items-start gap-space-xs text-tertiary font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[18px] text-tertiary shrink-0 mt-0.5">directions_walk</span>
+<span><strong>Next to Hotel:</strong> 8 min walk from your Banjara Hills stay. No commute required.</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Contemporary • Baithak</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">Acoustic Baithak &amp; Indie Fusion</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mt-1">Intimate session fusing Carnatic violin modes with ambient electronic soundscapes by Hyderabad indie collectives.</p>
+</div>
+<!-- Logistics Specs -->
+<div class="flex flex-col gap-space-xs pt-space-xs text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-secondary">calendar_today</span>
+<span class="font-semibold text-on-surface">Thu, 12 Sep • 8:30 PM – 11:00 PM</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-outline">pin_drop</span>
+<span>Moonshine Project, Jubilee Hills</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-secondary">payments</span>
+<span>Within your evening dining allocation</span>
+</div>
+</div>
+</div>
+<div class="pt-space-md mt-space-md border-t border-surface-container/60 flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-outline">Tickets</span>
+<div class="font-title-lg text-title-lg text-on-surface">₹499 <span class="font-body-sm text-body-sm text-outline font-normal">/ guest</span></div>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="px-space-sm py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors" onclick="showEventDetail('Acoustic Baithak &amp; Indie Fusion')" type="button">View</button>
+<button class="px-space-md py-2 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md shadow-sm transition-colors flex items-center gap-1" onclick="addToItinerary('Acoustic Baithak &amp; Indie Fusion', 'Thu, 12 Sep 8:30 PM')" type="button">
+<span class="material-symbols-outlined text-[16px]">add_circle</span>
+<span>Add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. FEATURED "HAPPENING NEAR YOU" (Editorial Curated Grid) -->
+<section class="w-full bg-surface py-space-xl">
+<div class="max-w-[1320px] mx-auto px-margin flex flex-col gap-space-xl">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm">
+<div>
+<span class="font-label-md text-label-md text-primary uppercase tracking-widest font-bold">Curated Cultural Lineup</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-1">Happening near you in Hyderabad</h2>
+</div>
+<div class="flex items-center gap-space-sm text-outline font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[18px] text-secondary">tune</span>
+<span>Sorted by proximity • Editorial verification badge</span>
+</div>
+</div>
+<!-- 4 Editorial Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-lg">
+<!-- Card 1: Echoes of the Nizam -->
+<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+<div>
+<div class="relative aspect-[4/3] bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Indian classical maestros performing Sitar and Bansuri flute jugalbandi on an elevated teakwood stage adorned with marigold garlands at Shilpakala Vedika theatre Hyderabad." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgV84BSfRGIOip8zUnJ9_BOu1daHYlK6KmAmeHDM4-LAZ58ykiSa_F84o2NJRAiSa-kw3QgYkwcTpP5w6d0rtBzzNK87NEDky2ZugWaHkYh-z8H4nZxJiuTZcsiLg32WIrw0OjhqXV6umvmiwKwlof6entqGouVsqq0gJfRa7o0JdMH20ePcJ3yLCiAqvfgY4eiI4c0h5N9qVm-iPFWa3aVC-ENZItxU_8vSGwSNlGC5N-XDa975g"/>
+<div class="absolute top-2 left-2 bg-primary text-on-primary px-2 py-0.5 rounded font-label-sm text-label-sm">Culture • Heritage</div>
+<div class="absolute bottom-2 left-2 bg-surface/90 backdrop-blur text-on-surface px-2 py-0.5 rounded font-label-sm text-label-sm">4.2 km away</div>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary font-semibold">94% Match</span>
+<span class="font-label-sm text-label-sm text-outline">Sat 14 Sep • 6:30 PM</span>
+</div>
+<h4 class="font-title-lg text-title-lg text-on-surface group-hover:text-primary transition-colors leading-snug">Echoes of the Nizam: Sitar &amp; Flute Jugalbandi</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">Shilpakala Vedika, Hitec City. Raga Yaman interpretations commemorating Hyderabad’s syncretic musical roots.</p>
+</div>
+</div>
+<div class="p-space-md pt-0 flex items-center justify-between">
+<span class="font-title-md text-title-md text-on-surface">₹599 <span class="font-body-sm text-body-sm text-outline font-normal">onwards</span></span>
+<button class="text-primary hover:text-primary-container font-title-md text-title-md flex items-center gap-1" onclick="addToItinerary('Sitar Jugalbandi Shilpakala', 'Sat 14 Sep 6:30 PM')" type="button">
+<span>Add</span>
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Zakir Khan Standup -->
+<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+<div>
+<div class="relative aspect-[4/3] bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Auditorium stage with warm spotlights focused on a standup comedian with microphone entertaining a massive, joyful theatre audience at HITEX convention centre in Hyderabad." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAwS7MVVV99bZ5JyfYsRCLmOFm04duNZ61SCBXEEb8RCTCzCT871G7MrJ2OmLVdBqr03WAlhem6gl3C26N4zMFarqGxN-Ry_5Z7NQ8ABVa1hmfpFO3hxz7FEk_yvayDRhFXwiD2At_SN2gh65XuRDLBmoVLged-yTK-sOiSXneGR5HBC27fq8MIq_t5Q1-f0bHPU0JYKH5oP7cAbefZrzssB-T2JHmw2QMe-QVS3AjNim82dpFrI8"/>
+<div class="absolute top-2 left-2 bg-on-surface text-surface px-2 py-0.5 rounded font-label-sm text-label-sm">Comedy • Standup</div>
+<div class="absolute top-2 right-2 bg-error text-on-error px-2 py-0.5 rounded font-label-sm text-label-sm">Selling Fast</div>
+<div class="absolute bottom-2 left-2 bg-surface/90 backdrop-blur text-on-surface px-2 py-0.5 rounded font-label-sm text-label-sm">6.8 km away</div>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary font-semibold">89% Match</span>
+<span class="font-label-sm text-label-sm text-outline">Sun 15 Sep • 7:00 PM</span>
+</div>
+<h4 class="font-title-lg text-title-lg text-on-surface group-hover:text-primary transition-colors leading-snug">Zakir Khan Live – ‘Tathastu’ Tour</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">HITEX Exhibition Center. Candid storytelling, heartfelt familial warmth, and iconic Hyderabadi observational humor.</p>
+</div>
+</div>
+<div class="p-space-md pt-0 flex items-center justify-between">
+<span class="font-title-md text-title-md text-on-surface">₹999 <span class="font-body-sm text-body-sm text-outline font-normal">onwards</span></span>
+<button class="text-primary hover:text-primary-container font-title-md text-title-md flex items-center gap-1" onclick="addToItinerary('Zakir Khan Live', 'Sun 15 Sep 7:00 PM')" type="button">
+<span>Add</span>
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Card 3: Telangana Craft & Weaves Masterclass -->
+<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+<div>
+<div class="relative aspect-[4/3] bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Traditional master artisan hands weaving intricate Pochampally Ikat silk yarn on an antique wooden handloom surrounded by natural dye palettes inside a sunlit art gallery in Banjara Hills." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-X5SbgPQZKb-OMkiLGg4X-pRjIbvwOSzyYvSFOsrX9p2BBrqFFLeECmhuDpHuQNMhngrG6cB7IFWsqxkTioM_7rf6hC0clcYtxYl3lqY0Yl0mhBqn09acdMuq9HP8lsCpAwLxCto0qVrXvtDovYeVXn7LI3hqfve970q__FCR4_tpgdR6NC7sL-HP8NX4zJicQQ4tINx3vT1Y8CDCAk3L9yJTrUYbuTVLeo-ywrhDZ5DLj5nLFcQ"/>
+<div class="absolute top-2 left-2 bg-tertiary-container text-on-tertiary-container px-2 py-0.5 rounded font-label-sm text-label-sm">Art • Workshop</div>
+<div class="absolute bottom-2 left-2 bg-surface/90 backdrop-blur text-on-surface px-2 py-0.5 rounded font-label-sm text-label-sm">3.1 km away</div>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary font-semibold">86% Match</span>
+<span class="font-label-sm text-label-sm text-outline">Fri 13 Sep • 11:00 AM</span>
+</div>
+<h4 class="font-title-lg text-title-lg text-on-surface group-hover:text-primary transition-colors leading-snug">Telangana Craft &amp; Weaves Masterclass</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">Kalakriti Art Gallery. Hands-on natural dyeing and loom demonstration with national award-winning weavers.</p>
+</div>
+</div>
+<div class="p-space-md pt-0 flex items-center justify-between">
+<span class="font-title-md text-title-md text-on-surface">₹750 <span class="font-body-sm text-body-sm text-outline font-normal">workshop fee</span></span>
+<button class="text-primary hover:text-primary-container font-title-md text-title-md flex items-center gap-1" onclick="addToItinerary('Weaves Masterclass Kalakriti', 'Fri 13 Sep 11:00 AM')" type="button">
+<span>Add</span>
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Card 4: Deccan Electronic Underground -->
+<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+<div>
+<div class="relative aspect-[4/3] bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Contemporary underground electronic music club in Hyderabad with warm amber architectural neon tubes, exposed stone walls, DJ playing modular synthesizers to an elegant stylish gathering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtOb-b4ZX4bYaQCWaXJvM4kJHdv-_FOdYZIXr8TPDMV4GQFkV1H0dw4GIeWoWXLslzgiYDBHBlra53gwGG_JDBxvs91Uk4HngWsFCSIS5gQp6rPsNerj-qkJA2hNezInmiOpoyBQJ5M1XY8U4B1Gd2qAxvpr9k5-fBa7ZGjHosre9i7D2ndkeVyh5vPKqsMG54uT5HPZvGLmGMAh3tHi_-y2gXrEMvbe-tXKc7DSFM_RWPp5KaZVg"/>
+<div class="absolute top-2 left-2 bg-secondary text-on-secondary px-2 py-0.5 rounded font-label-sm text-label-sm">Nightlife • Electronic</div>
+<div class="absolute bottom-2 left-2 bg-surface/90 backdrop-blur text-on-surface px-2 py-0.5 rounded font-label-sm text-label-sm">5.4 km away</div>
+</div>
+<div class="p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary font-semibold">81% Match</span>
+<span class="font-label-sm text-label-sm text-outline">Sat 14 Sep • 10:00 PM</span>
+</div>
+<h4 class="font-title-lg text-title-lg text-on-surface group-hover:text-primary transition-colors leading-snug">Deccan Electronic Underground</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">Tabula Rasa, Jubilee Hills. Deep organic downtempo featuring live sitar samples and South Asian polyrhythms.</p>
+</div>
+</div>
+<div class="p-space-md pt-0 flex items-center justify-between">
+<span class="font-title-md text-title-md text-on-surface">₹1,200 <span class="font-body-sm text-body-sm text-outline font-normal">cover</span></span>
+<button class="text-primary hover:text-primary-container font-title-md text-title-md flex items-center gap-1" onclick="addToItinerary('Deccan Electronic Tabula Rasa', 'Sat 14 Sep 10:00 PM')" type="button">
+<span>Add</span>
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. SMART DISCOVERY "PICKED FOR YOUR JOURNEY" -->
+<section class="w-full bg-surface-container-high/40 py-space-xl">
+<div class="max-w-[1320px] mx-auto px-margin flex flex-col gap-space-lg">
+<div class="bg-surface-container-lowest p-space-lg lg:p-space-xl rounded-2xl shadow-md">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md mb-space-lg">
+<div>
+<span class="font-label-md text-label-md text-tertiary uppercase tracking-wider font-bold">Curatorial Philosophy</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-1">Don’t just find an event. Find the event that belongs in your journey.</h3>
+</div>
+<!-- Filter pills -->
+<div class="flex flex-wrap items-center gap-space-xs font-label-md text-label-md">
+<button class="journey-filter px-space-md py-1.5 rounded-full bg-primary-container text-on-primary" type="button">All Journey Picks</button>
+<button class="journey-filter px-space-md py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface" type="button">After Sightseeing</button>
+<button class="journey-filter px-space-md py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface" type="button">Near Your Stay</button>
+<button class="journey-filter px-space-md py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface" type="button">Budget (&lt; ₹1,000)</button>
+</div>
+</div>
+<!-- Visual Route-Step Compatibility Timeline Banner -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col lg:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md w-full lg:w-auto">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold shrink-0">
+<span class="material-symbols-outlined text-[24px]">route</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="bg-secondary/10 text-secondary px-2 py-0.5 rounded text-label-sm font-label-sm font-semibold">Step 3 on Day 2</span>
+<span class="font-label-sm text-label-sm text-outline">After Golconda Fort Tour</span>
+</div>
+<span class="font-title-md text-title-md text-on-surface mt-0.5">18 min drive → Shilparamam Crafts &amp; Folk Dance Evening</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md w-full lg:w-auto justify-between lg:justify-end">
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-outline block">Avoids Peak Traffic</span>
+<span class="font-title-md text-title-md text-secondary">Saves 35 min commute</span>
+</div>
+<button class="h-11 px-space-md bg-on-surface text-surface hover:bg-primary transition-colors rounded-lg font-title-md text-title-md" onclick="addToItinerary('Shilparamam Folk Evening', 'Sat 14 Sep 5:30 PM')" type="button">
+              Insert into Day 2 Plan
+            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. MAP PREVIEW & SPATIAL RADAR ("Events around you") -->
+<section class="w-full bg-surface py-space-xl">
+<div class="max-w-[1320px] mx-auto px-margin flex flex-col gap-space-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm">
+<div>
+<span class="font-label-md text-label-md text-primary uppercase tracking-widest font-bold">Spatial Intelligence</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-1">Live Map Radar: Hyderabad</h2>
+</div>
+<button class="flex items-center gap-space-xs text-primary font-title-md text-title-md hover:underline" onclick="showToast('Loading full interactive radar map...')" type="button">
+<span class="material-symbols-outlined text-[20px]">map</span>
+<span>Open Full Map Radar (Google Maps Ready)</span>
+</button>
+</div>
+<!-- Split Map & Radar Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-stretch">
+<!-- Left: Static Maps Compatible Container -->
+<div class="lg:col-span-7 rounded-2xl overflow-hidden shadow-lg relative min-h-[420px] bg-surface-container-high">
+<!-- Google Maps data-location container -->
+<div class="w-full h-full bg-cover bg-center min-h-[420px]" data-location="Charminar, Hyderabad, Telangana, India" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB2zi-71rU-R63La2WvOiinUeW4Etyi5z5yyOCG6Bt-clM5oMnK8HxTeIdGq4T4QY1gLIlw3dbMbIJbxF0gZlC5ZNsonmK0igt1IomT_TdX20TQxPtugENrtdB1r3Bi80cnuE4dlPmckm3SsJFWKj7JVc1Yu8N7mz8AkqbfZhwJnXSLYNEwvmEZSLwNUBA2udBjtxdIsG-Q2HqT3SamgsdqXPopYdLj-Cwuudgmki_m2Xo7ETX9GpQ')"></div>
+<!-- Mock Interactive Map Pins Overlay -->
+<div class="absolute inset-0 p-space-md pointer-events-none flex flex-col justify-between">
+<div class="flex justify-between items-start pointer-events-auto">
+<div class="bg-surface/90 backdrop-blur-md px-space-md py-space-xs rounded-xl shadow-md flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary animate-ping"></span>
+<span class="font-label-md text-label-md text-on-surface">14 Verified Events Near You</span>
+</div>
+<div class="flex flex-col gap-1 bg-surface/90 backdrop-blur p-1 rounded-lg shadow">
+<button class="w-8 h-8 flex items-center justify-center text-on-surface hover:bg-surface-container rounded" type="button"><span class="material-symbols-outlined text-[18px]">add</span></button>
+<button class="w-8 h-8 flex items-center justify-center text-on-surface hover:bg-surface-container rounded" type="button"><span class="material-symbols-outlined text-[18px]">remove</span></button>
+</div>
+</div>
+<!-- Pin Markers representation over map -->
+<div class="relative w-full h-48 pointer-events-auto">
+<!-- Pin 1 -->
+<div class="absolute top-8 left-1/4 bg-primary text-on-primary px-2.5 py-1 rounded-full shadow-lg text-xs font-bold flex items-center gap-1 cursor-pointer hover:scale-110 transition-transform" onclick="showToast('Selected: Live Sufi Night (₹899)')">
+<span class="material-symbols-outlined text-[14px]">music_note</span>
+<span>₹899 • Sufi Night</span>
+</div>
+<!-- Pin 2 -->
+<div class="absolute bottom-10 right-1/3 bg-on-surface text-surface px-2.5 py-1 rounded-full shadow-lg text-xs font-bold flex items-center gap-1 cursor-pointer hover:scale-110 transition-transform" onclick="showToast('Selected: Biryani Trail (₹1,250)')">
+<span class="material-symbols-outlined text-[14px]">restaurant</span>
+<span>₹1,250 • Food Trail</span>
+</div>
+<!-- Hotel Marker -->
+<div class="absolute top-1/2 right-1/4 bg-tertiary-container text-on-tertiary-container px-2 py-1 rounded-full shadow-md text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">hotel</span>
+<span>Your Stay: Banjara Hills</span>
+</div>
+</div>
+<div class="pointer-events-auto bg-surface/95 backdrop-blur rounded-xl p-space-sm flex items-center justify-between shadow-md">
+<span class="font-body-sm text-body-sm text-on-surface">GPS Accuracy: ±15m • Location refreshed 4 mins ago</span>
+<button class="text-primary font-label-md text-label-md flex items-center gap-1" onclick="refreshGPS()" type="button">
+<span class="material-symbols-outlined text-[16px]">my_location</span>
+<span>Recalibrate</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right: Live Radar List with Distance Badges -->
+<div class="lg:col-span-5 flex flex-col gap-space-sm">
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow flex items-center justify-between cursor-pointer" onclick="showToast('Opening Qutb Shahi Tombs details')">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[20px]">near_me</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Qutb Shahi Necropolis Sufi</span>
+<span class="font-body-sm text-body-sm text-outline">Direct cab route • 8 mins away</span>
+</div>
+</div>
+<div class="text-right">
+<span class="bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold">0.8 km</span>
+<span class="font-body-sm text-body-sm text-on-surface block font-semibold mt-1">₹899</span>
+</div>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow flex items-center justify-between cursor-pointer" onclick="showToast('Opening Kalakriti Art Gallery details')">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[20px]">palette</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Telangana Ikat Masterclass</span>
+<span class="font-body-sm text-body-sm text-outline">Kalakriti Gallery • 12 mins away</span>
+</div>
+</div>
+<div class="text-right">
+<span class="bg-surface-container-high text-on-surface font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold">2.4 km</span>
+<span class="font-body-sm text-body-sm text-on-surface block font-semibold mt-1">₹750</span>
+</div>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow flex items-center justify-between cursor-pointer" onclick="showToast('Opening Shilpakala Vedika details')">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-tertiary/10 text-tertiary flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[20px]">theater_comedy</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Nizam Classical Sitar Night</span>
+<span class="font-body-sm text-body-sm text-outline">Direct metro via Hitec City station</span>
+</div>
+</div>
+<div class="text-right">
+<span class="bg-surface-container-high text-on-surface font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold">4.1 km</span>
+<span class="font-body-sm text-body-sm text-on-surface block font-semibold mt-1">₹599</span>
+</div>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow flex items-center justify-between cursor-pointer" onclick="showToast('Opening HITEX Standup details')">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[20px]">mic</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Zakir Khan Live</span>
+<span class="font-body-sm text-body-sm text-outline">HITEX Exhibition • En route airport</span>
+</div>
+</div>
+<div class="text-right">
+<span class="bg-surface-container-high text-on-surface font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold">6.8 km</span>
+<span class="font-body-sm text-body-sm text-on-surface block font-semibold mt-1">₹999</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 7. POPULAR EXPERIENCES (Visual Category Cards) -->
+<section class="w-full bg-surface-container-low py-space-xl">
+<div class="max-w-[1320px] mx-auto px-margin flex flex-col gap-space-xl">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-primary uppercase tracking-wider font-bold">Immersive Threads</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-1">Explore by Cultural Genre</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">Deep-dive into living regional arts, classical mehfils, oral storytelling, and regional epicurean customs.</p>
+</div>
+<!-- 6 Experiential Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-space-lg">
+<!-- Category 1 -->
+<div class="group relative rounded-2xl overflow-hidden aspect-[16/11] shadow-md bg-surface-container-high cursor-pointer" onclick="filterCategory('culture')">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Intimate candlelit Hindustani classical music mehfil with sitar player, vocalist and harmonium in a courtyard draped in raw raw silk fabric and scented rose petals." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBw0uv7EolfaMHAoT8Ybrh9gpeLILb-TsLufBP2NXOGpTh_-gO_7PaHmF-pMKRc7hlax-1Cb_5UFJ8XsEbsXWge9TMVIvPDUiLVoqUSJubukpBZCaHqG1BnLw3Nk1Xz3R6BI_Rgnhd8xJSUFlKeLwnqBQ76RikuIjAs37eWAvxI_5XDN0h295mnIxsrbouv4ul0UA899aRtt5bmZfTfMW4Td-eJUnN0mv0vKlq8ikwnkBgz8taNCd8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface via-on-surface/40 to-transparent"></div>
+<div class="absolute bottom-space-md left-space-md right-space-md text-surface-container-lowest">
+<span class="font-label-sm text-label-sm text-secondary-fixed uppercase font-bold tracking-wider">12 Events Nearby</span>
+<h3 class="font-headline-sm text-headline-sm text-surface-container-lowest mt-0.5">Indian Classical &amp; Sufi Mehfils</h3>
+<p class="font-body-sm text-body-sm text-surface-variant line-clamp-1 mt-1">Acoustic evenings, shrine qawwalis, and baithaks.</p>
+</div>
+</div>
+<!-- Category 2 -->
+<div class="group relative rounded-2xl overflow-hidden aspect-[16/11] shadow-md bg-surface-container-high cursor-pointer" onclick="filterCategory('heritage')">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Tour guide with brass lantern leading small group of curious travelers along the grand stone ramparts of an ancient Indian fortress at sunrise with mist rising." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtIMKNVR78GzumpHUGIhXLSz1czKjgmAXlJqpeYuXLLCO1Y4UldIBZ-fegtJ-W6ar42zTEKoqroB4j3tReU9kHsjHFMSvjuUVhVq3bQrHBh2oUf6M3YyDSEiBgps3kgmBvdsM_1PA7JAw1Um9z3KeFtO39_sLtB2wG1GVQM60yZtEtwWie7t36uk1cKzWW2LtTpBjj6n7G8Ir1bB5-3gmtCuqI9WIvhtVNGf-86NFRB4-4Sn5y8vM"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface via-on-surface/40 to-transparent"></div>
+<div class="absolute bottom-space-md left-space-md right-space-md text-surface-container-lowest">
+<span class="font-label-sm text-label-sm text-secondary-fixed uppercase font-bold tracking-wider">8 Events Nearby</span>
+<h3 class="font-headline-sm text-headline-sm text-surface-container-lowest mt-0.5">Heritage Walks &amp; Guided Trails</h3>
+<p class="font-body-sm text-body-sm text-surface-variant line-clamp-1 mt-1">Secret stepwells, royal tombs, and forgotten lanes.</p>
+</div>
+</div>
+<!-- Category 3 -->
+<div class="group relative rounded-2xl overflow-hidden aspect-[16/11] shadow-md bg-surface-container-high cursor-pointer" onclick="filterCategory('comedy')">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Live storytelling performance in an artisanal Indian cafe setting with vintage carpets, floor cushions, and expressive speaker captivating a relaxed audience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV9ctwJvjzDXpZodjbxc7YpVcIoMXwBNURAJLzmf8RECGG7jY810CawidwqZLpxelgu_-6Eflk3qi8z-3oZyXB2ifYJyOXxGvACEsg7U4mbofiGGRQEkKKv5Dh0sOLU9NRP7eIY6lTHKmiyJhN5AVoBfMbxG2btF--n-wn2E6suXg2gA97yfY2NSFi5XmFG_6CjSOAXqc03p44ydI21YHeP6-Ve693Ag-XfQ4skdZDXcFiUpmXmVs"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface via-on-surface/40 to-transparent"></div>
+<div class="absolute bottom-space-md left-space-md right-space-md text-surface-container-lowest">
+<span class="font-label-sm text-label-sm text-secondary-fixed uppercase font-bold tracking-wider">9 Events Nearby</span>
+<h3 class="font-headline-sm text-headline-sm text-surface-container-lowest mt-0.5">Standup Comedy &amp; Dastangoi</h3>
+<p class="font-body-sm text-body-sm text-surface-variant line-clamp-1 mt-1">Urdu oral traditions alongside modern club standup.</p>
+</div>
+</div>
+<!-- Category 4 -->
+<div class="group relative rounded-2xl overflow-hidden aspect-[16/11] shadow-md bg-surface-container-high cursor-pointer" onclick="filterCategory('culinary')">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Close up of traditional Indian culinary master preparing saffron fragrant pilaf in a colossal hammered copper cauldron over wood fire embers with garnish of mint and fried onions." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBM1YCp7DTNQWIdPZzHv2lLzMchuN9kn1FNrwtIgxrCtqyy6iB8y00mp9f1qBEaVy4UbxWkZgPwfzwVVrbjvA4EYngPT9DQLANR8Ua8tL_NnkVikutEUNb0r6YmCb-FUpCfE6JWP3J8q5ERCQ11WIRwZ5bnBweBJD3UCUzwL3teawN-g-G1i5nGsxW9SAdEyhxPtcCqlf1Y0qDtpz1xaMH3BlPF67so3m9SWt_eo6cPjnyucafAM_Q"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface via-on-surface/40 to-transparent"></div>
+<div class="absolute bottom-space-md left-space-md right-space-md text-surface-container-lowest">
+<span class="font-label-sm text-label-sm text-secondary-fixed uppercase font-bold tracking-wider">14 Events Nearby</span>
+<h3 class="font-headline-sm text-headline-sm text-surface-container-lowest mt-0.5">Regional Culinary Walks</h3>
+<p class="font-body-sm text-body-sm text-surface-variant line-clamp-1 mt-1">Authentic haleem pots, Irani bakeries, and royal banquets.</p>
+</div>
+</div>
+<!-- Category 5 -->
+<div class="group relative rounded-2xl overflow-hidden aspect-[16/11] shadow-md bg-surface-container-high cursor-pointer" onclick="filterCategory('workshops')">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Art gallery studio showing contemporary Indian art exhibition with modern canvas paintings inspired by temple architecture, visited by cultural patrons in linen attire." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjgYUby3pRTOWnL3k9sJvlld-oJnD9hKoeEW3Yo_xQditaiXK5xTKFPz4cwIeTRwkzWZhPTUUKBwXDP1pgDokHNt3LpfGtdDKCjfsQ6UjmEt1q2WwE7a4wRsAn1otN83xEYB8wZbiSOoRchtLFYSfvm24cAJzAB7DSIxL5NZydPtMPq8TGT5xjaZuaTVRfwvIUGxpb7RFc-SZs0bl0UubvfsxcexhBg-H6zr2WxJLMXnVI3oTeO8c"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface via-on-surface/40 to-transparent"></div>
+<div class="absolute bottom-space-md left-space-md right-space-md text-surface-container-lowest">
+<span class="font-label-sm text-label-sm text-secondary-fixed uppercase font-bold tracking-wider">6 Events Nearby</span>
+<h3 class="font-headline-sm text-headline-sm text-surface-container-lowest mt-0.5">Contemporary Indian Art</h3>
+<p class="font-body-sm text-body-sm text-surface-variant line-clamp-1 mt-1">Sculptural showcases, Bidri craft, and gallery mixers.</p>
+</div>
+</div>
+<!-- Category 6 -->
+<div class="group relative rounded-2xl overflow-hidden aspect-[16/11] shadow-md bg-surface-container-high cursor-pointer" onclick="filterCategory('music')">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Outdoor amphitheatre music festival in an ancient banyan garden with ambient stage lighting illuminating Indian indie acoustic band performing under starry sky." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAk_7USFt4kjxUytAJJmvB1qrBBcli2S2roCjI3-gbUzJfuKzMSylVVI6QqYiPTa4nG_lEsU1P4nQo-5kWkwTbwofkDFt-0YSKm2hV8rPx8Rba0uGijJmL6DJdTg_mugfUtbtnjxYEuHL3U8LRcthm0y_sNIzh0BJ5lgtTFjoyiJWo0dk2YMZPG1eKwodnGJJ5QVbQEAEBjFw_YzGpZXjEAgXOEAfrphVmUOWNiC83AOU5VdWC3izs"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface via-on-surface/40 to-transparent"></div>
+<div class="absolute bottom-space-md left-space-md right-space-md text-surface-container-lowest">
+<span class="font-label-sm text-label-sm text-secondary-fixed uppercase font-bold tracking-wider">11 Events Nearby</span>
+<h3 class="font-headline-sm text-headline-sm text-surface-container-lowest mt-0.5">Live Music &amp; Indie Concerts</h3>
+<p class="font-body-sm text-body-sm text-surface-variant line-clamp-1 mt-1">Folk fusion, jazz baithaks, and rooftop sessions.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 8. NO TRIP STATE / EMPTY STATE PREVIEW TOGGLE -->
+<section class="w-full bg-surface py-space-xl">
+<div class="max-w-[1320px] mx-auto px-margin">
+<div class="flex items-center justify-between mb-space-md">
+<span class="font-label-sm text-label-sm text-outline uppercase font-semibold">State Showcase Switcher</span>
+<button class="font-label-md text-label-md text-primary hover:underline flex items-center gap-1" id="empty-state-toggle-btn" onclick="toggleEmptyStateMock()" type="button">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+<span>Preview: No Active Trip Fallback Mode</span>
+</button>
+</div>
+<!-- Empty State Card (Hidden by default, toggled via JS) -->
+<div class="hidden bg-surface-container-low rounded-2xl p-space-xl text-center flex flex-col items-center justify-center gap-space-md border-0" id="no-trip-empty-card">
+<div class="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center text-primary mb-2">
+<span class="material-symbols-outlined text-[32px]">flight_takeoff</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface max-w-lg">Planning your next Indian journey?</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">
+          When an active itinerary is connected, VIHARA automatically maps performances, baithaks, and culinary trails into your free time slots without logistical friction.
+        </p>
+<div class="flex flex-wrap items-center justify-center gap-space-md pt-space-xs">
+<button class="h-12 px-space-lg rounded-xl bg-primary-container text-on-primary font-title-md text-title-md hover:bg-primary transition-colors shadow-md" onclick="showToast('Redirecting to Trip Planner...')" type="button">
+            Plan a New Trip
+          </button>
+<button class="h-12 px-space-lg rounded-xl bg-surface text-on-surface font-title-md text-title-md hover:bg-surface-container-high transition-colors" onclick="switchMode('local')" type="button">
+            Explore All Nearby Events
+          </button>
+</div>
+</div>
+</div>
+</section>
+<!-- 9. TRUST & INTEGRATION STRIP -->
+<section class="w-full bg-surface-container-high/60 py-space-lg">
+<div class="max-w-[1320px] mx-auto px-margin">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<div class="flex items-center gap-space-md p-space-sm">
+<div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">verified_user</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Verified Credentials</span>
+<span class="font-body-sm text-body-sm text-outline">Vetted cultural organizers &amp; institutions</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md p-space-sm">
+<div class="w-10 h-10 rounded-full bg-secondary/10 text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">currency_rupee</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Transparent Fair Pricing</span>
+<span class="font-body-sm text-body-sm text-outline">Zero hidden ticketing surcharges</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md p-space-sm">
+<div class="w-10 h-10 rounded-full bg-tertiary/10 text-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">share_location</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Google Places Ready</span>
+<span class="font-body-sm text-body-sm text-outline">Live geo-coordinates &amp; navigation routing</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md p-space-sm">
+<div class="w-10 h-10 rounded-full bg-surface-tint/10 text-surface-tint flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">calendar_add_on</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface">Instant Sync</span>
+<span class="font-body-sm text-body-sm text-outline">Adds directly to Apple/Google calendars</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- LOCATION CHANGE MODAL (Interactive) -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/40 backdrop-blur-sm hidden items-center justify-center p-margin-mobile" id="location-modal">
+<div class="bg-surface-container-lowest rounded-2xl max-w-lg w-full p-space-xl shadow-2xl flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Select Discovery Location</h3>
+<button class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-outline" onclick="closeLocationModal()" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full h-12 pl-10 pr-4 bg-surface-container-low rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary/20" id="modal-city-input" placeholder="Search Indian city, district, or PIN code..." type="text"/>
+</div>
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm text-outline uppercase font-semibold">Active Journeys &amp; Hubs</span>
+<button class="p-space-sm rounded-lg hover:bg-surface-container-low flex items-center justify-between text-left" onclick="selectCityModal('Hyderabad, Telangana')" type="button">
+<div>
+<div class="font-title-md text-title-md text-on-surface">Hyderabad, Telangana</div>
+<div class="font-body-sm text-body-sm text-outline">Active Trip: Falaknuma • 12–15 Sep</div>
+</div>
+<span class="material-symbols-outlined text-secondary text-[20px]">check</span>
+</button>
+<button class="p-space-sm rounded-lg hover:bg-surface-container-low flex items-center justify-between text-left" onclick="selectCityModal('Bengaluru, Karnataka')" type="button">
+<div>
+<div class="font-title-md text-title-md text-on-surface">Bengaluru, Karnataka</div>
+<div class="font-body-sm text-body-sm text-outline">Upcoming Journey: 22–26 Oct</div>
+</div>
+<span class="material-symbols-outlined text-outline text-[16px]">chevron_right</span>
+</button>
+<button class="p-space-sm rounded-lg hover:bg-surface-container-low flex items-center justify-between text-left" onclick="selectCityModal('Panaji, Goa')" type="button">
+<div>
+<div class="font-title-md text-title-md text-on-surface">Panaji, Goa</div>
+<div class="font-body-sm text-body-sm text-outline">Saved Explorer Hub</div>
+</div>
+<span class="material-symbols-outlined text-outline text-[16px]">chevron_right</span>
+</button>
+</div>
+<button class="w-full h-12 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-title-md text-title-md flex items-center justify-center gap-space-xs transition-colors" onclick="useCurrentGPS()" type="button">
+<span class="material-symbols-outlined text-primary text-[20px]">my_location</span>
+<span>Use Device GPS Location</span>
+</button>
+</div>
+</div>
+<!-- TOAST NOTIFICATION CONTAINER -->
+<div class="fixed bottom-6 right-6 z-50 bg-inverse-surface text-inverse-on-surface px-space-lg py-space-md rounded-xl shadow-2xl transition-all duration-300 transform translate-y-24 opacity-0 pointer-events-none flex items-center gap-space-sm font-body-md text-body-md" id="toast">
+<span class="material-symbols-outlined text-secondary-fixed text-[22px]">check_circle</span>
+<span id="toast-text">Event synchronized to Itinerary</span>
+</div>
+</div>
+<!-- Interactive Logic for Discovery Engine -->
+<script>
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    const toastText = document.getElementById('toast-text');
+    toastText.innerText = message;
+    toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+    toast.classList.add('translate-y-0', 'opacity-100');
+    setTimeout(() => {
+      toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+      toast.classList.remove('translate-y-0', 'opacity-100');
+    }, 3200);
+  }
+
+  function addToItinerary(eventName, slotTime) {
+    showToast(`"${eventName}" added to itinerary for ${slotTime}`);
+  }
+
+  function showEventDetail(eventName) {
+    showToast(`Loading cultural notes & seating for ${eventName}...`);
+  }
+
+  function toggleBookmark(btn) {
+    const icon = btn.querySelector('.material-symbols-outlined');
+    if (icon.innerText === 'bookmark_border') {
+      icon.innerText = 'bookmark';
+      icon.style.fontVariationSettings = "'FILL' 1";
+      showToast('Saved to your Cultural Bookmarks');
+    } else {
+      icon.innerText = 'bookmark_border';
+      icon.style.fontVariationSettings = "'FILL' 0";
+      showToast('Removed from Bookmarks');
+    }
+  }
+
+  function setRadius(dist, btn) {
+    document.querySelectorAll('.radius-btn').forEach(b => {
+      b.classList.remove('bg-on-surface', 'text-surface');
+      b.classList.add('text-on-surface-variant');
+    });
+    btn.classList.add('bg-on-surface', 'text-surface');
+    btn.classList.remove('text-on-surface-variant');
+    showToast(`Search radius set to ${dist}`);
+  }
+
+  function setCity(cityName) {
+    document.getElementById('current-location-label').innerText = `${cityName}, India`;
+    showToast(`Location switched to ${cityName}. Radar updated.`);
+  }
+
+  function filterCategory(category, btn) {
+    if (btn) {
+      document.querySelectorAll('.category-chip').forEach(b => {
+        b.classList.remove('bg-on-surface', 'text-surface');
+        b.classList.add('bg-surface-container-low', 'text-on-surface-variant');
+      });
+      btn.classList.remove('bg-surface-container-low', 'text-on-surface-variant');
+      btn.classList.add('bg-on-surface', 'text-surface');
+    }
+    showToast(`Filtering experiences for: ${category}`);
+  }
+
+  function setDateFilter(when, btn) {
+    document.querySelectorAll('.date-chip').forEach(b => {
+      b.classList.remove('bg-primary-container', 'text-on-primary');
+      b.classList.add('bg-surface-container-low', 'text-on-surface');
+    });
+    btn.classList.remove('bg-surface-container-low', 'text-on-surface');
+    btn.classList.add('bg-primary-container', 'text-on-primary');
+    showToast(`Date scope updated to: ${when}`);
+  }
+
+  function switchMode(mode) {
+    const tripBtn = document.getElementById('mode-trip-btn');
+    const localBtn = document.getElementById('mode-local-btn');
+    const tripContainer = document.getElementById('trip-intelligence-container');
+
+    if (mode === 'trip') {
+      tripBtn.className = 'flex items-center gap-space-xs bg-primary-container text-on-primary px-space-md py-space-xs rounded-full font-label-md text-label-md transition-all shadow-sm';
+      localBtn.className = 'flex items-center gap-space-xs text-on-surface-variant hover:text-on-surface px-space-md py-space-xs rounded-full font-label-md text-label-md transition-all';
+      if (tripContainer) tripContainer.style.display = 'block';
+      showToast('Active: Trip-Aware Radar mode (Hyderabad Itinerary)');
+    } else {
+      localBtn.className = 'flex items-center gap-space-xs bg-on-surface text-surface px-space-md py-space-xs rounded-full font-label-md text-label-md transition-all shadow-sm';
+      tripBtn.className = 'flex items-center gap-space-xs text-on-surface-variant hover:text-on-surface px-space-md py-space-xs rounded-full font-label-md text-label-md transition-all';
+      if (tripContainer) tripContainer.style.display = 'none';
+      showToast('Active: Independent Local Explorer mode');
+    }
+  }
+
+  function toggleGapsOnly(checkbox) {
+    const cards = document.querySelectorAll('.trip-matched-card');
+    if (checkbox.checked) {
+      showToast('Showing only events filling unscheduled gaps on Day 2 & 3');
+      cards.forEach((card, index) => {
+        if (index === 2) card.style.opacity = '0.4';
+      });
+    } else {
+      cards.forEach(card => card.style.opacity = '1');
+      showToast('Showing all trip-matched recommendations');
+    }
+  }
+
+  function toggleEmptyStateMock() {
+    const emptyCard = document.getElementById('no-trip-empty-card');
+    const toggleBtn = document.getElementById('empty-state-toggle-btn');
+    if (emptyCard.classList.contains('hidden')) {
+      emptyCard.classList.remove('hidden');
+      toggleBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">visibility_off</span><span>Hide Fallback State</span>';
+    } else {
+      emptyCard.classList.add('hidden');
+      toggleBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">visibility</span><span>Preview: No Active Trip Fallback Mode</span>';
+    }
+  }
+
+  function openLocationModal() {
+    const modal = document.getElementById('location-modal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  function closeLocationModal() {
+    const modal = document.getElementById('location-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  function selectCityModal(cityName) {
+    document.getElementById('current-location-label').innerText = cityName;
+    closeLocationModal();
+    showToast(`Location set to ${cityName}`);
+  }
+
+  function useCurrentGPS() {
+    closeLocationModal();
+    showToast('GPS coordinates locked: Banjara Hills, Hyderabad (Accuracy: 12m)');
+  }
+
+  function refreshGPS() {
+    showToast('Recalibrating spatial radar with device GPS...');
+  }
+
+  function triggerSearch() {
+    const query = document.getElementById('event-search-input').value;
+    if (query.trim() === '') {
+      showToast('Scanning all cultural events in 15 km radar...');
+    } else {
+      showToast(`Searching for "${query}" near Hyderabad...`);
+    }
+  }
+</script></main><footer class="w-full bg-surface-container-low pt-space-xl pb-space-lg shadow-[0_-1px_8px_rgba(0,0,0,0.02)]"><div class="max-w-[1320px] mx-auto px-margin"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-gutter mb-space-xl"><div class="lg:col-span-2 flex flex-col gap-space-md"><div class="flex items-center gap-space-sm"><img alt="VIHARA Brand Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WKhU6jn5cMDbDgZddTFJYceFsrHCU3-UvWxfdVO-xAP7uXS6u3789AJfau7paTIEVHWtkQffycI5RirtPMxmssRRie7C8MfZhi9H12Pd25Yt1Hu3N8JHjWRQHcOgrLFF9x7B-jPSw0DLEBBhGIHSda-01KWshVuhLWDzSGTArwLjGVogGEVLiboYOjsumH64jn4_KHVnhVR6IGYPQmUjQHfj_FPmawe7qgEGN_De1blqIDUgvZ_zzO"/><span class="font-headline-sm text-headline-sm text-on-surface">VIHARA</span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-md">An elevated, culture-forward travel ecosystem honoring India's living traditions, architectural marvels, and bespoke hospitality.</p><div class="flex flex-col gap-space-xs"><span class="font-label-md text-label-md text-on-surface uppercase">Curatorial Letter</span><div class="flex max-w-sm gap-space-xs"><input class="flex-1 h-12 px-space-md rounded-lg bg-surface font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="Enter your email for slow travel journals" type="email"/><button class="h-12 px-space-lg rounded-lg bg-primary-container text-on-primary font-title-md text-title-md hover:bg-primary transition-colors" type="button">Subscribe</button></div></div></div><div class="flex flex-col gap-space-sm"><span class="font-title-md text-title-md text-on-surface">Discover</span><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="trip-planner" href="#">Trip Planning</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="events-nearby" href="#">Events Nearby</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="stays-and-travel" href="#">Heritage Stays</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="saved-and-itinerary" href="#">Curated Journeys</a></div><div class="flex flex-col gap-space-sm"><span class="font-title-md text-title-md text-on-surface">Intelligence</span><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="ai-concierge" href="#">AI Concierge</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Active Trip Companion</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Regional Almanac</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Artisan Archives</a></div><div class="flex flex-col gap-space-sm"><span class="font-title-md text-title-md text-on-surface">Integrity</span><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">About VIHARA</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Safety &amp; Transparency</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Cultural Preservation Fund</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Editorial Standards</a></div></div><div class="pt-space-md flex flex-col md:flex-row items-center justify-between gap-space-sm bg-surface-container px-space-lg py-space-md rounded-xl"><span class="font-body-sm text-body-sm text-on-surface-variant">© 2024 VIHARA Experiences Pvt. Ltd. Crafted with cultural heritage respect. Made in India.</span><div class="flex items-center gap-space-md"><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Privacy Policy</a><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Terms of Hospitality</a><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">Local Community Pledges</a></div></div></div></footer></body></html>
