@@ -86,7 +86,9 @@ export const generateItineraryPDFBlob = async (tripData = {}) => {
       doc.text(splitTitle, margin + 32, margin + 80);
 
       // Subtitle (Duration & Destinations Ribbon)
-      const destString = activeDestinations.map((d) => cleanText(d).toUpperCase()).join(' ~ ');
+      const destString = activeDestinations
+        .map((d) => cleanText(typeof d === 'object' ? (d.name || d.id || '') : d).toUpperCase())
+        .join(' ~ ');
       const destSub = `${numberOfDays}D / ${Math.max(1, numberOfDays - 1)}N | ${destString}`;
       doc.setTextColor(254, 214, 91);
       doc.setFontSize(10.5);
@@ -104,7 +106,7 @@ export const generateItineraryPDFBlob = async (tripData = {}) => {
       doc.setTextColor(13, 28, 50);
       doc.setFontSize(9);
       doc.setFont('helvetica', 'bold');
-      const routeText = `Origin: ${cleanText(currentLocation)}   ->   ${activeDestinations.map((d) => cleanText(d).toUpperCase()).join(' -> ')}   ->   ${numberOfTravelers} Travelers (${cleanText(travelType)})`;
+      const routeText = `Origin: ${cleanText(currentLocation)}   ->   ${activeDestinations.map((d) => cleanText(typeof d === 'object' ? (d.name || d.id || '') : d).toUpperCase()).join(' -> ')}   ->   ${numberOfTravelers} Travelers (${cleanText(travelType)})`;
       const splitRoute = doc.splitTextToSize(routeText, contentWidth - 50);
       doc.text(splitRoute, margin + 28, ribbonY + 24);
 
@@ -322,3 +324,174 @@ export const generateItineraryPDFBlob = async (tripData = {}) => {
     }
   });
 };
+
+/**
+ * Generates an official, branded PDF Reservation Voucher for a hotel booking
+ *
+ * @param {Object} booking - Complete booking details object
+ * @returns {Promise<Blob>} A Promise resolving to a valid application/pdf Blob
+ */
+export const generateBookingVoucherPDFBlob = async (booking = {}) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'pt',
+        format: 'a4'
+      });
+
+      const pageWidth = 595.28;
+      const pageHeight = 841.89;
+      const margin = 36;
+      const contentWidth = pageWidth - margin * 2;
+
+      const cleanText = (text) => {
+        if (!text) return '';
+        return String(text)
+          .replace(/₹/g, 'Rs. ')
+          .replace(/[•●]/g, '-')
+          .replace(/[^\x00-\x7F]/g, '')
+          .trim();
+      };
+
+      // Outer Frame
+      doc.setDrawColor(229, 231, 235);
+      doc.setFillColor(252, 249, 241);
+      doc.roundedRect(margin, margin, contentWidth, pageHeight - margin * 2, 12, 12, 'FD');
+
+      // Top Navy Header
+      doc.setFillColor(13, 28, 50);
+      doc.roundedRect(margin + 16, margin + 16, contentWidth - 32, 90, 8, 8, 'F');
+
+      // Brand Title
+      doc.setTextColor(212, 175, 55);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.text('VIHARA STAYS | OFFICIAL SANCTUARY RESERVATION VOUCHER', margin + 32, margin + 40);
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(18);
+      doc.text(cleanText(booking.hotel?.name || 'Sanctuary Retreat'), margin + 32, margin + 65);
+
+      doc.setTextColor(200, 200, 200);
+      doc.setFontSize(8.5);
+      doc.setFont('helvetica', 'normal');
+      doc.text(cleanText(booking.hotel?.location || 'India'), margin + 32, margin + 82);
+
+      // Reference Badge Box
+      const badgeY = margin + 120;
+      doc.setFillColor(255, 255, 255);
+      doc.setDrawColor(212, 175, 55);
+      doc.roundedRect(margin + 16, badgeY, contentWidth - 32, 45, 6, 6, 'FD');
+
+      doc.setTextColor(115, 92, 0);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.text('BOOKING REFERENCE', margin + 32, badgeY + 18);
+
+      doc.setTextColor(180, 83, 9);
+      doc.setFontSize(14);
+      doc.text(cleanText(booking.bookingId || 'VIH-RES-000000'), margin + 32, badgeY + 35);
+
+      doc.setTextColor(16, 185, 129);
+      doc.setFontSize(9);
+      doc.text('CONFIRMED & GUARANTEED', pageWidth - margin - 170, badgeY + 28);
+
+      // Stay Details Grid Box
+      const gridY = badgeY + 60;
+      doc.setFillColor(255, 255, 255);
+      doc.setDrawColor(229, 231, 235);
+      doc.roundedRect(margin + 16, gridY, contentWidth - 32, 120, 6, 6, 'FD');
+
+      doc.setTextColor(13, 28, 50);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.text('RESERVATION & SCHEDULE DETAILS', margin + 32, gridY + 24);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8.5);
+      doc.setTextColor(75, 85, 99);
+
+      doc.text(`* Check-In Date: ${cleanText(booking.checkIn)} (From 2:00 PM)`, margin + 32, gridY + 45);
+      doc.text(`* Check-Out Date: ${cleanText(booking.checkOut)} (Until 11:00 AM)`, margin + 32, gridY + 65);
+      doc.text(`* Duration: ${booking.nights || 1} Nights`, margin + 32, gridY + 85);
+      doc.text(`* Reserved Suite: ${cleanText(booking.room?.name || 'Deluxe Suite')}`, margin + 32, gridY + 105);
+
+      doc.text(`* Lead Guest: ${cleanText(booking.guestDetails?.fullName || 'Traveler')}`, margin + 280, gridY + 45);
+      doc.text(`* Email: ${cleanText(booking.guestDetails?.email || 'N/A')}`, margin + 280, gridY + 65);
+      doc.text(`* Occupancy: ${booking.guests || 2} Guests (${booking.rooms || 1} Room)`, margin + 280, gridY + 85);
+      doc.text(`* Inclusions: ${cleanText(booking.room?.mealPlan || 'Breakfast Included')}`, margin + 280, gridY + 105);
+
+      // Tariff Breakdown Box
+      const tariffY = gridY + 135;
+      doc.setFillColor(255, 255, 255);
+      doc.setDrawColor(229, 231, 235);
+      doc.roundedRect(margin + 16, tariffY, contentWidth - 32, 140, 6, 6, 'FD');
+
+      doc.setTextColor(13, 28, 50);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.text('PAYMENT & ITEMIZED TARIFF SUMMARY', margin + 32, tariffY + 24);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8.5);
+      doc.setTextColor(75, 85, 99);
+
+      const pricing = booking.pricing || {};
+      doc.text(`Nightly Suite Rate (${booking.nights || 1} Nights):`, margin + 32, tariffY + 48);
+      doc.text(`Rs. ${(pricing.baseTariff || 0).toLocaleString()}`, pageWidth - margin - 100, tariffY + 48);
+
+      doc.text('Heritage Conservation Cess (8%):', margin + 32, tariffY + 68);
+      doc.text(`Rs. ${(pricing.heritageCess || 0).toLocaleString()}`, pageWidth - margin - 100, tariffY + 68);
+
+      doc.text('Goods & Services Tax (18% GST):', margin + 32, tariffY + 88);
+      doc.text(`Rs. ${(pricing.gst || 0).toLocaleString()}`, pageWidth - margin - 100, tariffY + 88);
+
+      if (pricing.memberDiscount > 0) {
+        doc.text('VIHARA Privilege Member Benefit:', margin + 32, tariffY + 108);
+        doc.text(`-Rs. ${pricing.memberDiscount.toLocaleString()}`, pageWidth - margin - 100, tariffY + 108);
+      }
+
+      doc.setDrawColor(229, 231, 235);
+      doc.line(margin + 32, tariffY + 115, pageWidth - margin - 32, tariffY + 115);
+
+      doc.setTextColor(180, 83, 9);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.text('TOTAL AMOUNT PAID:', margin + 32, tariffY + 130);
+      doc.text(`Rs. ${(pricing.totalAmount || 0).toLocaleString()} (PAID)`, pageWidth - margin - 120, tariffY + 130);
+
+      // Terms & Concierge Box
+      const termsY = tariffY + 155;
+      doc.setFillColor(250, 250, 245);
+      doc.setDrawColor(229, 231, 235);
+      doc.roundedRect(margin + 16, termsY, contentWidth - 32, 90, 6, 6, 'FD');
+
+      doc.setTextColor(115, 92, 0);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8.5);
+      doc.text('IMPORTANT CHECK-IN POLICIES & CONCIERGE', margin + 32, termsY + 20);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(75, 85, 99);
+      doc.text('* Please present a government-issued photo ID upon arrival at the palace reception.', margin + 32, termsY + 36);
+      doc.text(`* Cancellation Policy: ${cleanText(booking.room?.cancellationPolicy || 'Free cancellation until 24h before check-in.')}`, margin + 32, termsY + 52);
+      doc.text('* 24/7 Palace Concierge Direct Line: +91 800-VIHARA (800-844272) | concierge@vihara.travel', margin + 32, termsY + 68);
+
+      // Footer
+      const footerY = pageHeight - margin - 20;
+      doc.setTextColor(107, 114, 128);
+      doc.setFontSize(8);
+      doc.text('VIHARA Smart Heritage Tourism | Digitally Verified Voucher', margin + 20, footerY);
+      doc.text(`Generated: ${new Date().toLocaleDateString('en-IN')}`, pageWidth - margin - 140, footerY);
+
+      const pdfBlob = doc.output('blob');
+      resolve(pdfBlob);
+    } catch (error) {
+      console.error('Error generating booking voucher PDF:', error);
+      reject(error);
+    }
+  });
+};
+

@@ -36,7 +36,7 @@ export const TripPlanningPage2 = ({ onBack, onNext }) => {
         <p className="text-sm md:text-base text-gray-600 mt-2 max-w-2xl mx-auto">
           Categories and experiences are dynamically verified against your selected destinations (
           <span className="font-semibold text-[#0d1c32] capitalize">
-            {selectedDestinations.join(', ')}
+            {selectedDestinations.map(d => typeof d === 'object' ? (d.name || d.id || '') : d).join(', ')}
           </span>
           ).
         </p>

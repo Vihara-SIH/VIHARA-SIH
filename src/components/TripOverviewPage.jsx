@@ -27,13 +27,15 @@ import {
 } from 'lucide-react';
 import { useTrip } from '../context/TripContext';
 import { useAuth } from '../context/AuthContext';
+import { useStays } from '../context/StaysContext';
 import { sendItineraryWebhook } from '../services/webhookService';
 import { generateItineraryPDFBlob } from '../services/pdfService';
 import { PDFItineraryModal } from './PDFItineraryModal';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-export function TripOverviewPage({ onPlanNewTrip }) {
+export function TripOverviewPage({ onPlanNewTrip, onBookStay }) {
+  const stays = useStays();
   const {
     currentLocation,
     selectedDestinations,
@@ -199,8 +201,14 @@ export function TripOverviewPage({ onPlanNewTrip }) {
     setTempDestOrder(newArr);
   };
 
+  // Helper to get clean display name
+  const formatDestName = (d) => typeof d === 'object' ? (d.name || d.id || 'Destination') : d;
+
   // Capitalize helpers
-  const tripTitle = `${destinationOrder.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(' & ')} Odyssey`;
+  const tripTitle = `${destinationOrder.map(d => {
+    const s = formatDestName(d);
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }).join(' & ')} Odyssey`;
 
   // Send Itinerary PDF to Logged-in User Email via n8n Webhook
   const handleSendItineraryEmail = async () => {
@@ -363,6 +371,7 @@ export function TripOverviewPage({ onPlanNewTrip }) {
             { id: 'itinerary', label: 'Itinerary (P4)' },
             { id: 'places', label: `Place Cards (${placeCards.length}) (P5)` },
             { id: 'routes', label: 'Routes & Map (P6)' },
+            { id: 'stays', label: 'Accommodation & Stays' },
             { id: 'budget', label: 'Budget Breakdown' }
           ].map((tab) => (
             <button
@@ -561,7 +570,7 @@ export function TripOverviewPage({ onPlanNewTrip }) {
               <p className="text-xs text-gray-600 leading-relaxed mb-4">
                 Current travel progression across destinations:
                 <strong className="block text-[#0d1c32] mt-1 text-sm">
-                  {destinationOrder.map(d => d.toUpperCase()).join(' ➔ ')}
+                  {destinationOrder.map(d => formatDestName(d).toUpperCase()).join(' ➔ ')}
                 </strong>
               </p>
 
@@ -571,6 +580,32 @@ export function TripOverviewPage({ onPlanNewTrip }) {
                 className="w-full py-2.5 border border-[#D4AF37] bg-[#fed65b]/10 hover:bg-[#fed65b]/25 text-[#735c00] rounded-xl text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer"
               >
                 Change Order of Destinations
+              </button>
+            </div>
+
+            {/* Matched Luxury Stays Quick Card */}
+            <div className="bg-white p-6 rounded-3xl border border-[#dcc1b8]/70 shadow-sm space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#765100]">
+                  Smart Match Stays
+                </span>
+                <span className="text-[10px] font-bold text-[#b45309] bg-[#fdc66b]/25 px-2 py-0.5 rounded-full">
+                  94% Match
+                </span>
+              </div>
+              <h3 className="text-sm font-bold text-[#1c1c17]" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+                Curated Stays in {destinationOrder[0] ? formatDestName(destinationOrder[0]) : 'Goa'}
+              </h3>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                Matched to your daily {destinationOrder[0] ? formatDestName(destinationOrder[0]) : 'Goa'} itinerary attractions and ₹{userSelectedBudget.toLocaleString()} budget.
+              </p>
+              <button
+                type="button"
+                onClick={onBookStay}
+                className="w-full py-2.5 bg-[#b45309] hover:bg-[#9b4522] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+              >
+                <span>Find Matched Stays</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
 
@@ -767,7 +802,112 @@ export function TripOverviewPage({ onPlanNewTrip }) {
       )}
 
       {/* =========================================================================
-          TAB 4: BUDGET BREAKDOWN (P3)
+          TAB 4: ACCOMMODATION & STAYS
+          ========================================================================= */}
+      {activeTab === 'stays' && (
+        <div className="space-y-6 animate-fadeIn">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-2xl font-bold text-[#0d1c32]" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+                Trip Accommodation &amp; Heritage Stays
+              </h2>
+              <p className="text-xs text-gray-500 mt-1">
+                Luxury havelis and retreats matched specifically for your {numberOfDays}-day {destinationOrder.map(formatDestName).join(' & ')} journey.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={onBookStay}
+              className="px-5 py-2.5 bg-[#b45309] hover:bg-[#9b4522] text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-md transition-all cursor-pointer"
+            >
+              <span>Explore All Stays</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {/* If a confirmed booking exists for this user */}
+          {stays?.currentBooking || stays?.userBookings?.length > 0 ? (
+            <div className="bg-white rounded-3xl border border-[#dcc1b8]/70 p-6 shadow-sm space-y-4">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-[#b45309]" />
+                <span className="text-xs font-bold text-[#765100] uppercase tracking-wider">
+                  Linked Sanctuary Reservation
+                </span>
+              </div>
+
+              {(() => {
+                const booking = stays.currentBooking || stays.userBookings[0];
+                return (
+                  <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 p-4 bg-[#fcf9f1] rounded-2xl border border-[#dcc1b8]/40">
+                    <div className="flex items-center gap-4">
+                      <div className="w-20 h-20 rounded-2xl overflow-hidden bg-gray-100 shrink-0">
+                        <img
+                          src={booking.room?.image || booking.hotel?.heroImage}
+                          alt={booking.hotel?.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-[10px] font-bold text-[#b45309]">
+                            {booking.bookingId}
+                          </span>
+                          <span className="text-[10px] bg-green-50 border border-green-200 text-green-700 font-bold px-2 py-0.5 rounded-full">
+                            ✓ Confirmed
+                          </span>
+                        </div>
+                        <h3 className="text-base font-bold text-[#1c1c17] mt-0.5" style={{ fontFamily: 'Noto Serif, serif' }}>
+                          {booking.hotel?.name}
+                        </h3>
+                        <p className="text-xs text-gray-500">{booking.room?.name} • {booking.nights} Nights</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+                      <div className="text-right">
+                        <span className="text-[10px] text-gray-400 uppercase tracking-wider block">Total Tariff</span>
+                        <span className="text-base font-bold text-[#b45309]">
+                          ₹{booking.pricing?.totalAmount?.toLocaleString()}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={onBookStay}
+                        className="px-4 py-2 bg-[#0d1c32] hover:bg-black text-white rounded-xl text-xs font-bold uppercase transition-colors"
+                      >
+                        View Stays
+                      </button>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+          ) : (
+            <div className="bg-white rounded-3xl p-8 border border-[#dcc1b8]/60 shadow-sm text-center space-y-4">
+              <Building className="w-12 h-12 text-[#b45309] mx-auto opacity-70" />
+              <div className="max-w-md mx-auto">
+                <h3 className="text-lg font-bold text-[#1c1c17]" style={{ fontFamily: 'Noto Serif, serif' }}>
+                  No Accommodation Booked Yet for This Trip
+                </h3>
+                <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                  VIHARA Smart Match has found luxury havelis in {destinationOrder[0] ? formatDestName(destinationOrder[0]) : 'Goa'} matching your planned itinerary spots and ₹{userSelectedBudget.toLocaleString()} budget.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={onBookStay}
+                className="px-6 py-3 bg-[#b45309] hover:bg-[#9b4522] text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-md transition-all cursor-pointer"
+              >
+                Find &amp; Book Matched Stays
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* =========================================================================
+          TAB 5: BUDGET BREAKDOWN (P3)
           ========================================================================= */}
       {activeTab === 'budget' && (
         <div className="bg-white p-6 md:p-8 rounded-3xl border border-gray-200 shadow-sm max-w-2xl mx-auto animate-fadeIn">
@@ -869,10 +1009,10 @@ export function TripOverviewPage({ onPlanNewTrip }) {
             <div className="space-y-2 mb-6">
               {tempDestOrder.map((dest, i) => (
                 <div
-                  key={dest}
+                  key={typeof dest === 'object' ? (dest.placeId || `${dest.name}_${i}`) : `${dest}_${i}`}
                   className="flex items-center justify-between p-3 bg-[#fafaf5] rounded-xl border border-gray-200 text-xs font-bold text-[#0d1c32]"
                 >
-                  <span>{i + 1}. {dest.toUpperCase()}</span>
+                  <span>{i + 1}. {formatDestName(dest).toUpperCase()}</span>
                   <div className="flex items-center gap-1">
                     <button
                       type="button"

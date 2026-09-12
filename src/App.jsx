@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { TripProvider, useTrip } from './context/TripContext';
+import { StaysProvider, useStays } from './context/StaysContext';
 import { Navbar } from './components/Navbar';
 import { TopNotification } from './components/TopNotification';
 import { AuthModal } from './components/AuthModal';
@@ -12,12 +13,27 @@ import { TripOverviewPage } from './components/TripOverviewPage';
 import { NearMe } from './components/features/NearMe';
 import { EventBookings } from './components/features/EventBookings';
 import { StaysAndTravel } from './components/features/StaysAndTravel';
+import { GlobalAIConcierge } from './components/GlobalAIConcierge';
 import './styles/vihara-theme.css';
 
 function MainApplication() {
-  const { isAuthenticated, triggerAuthGate } = useAuth();
+  const { isAuthenticated, triggerAuthGate, pendingTargetView, setPendingTargetView } = useAuth();
   const { activeStep, setActiveStep, resetTripState } = useTrip();
-  const [currentView, setCurrentView] = useState('home'); // 'home' | 'trip-planning' | 'near-me' | 'event-bookings' | 'stays-travel'
+  const stays = useStays();
+  const [currentView, setCurrentView] = useState('home'); // 'home' | 'trip-planning' | 'near-me' | 'event-bookings' | 'stays-travel' | 'my-bookings'
+
+  // Auto-navigate to pending target view after successful login
+  React.useEffect(() => {
+    if (isAuthenticated && pendingTargetView) {
+      if (pendingTargetView === 'my-bookings') {
+        stays?.navigateToStage('my-bookings');
+        setCurrentView('stays-travel');
+      } else {
+        setCurrentView(pendingTargetView);
+      }
+      setPendingTargetView(null);
+    }
+  }, [isAuthenticated, pendingTargetView]);
 
   const handleNavigate = (view) => {
     if (view === 'home') {
@@ -36,9 +52,17 @@ function MainApplication() {
             ? 'Near Me Experiences'
             : view === 'event-bookings'
             ? 'Cultural Events'
+            : view === 'my-bookings'
+            ? 'My Bookings & Reservations'
             : 'Luxury Stays & Transit'
         }.`
       );
+      return;
+    }
+
+    if (view === 'my-bookings') {
+      stays?.navigateToStage('my-bookings');
+      setCurrentView('stays-travel');
       return;
     }
 
@@ -52,6 +76,12 @@ function MainApplication() {
     resetTripState();
     setActiveStep(1);
     setCurrentView('trip-planning');
+  };
+
+  const handleBookStayForTrip = () => {
+    stays?.syncWithActiveTrip();
+    stays?.navigateToStage('results');
+    setCurrentView('stays-travel');
   };
 
   const renderTripPlanningStage = () => {
@@ -73,7 +103,12 @@ function MainApplication() {
           />
         );
       case 4:
-        return <TripOverviewPage onPlanNewTrip={handlePlanNewTrip} />;
+        return (
+          <TripOverviewPage
+            onPlanNewTrip={handlePlanNewTrip}
+            onBookStay={handleBookStayForTrip}
+          />
+        );
       default:
         return <TripPlanningPage1 onNext={() => setActiveStep(2)} />;
     }
@@ -88,7 +123,12 @@ function MainApplication() {
       case 'event-bookings':
         return <EventBookings onBack={() => setCurrentView('home')} />;
       case 'stays-travel':
-        return <StaysAndTravel onBack={() => setCurrentView('home')} />;
+        return (
+          <StaysAndTravel
+            onBack={() => setCurrentView('home')}
+            onNavigateToTrip={() => handleNavigate('trip-planning')}
+          />
+        );
       default:
         return null;
     }
@@ -101,6 +141,9 @@ function MainApplication() {
 
       {/* Global Auth Modal for Sign In, Sign Up, and Password Reset */}
       <AuthModal />
+
+      {/* Global Context-Aware AI Concierge Widget */}
+      <GlobalAIConcierge currentView={currentView} />
 
       {currentView === 'home' ? (
         /* Full-screen Stitch Homepage */
@@ -140,7 +183,9 @@ export function App() {
   return (
     <AuthProvider>
       <TripProvider>
-        <MainApplication />
+        <StaysProvider>
+          <MainApplication />
+        </StaysProvider>
       </TripProvider>
     </AuthProvider>
   );

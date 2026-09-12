@@ -1,4 +1,4 @@
-import { db } from './firebase';
+import { db } from './firebase.js';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 
 /**
@@ -654,37 +654,120 @@ export const getAllAvailableDestinations = () => {
 /**
  * Fetch destination data from Firestore or fallback to destination catalog
  */
-export const getDestinationData = async (destinationId) => {
-  const normId = destinationId?.toLowerCase()?.trim();
+export const getDestinationData = async (destinationInput) => {
+  let normId = '';
+  let customObj = null;
+
+  if (typeof destinationInput === 'object' && destinationInput !== null) {
+    customObj = destinationInput;
+    normId = (destinationInput.name || destinationInput.id || destinationInput.destinationName || '').toLowerCase().trim();
+  } else {
+    normId = (destinationInput || '').toLowerCase().trim();
+  }
+
+  // Remove common suffixes like ", telangana, india" if present for catalog lookup
+  const simpleName = normId.split(',')[0].trim();
+
   try {
-    const docRef = doc(db, 'destinations', normId);
+    const docRef = doc(db, 'destinations', simpleName);
     const snap = await getDoc(docRef);
     if (snap.exists()) {
       const data = snap.data();
-      const fallback = DESTINATION_CATALOG[normId] || {};
+      const fallback = DESTINATION_CATALOG[simpleName] || {};
       return {
-        id: normId,
-        name: data.name || fallback.name || destinationId,
+        id: simpleName,
+        name: data.name || fallback.name || customObj?.name || simpleName,
         subcategories: data.subcategories || fallback.subcategories || [],
         places: (data.places && data.places.length > 0) ? data.places : (fallback.places || []),
-        coordinates: data.coordinates || fallback.coordinates || { lat: 20.5937, lng: 78.9629 },
-        state: data.state || fallback.state || '',
-        tagline: data.tagline || fallback.tagline || ''
+        coordinates: customObj?.latitude ? { lat: customObj.latitude, lng: customObj.longitude } : (data.coordinates || fallback.coordinates || { lat: 20.5937, lng: 78.9629 }),
+        state: data.state || fallback.state || customObj?.state || '',
+        tagline: data.tagline || fallback.tagline || customObj?.formattedAddress || ''
       };
     }
   } catch (error) {
-    console.warn(`Firestore read failed for destination '${normId}', using knowledge catalog:`, error);
+    console.warn(`Firestore read failed for destination '${simpleName}', using knowledge catalog:`, error);
   }
 
-  // Fallback
-  return DESTINATION_CATALOG[normId] || {
-    id: normId,
-    name: normId.charAt(0).toUpperCase() + normId.slice(1),
-    subcategories: ['temples', 'forts', 'historical-monuments', 'heritage-walks', 'beaches'],
-    places: [],
-    coordinates: { lat: 20.5937, lng: 78.9629 },
-    state: 'India',
-    tagline: 'Cultural Destination'
+  // Catalog match
+  if (DESTINATION_CATALOG[simpleName]) {
+    const cat = DESTINATION_CATALOG[simpleName];
+    return {
+      ...cat,
+      coordinates: customObj?.latitude ? { lat: customObj.latitude, lng: customObj.longitude } : cat.coordinates,
+      state: customObj?.state || cat.state,
+      tagline: cat.tagline || customObj?.formattedAddress || ''
+    };
+  }
+
+  // Dynamic Google Places Destination Fallback
+  const displayName = customObj?.name || (simpleName ? simpleName.charAt(0).toUpperCase() + simpleName.slice(1) : 'Destination');
+  const lat = customObj?.latitude !== undefined ? Number(customObj.latitude) : 20.5937;
+  const lng = customObj?.longitude !== undefined ? Number(customObj.longitude) : 78.9629;
+  const state = customObj?.state || '';
+  const formattedAddress = customObj?.formattedAddress || displayName;
+
+  return {
+    id: simpleName || customObj?.placeId || 'dest',
+    name: displayName,
+    formattedAddress,
+    state,
+    tagline: formattedAddress || 'Cultural Heritage Destination',
+    coordinates: { lat, lng },
+    subcategories: [
+      'temples', 'pilgrimage-sites', 'spiritual-towns',
+      'forts', 'palaces', 'historical-monuments', 'unesco-sites', 'heritage-walks',
+      'hills-valleys', 'lakes', 'waterfalls', 'beaches', 'national-parks'
+    ],
+    places: [
+      {
+        id: `${simpleName || 'place'}-heritage-landmark`,
+        name: `${displayName} Historical Landmarks & Heritage`,
+        category: 'Heritage',
+        subcategories: ['historical-monuments', 'heritage-walks', 'forts'],
+        description: `Explore the vibrant architectural legacy, royal history, and iconic landmarks of ${displayName}.`,
+        image: 'https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?auto=format&fit=crop&w=800&q=80',
+        coordinates: { lat, lng },
+        city: displayName,
+        state,
+        country: 'India',
+        visitingHours: { open: '09:00 AM', close: '05:30 PM' },
+        entryInfo: 'Standard Entry',
+        travelTips: 'Arrive early for serenity and great photography.',
+        culinarySpecialty: 'Regional Specialties & Artisanal Cuisine'
+      },
+      {
+        id: `${simpleName || 'place'}-spiritual-temple`,
+        name: `${displayName} Sacred Sanctum & Ancient Temples`,
+        category: 'Spiritual',
+        subcategories: ['temples', 'pilgrimage-sites', 'spiritual-towns'],
+        description: `Experience revered spiritual sanctuaries and serene temple architecture in ${displayName}.`,
+        image: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=800&q=80',
+        coordinates: { lat: lat + 0.005, lng: lng + 0.005 },
+        city: displayName,
+        state,
+        country: 'India',
+        visitingHours: { open: '06:00 AM', close: '08:30 PM' },
+        entryInfo: 'Free Entry',
+        travelTips: 'Experience tranquil morning and sunset prayer rituals.',
+        culinarySpecialty: 'Temple Prasadam & Traditional Meals'
+      },
+      {
+        id: `${simpleName || 'place'}-sunset-promenade`,
+        name: `${displayName} Promenade & Cultural Bazaar`,
+        category: 'Nature',
+        subcategories: ['heritage-walks', 'lakes', 'hills-valleys'],
+        description: `Vibrant twilight promenade, local handicraft markets, and scenic sunset views in ${displayName}.`,
+        image: 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=800&q=80',
+        coordinates: { lat: lat - 0.005, lng: lng - 0.005 },
+        city: displayName,
+        state,
+        country: 'India',
+        visitingHours: { open: 'Open until 10:00 PM' },
+        entryInfo: 'Free Public Access',
+        travelTips: 'Great spot for purchasing local souvenirs and street food delicacies.',
+        culinarySpecialty: 'Local Sweets & Street Delicacies'
+      }
+    ]
   };
 };
 

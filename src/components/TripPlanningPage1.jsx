@@ -11,18 +11,43 @@ import {
   ChevronDown,
   X,
   Navigation,
-  Clock
+  Clock,
+  Loader2,
+  RefreshCw,
+  AlertCircle,
+  Edit3,
+  Building2,
+  Compass,
+  CheckCircle2
 } from 'lucide-react';
 import { useTrip } from '../context/TripContext';
 import { getAllAvailableDestinations } from '../services/destinationService';
+import {
+  fetchPlaceAutocomplete,
+  fetchPlaceDetails
+} from '../services/locationService';
 
 export function TripPlanningPage1({ onNext }) {
   const {
     currentLocation,
     setCurrentLocation,
+    currentLocationName,
+    currentLocationLatitude,
+    currentLocationLongitude,
+    userLocation,
+    setUserLocation,
+    setManualLocation,
+    locationMode,
+    setLocationMode,
+    locationStatus,
+    locationError,
+    detectLocation,
+    destinations = [],
+    setDestinations,
+    addDestination,
+    removeDestination,
+    clearDestinations,
     selectedDestinations,
-    toggleDestination,
-    setSelectedDestinations,
     startDate,
     endDate,
     setDateRange,
@@ -32,10 +57,25 @@ export function TripPlanningPage1({ onNext }) {
     setCompany
   } = useTrip();
 
-  // Search & Dropdown state for destinations
-  const [destSearch, setDestSearch] = useState('');
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  // Manual Autocomplete Search State for Current Location
+  const [manualQuery, setManualQuery] = useState('');
+  const [autocompleteSuggestions, setAutocompleteSuggestions] = useState([]);
+  const [isSearchingPlaces, setIsSearchingPlaces] = useState(false);
+  const [placesDropdownOpen, setPlacesDropdownOpen] = useState(false);
+  const [autocompleteError, setAutocompleteError] = useState(null);
+  const [manualSelectionRequired, setManualSelectionRequired] = useState(false);
+  const manualSearchRef = useRef(null);
+  const manualInputRef = useRef(null);
+
+  // Google Places Autocomplete Search State for Destinations
+  const [destQuery, setDestQuery] = useState('');
+  const [destSuggestions, setDestSuggestions] = useState([]);
+  const [isSearchingDest, setIsSearchingDest] = useState(false);
+  const [destDropdownOpen, setDestDropdownOpen] = useState(false);
+  const [destError, setDestError] = useState(null);
+  const [destDuplicateAlert, setDestDuplicateAlert] = useState(null);
+  const destSearchContainerRef = useRef(null);
+  const destSearchInputRef = useRef(null);
 
   // Calendar State
   const [rangeStart, setRangeStart] = useState(startDate || '');
@@ -47,37 +87,226 @@ export function TripPlanningPage1({ onNext }) {
   const [viewMonth, setViewMonth] = useState(initialDate.getMonth());
   const [viewYear, setViewYear] = useState(initialDate.getFullYear());
 
-  const allDestinations = useMemo(() => getAllAvailableDestinations(), []);
+  // 1. Automatically initiate current-location detection as FIRST step on mount if in auto mode and not yet detected
+  useEffect(() => {
+    if (!userLocation && locationStatus === 'idle' && locationMode === 'auto') {
+      detectLocation().catch((err) => {
+        console.log('[TripPlanningPage1] Initial location detection notice:', err?.message);
+      });
+    }
+  }, [userLocation, locationStatus, locationMode, detectLocation]);
 
-  // Filter destinations based on search query
-  const filteredDestinations = useMemo(() => {
-    if (!destSearch.trim()) return allDestinations;
-    const q = destSearch.toLowerCase().trim();
-    return allDestinations.filter(
-      d => d.name.toLowerCase().includes(q) || d.state.toLowerCase().includes(q)
-    );
-  }, [allDestinations, destSearch]);
+  // Debounced Google Places Autocomplete Query for Current Location
+  useEffect(() => {
+    if (!manualQuery || manualQuery.trim().length < 2) {
+      setAutocompleteSuggestions([]);
+      setPlacesDropdownOpen(false);
+      setIsSearchingPlaces(false);
+      return;
+    }
 
-  // Close dropdown on outside click
+    let isMounted = true;
+    setIsSearchingPlaces(true);
+    setAutocompleteError(null);
+
+    const debounceTimer = setTimeout(async () => {
+      try {
+        const predictions = await fetchPlaceAutocomplete(manualQuery);
+        if (isMounted) {
+          setAutocompleteSuggestions(predictions);
+          setPlacesDropdownOpen(true);
+          setIsSearchingPlaces(false);
+        }
+      } catch (err) {
+        if (isMounted) {
+          setAutocompleteError('Unable to fetch location suggestions. Please try again.');
+          setIsSearchingPlaces(false);
+        }
+      }
+    }, 280);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(debounceTimer);
+    };
+  }, [manualQuery]);
+
+  // Debounced Google Places Autocomplete Query for Destinations
+  useEffect(() => {
+    if (!destQuery || destQuery.trim().length < 2) {
+      setDestSuggestions([]);
+      setDestDropdownOpen(false);
+      setIsSearchingDest(false);
+      return;
+    }
+
+    let isMounted = true;
+    setIsSearchingDest(true);
+    setDestError(null);
+    setDestDuplicateAlert(null);
+
+    const debounceTimer = setTimeout(async () => {
+      try {
+        const predictions = await fetchPlaceAutocomplete(destQuery);
+        if (isMounted) {
+          setDestSuggestions(predictions);
+          setDestDropdownOpen(true);
+          setIsSearchingDest(false);
+        }
+      } catch (err) {
+        if (isMounted) {
+          setDestError('Unable to fetch destination suggestions. Please try again.');
+          setIsSearchingDest(false);
+        }
+      }
+    }, 280);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(debounceTimer);
+    };
+  }, [destQuery]);
+
+  // Close current location places dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setDropdownOpen(false);
+      if (manualSearchRef.current && !manualSearchRef.current.contains(e.target)) {
+        setPlacesDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Sync with context if context changes
+  // Close destination dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (destSearchContainerRef.current && !destSearchContainerRef.current.contains(e.target)) {
+        setDestDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Sync dates with context
   useEffect(() => {
     if (startDate) setRangeStart(startDate);
     if (endDate) setRangeEnd(endDate);
   }, [startDate, endDate]);
 
-  // Detect location handler (Defaults to Hyderabad)
-  const handleDetectLocation = () => {
-    setCurrentLocation('Hyderabad, Telangana');
+  // Handle Selection of Google Places Suggestion for Current Location
+  const handleSelectPlaceSuggestion = async (suggestion) => {
+    setIsSearchingPlaces(true);
+    setPlacesDropdownOpen(false);
+    setManualSelectionRequired(false);
+
+    try {
+      const placeDetails = await fetchPlaceDetails(suggestion);
+      setManualLocation(placeDetails);
+      setManualQuery(placeDetails.currentLocationName);
+    } catch (err) {
+      console.error('[TripPlanningPage1] Error retrieving place details:', err);
+      // Fallback with prediction data
+      setManualLocation({
+        name: suggestion.mainText,
+        formattedAddress: suggestion.description,
+        currentLocationName: suggestion.description,
+        currentLocationLatitude: suggestion.latitude || 17.3850,
+        currentLocationLongitude: suggestion.longitude || 78.4867,
+        placeId: suggestion.placeId
+      });
+      setManualQuery(suggestion.description);
+    } finally {
+      setIsSearchingPlaces(false);
+    }
+  };
+
+  // Handle Selection of Google Places Suggestion for Destination
+  const handleSelectDestinationSuggestion = async (suggestion) => {
+    setIsSearchingDest(true);
+    setDestDropdownOpen(false);
+    setDestDuplicateAlert(null);
+
+    try {
+      const placeDetails = await fetchPlaceDetails(suggestion);
+      const result = await addDestination({
+        ...placeDetails,
+        destinationName: placeDetails.name || suggestion.mainText || suggestion.description || 'Destination'
+      });
+      if (result && result.duplicate) {
+        setDestDuplicateAlert('Destination already added.');
+      }
+      setDestQuery('');
+      setDestSuggestions([]);
+    } catch (err) {
+      console.error('[TripPlanningPage1] Error retrieving destination details:', err);
+      const fallbackDest = {
+        destinationName: suggestion.mainText || suggestion.description || 'Destination',
+        name: suggestion.mainText || suggestion.description || 'Destination',
+        formattedAddress: suggestion.description,
+        placeId: suggestion.placeId,
+        latitude: suggestion.latitude || 20.5937,
+        longitude: suggestion.longitude || 78.9629
+      };
+      const result = await addDestination(fallbackDest);
+      if (result && result.duplicate) {
+        setDestDuplicateAlert('Destination already added.');
+      }
+      setDestQuery('');
+      setDestSuggestions([]);
+    } finally {
+      setIsSearchingDest(false);
+    }
+  };
+
+  // "+ Add another destination" button handler
+  const handleAddAnotherDestination = () => {
+    setDestDuplicateAlert(null);
+    setDestQuery('');
+    setDestDropdownOpen(false);
+    setTimeout(() => {
+      destSearchInputRef.current?.focus();
+    }, 100);
+  };
+
+  // Remove destination handler
+  const handleRemoveDestination = (identifier) => {
+    removeDestination(identifier);
+    setDestDuplicateAlert(null);
+  };
+
+  // Switch to Option A: Current Location (GPS)
+  const handleSwitchToAutoLocation = () => {
+    setLocationMode('auto');
+    setManualSelectionRequired(false);
+    detectLocation(true).catch(() => {});
+  };
+
+  // Switch to Option B: Manual Location (Google Places)
+  const handleSwitchToManualLocation = () => {
+    setLocationMode('manual');
+    setManualQuery('');
+    setAutocompleteSuggestions([]);
+    setPlacesDropdownOpen(false);
+    setTimeout(() => {
+      manualInputRef.current?.focus();
+    }, 100);
+  };
+
+  // Next Step validation
+  const handleProceedNext = () => {
+    if (locationMode === 'manual' && (!userLocation || !userLocation.currentLocationName)) {
+      setManualSelectionRequired(true);
+      manualInputRef.current?.focus();
+      return;
+    }
+    if (!destinations || destinations.length === 0) {
+      setDestDuplicateAlert('Please select at least one destination to continue.');
+      destSearchInputRef.current?.focus();
+      return;
+    }
+    onNext();
   };
 
   // Calendar helpers
@@ -112,12 +341,10 @@ export function TripPlanningPage1({ onNext }) {
     const clickedDateStr = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
     if (!rangeStart || (rangeStart && rangeEnd)) {
-      // 1st click: Start date selected, clear end date
       setRangeStart(clickedDateStr);
       setRangeEnd('');
       setDateRange(clickedDateStr, '');
     } else if (rangeStart && !rangeEnd) {
-      // 2nd click: End date selected
       if (clickedDateStr < rangeStart) {
         setRangeStart(clickedDateStr);
         setRangeEnd('');
@@ -129,7 +356,7 @@ export function TripPlanningPage1({ onNext }) {
     }
   };
 
-  // Direct Date input change handler
+  // Direct Date input change handlers
   const handleStartDateInputChange = (val) => {
     setRangeStart(val);
     if (val && rangeEnd && val <= rangeEnd) {
@@ -147,7 +374,7 @@ export function TripPlanningPage1({ onNext }) {
     }
   };
 
-  // Quick Preset Helper (e.g. 3, 5, 7, 10 days)
+  // Quick Preset Helper
   const applyDurationPreset = (days) => {
     const startD = rangeStart ? new Date(rangeStart) : new Date();
     const endD = new Date(startD);
@@ -159,18 +386,6 @@ export function TripPlanningPage1({ onNext }) {
     setRangeStart(startStr);
     setRangeEnd(endStr);
     setDateRange(startStr, endStr);
-  };
-
-  // Format date helper (e.g. "Mon, 31 Aug, 2026")
-  const formatDateDisplay = (dateStr) => {
-    if (!dateStr) return 'Select date';
-    const d = new Date(dateStr);
-    return d.toLocaleDateString('en-US', {
-      weekday: 'short',
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric'
-    });
   };
 
   // Check if a day is in selected range
@@ -199,143 +414,545 @@ export function TripPlanningPage1({ onNext }) {
           Design Your Journey
         </h1>
         <p className="text-xs md:text-sm text-gray-500 mt-2">
-          Choose your destinations, select your trip date range on the calendar, and specify your traveling company.
+          Verify your starting location, choose your destinations, select your trip date range on the calendar, and specify your traveling company.
         </p>
       </div>
 
-      {/* 1. Starting Location */}
-      <div className="mb-8">
-        <label className="block text-xs font-bold uppercase tracking-wider text-[#0d1c32] mb-2">
-          1. Your Starting Location
-        </label>
-        <div className="relative flex items-center">
-          <MapPin className="absolute left-4 w-4 h-4 text-[#735c00]" />
-          <input
-            type="text"
-            className="w-full pl-11 pr-28 py-3 bg-[#fafaf5] border border-gray-200 rounded-xl text-sm font-medium text-[#0d1c32] focus:outline-none focus:border-[#D4AF37] transition-all"
-            placeholder="Enter city or origin..."
-            value={currentLocation}
-            onChange={(e) => setCurrentLocation(e.target.value)}
-          />
-          <button
-            type="button"
-            onClick={handleDetectLocation}
-            className="absolute right-2 px-3 py-1.5 bg-[#fed65b]/30 hover:bg-[#fed65b]/50 text-[#735c00] rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer"
-          >
-            <Navigation className="w-3.5 h-3.5" />
-            <span>Detect</span>
-          </button>
+      {/* 1. Starting Location Selection (Option A: GPS vs Option B: Google Places Manual) */}
+      <div className="mb-8 relative z-30">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+          <label className="text-xs font-bold uppercase tracking-wider text-[#0d1c32] flex items-center gap-1.5">
+            <span className="w-5 h-5 rounded-full bg-[#0d1c32] text-[#D4AF37] flex items-center justify-center text-[10px] font-bold">1</span>
+            <span>Your Starting Location</span>
+          </label>
+
+          {/* Option A vs Option B Segmented Switch */}
+          <div className="flex items-center bg-[#fafaf5] p-1 rounded-xl border border-gray-200 self-start sm:self-auto shadow-inner">
+            <button
+              type="button"
+              onClick={handleSwitchToAutoLocation}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                locationMode === 'auto'
+                  ? 'bg-[#0d1c32] text-white shadow-sm'
+                  : 'text-gray-600 hover:text-[#0d1c32]'
+              }`}
+            >
+              <Navigation className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <span>Use Current Location</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleSwitchToManualLocation}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                locationMode === 'manual'
+                  ? 'bg-[#0d1c32] text-white shadow-sm'
+                  : 'text-gray-600 hover:text-[#0d1c32]'
+              }`}
+            >
+              <Search className="w-3.5 h-3.5 text-[#D4AF37]" />
+              <span>Enter Manually</span>
+            </button>
+          </div>
         </div>
+
+        {/* ------------------------------------------------------------- */}
+        {/* OPTION A: AUTOMATIC GPS LOCATION DETECTION FLOW               */}
+        {/* ------------------------------------------------------------- */}
+        {locationMode === 'auto' && (
+          <div className="space-y-3 animate-fadeIn">
+            {/* Case A1: Detecting State */}
+            {locationStatus === 'detecting' && (
+              <div className="p-4 bg-[#fafaf5] border border-[#D4AF37]/50 rounded-2xl flex items-center justify-between shadow-sm animate-fadeIn">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#fed65b]/20 border border-[#D4AF37]/30 flex items-center justify-center text-[#735c00]">
+                    <Loader2 className="w-5 h-5 animate-spin text-[#735c00]" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-[#0d1c32] flex items-center gap-1.5">
+                      <span>Detecting your location...</span>
+                    </div>
+                    <div className="text-[11px] text-gray-500 mt-0.5">
+                      Requesting browser GPS permission &amp; querying Google Geocoding API
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Case A2: Detected Location Success State */}
+            {locationStatus === 'success' && (
+              <div className="p-4 bg-gradient-to-r from-[#fafaf5] to-white border border-[#D4AF37]/40 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm hover:border-[#D4AF37] transition-all">
+                <div className="flex items-start sm:items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#0d1c32] text-[#D4AF37] flex items-center justify-center shrink-0 shadow-sm">
+                    <MapPin className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#735c00]">
+                        📍 Current Location
+                      </span>
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        GPS Verified
+                      </span>
+                    </div>
+                    <div className="text-sm md:text-base font-bold text-[#0d1c32] mt-0.5">
+                      {currentLocationName || currentLocation || 'Hyderabad, Telangana, India'}
+                    </div>
+                    {currentLocationLatitude && currentLocationLongitude && (
+                      <div className="text-[10px] text-gray-400 font-mono mt-0.5">
+                        {Number(currentLocationLatitude).toFixed(4)}° N, {Number(currentLocationLongitude).toFixed(4)}° E
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 self-end sm:self-auto">
+                  <button
+                    type="button"
+                    onClick={handleSwitchToManualLocation}
+                    className="px-3 py-1.5 bg-white hover:bg-gray-50 text-[#0d1c32] border border-gray-200 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer shadow-sm"
+                  >
+                    <Edit3 className="w-3.5 h-3.5 text-gray-500" />
+                    <span>Change</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => detectLocation(true)}
+                    title="Re-detect GPS location"
+                    className="p-1.5 bg-[#fed65b]/20 hover:bg-[#fed65b]/40 text-[#735c00] border border-[#D4AF37]/30 rounded-lg text-xs font-bold flex items-center gap-1 transition-all cursor-pointer"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Case A3: Denied Permission State */}
+            {locationStatus === 'denied' && (
+              <div className="p-4 bg-amber-50/70 border border-amber-300 rounded-2xl space-y-3 animate-fadeIn">
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-amber-100 border border-amber-300 text-amber-800 flex items-center justify-center shrink-0">
+                    <AlertCircle className="w-5 h-5" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-xs font-bold text-amber-900">
+                      Location Permission Denied
+                    </div>
+                    <div className="text-[11px] text-amber-700 mt-0.5 leading-relaxed">
+                      Location permission is required to automatically detect your current location. You can retry with permission or search your starting city below.
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => detectLocation(true)}
+                    className="px-3.5 py-1.5 bg-[#0d1c32] text-white hover:bg-black rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm"
+                  >
+                    <Navigation className="w-3.5 h-3.5 text-[#D4AF37]" />
+                    <span>Try Again</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSwitchToManualLocation}
+                    className="px-3.5 py-1.5 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
+                  >
+                    Enter Location Manually
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Case A4: Error / Timeout / Unavailable */}
+            {(locationStatus === 'unavailable' || locationStatus === 'timeout' || locationStatus === 'error') && (
+              <div className="p-4 bg-red-50/60 border border-red-200 rounded-2xl space-y-3 animate-fadeIn">
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-red-100 border border-red-200 text-red-700 flex items-center justify-center shrink-0">
+                    <AlertCircle className="w-5 h-5" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-xs font-bold text-red-900">
+                      {locationStatus === 'timeout'
+                        ? 'Location Request Timed Out'
+                        : locationStatus === 'unavailable'
+                        ? 'Position Unavailable'
+                        : 'Location Detection Notice'}
+                    </div>
+                    <div className="text-[11px] text-red-700 mt-0.5 leading-relaxed">
+                      {locationError || 'Unable to determine your current location name. Please try again.'}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => detectLocation(true)}
+                    className="px-3.5 py-1.5 bg-[#0d1c32] text-white hover:bg-black rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5 text-[#D4AF37]" />
+                    <span>Try Again</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSwitchToManualLocation}
+                    className="px-3.5 py-1.5 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
+                  >
+                    Enter Location Manually
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ------------------------------------------------------------- */}
+        {/* OPTION B: MANUAL GOOGLE PLACES AUTOCOMPLETE FLOW              */}
+        {/* ------------------------------------------------------------- */}
+        {locationMode === 'manual' && (
+          <div className="space-y-3 animate-fadeIn" ref={manualSearchRef}>
+            {/* Selected Place Confirmation Card */}
+            {userLocation?.currentLocationName && (
+              <div className="p-4 bg-gradient-to-r from-emerald-50/70 to-white border border-emerald-300/80 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm animate-fadeIn">
+                <div className="flex items-start sm:items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0 shadow-sm">
+                    <CheckCircle2 className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800">
+                        📍 Selected Starting Location
+                      </span>
+                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 border border-emerald-200 px-2 py-0.5 rounded-full">
+                        Google Places Verified
+                      </span>
+                    </div>
+                    <div className="text-sm md:text-base font-bold text-emerald-950 mt-0.5">
+                      {userLocation.currentLocationName}
+                    </div>
+                    {currentLocationLatitude && currentLocationLongitude && (
+                      <div className="text-[10px] text-gray-400 font-mono mt-0.5">
+                        {Number(currentLocationLatitude).toFixed(4)}° N, {Number(currentLocationLongitude).toFixed(4)}° E
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setManualQuery('');
+                    setTimeout(() => manualInputRef.current?.focus(), 100);
+                  }}
+                  className="px-3 py-1.5 bg-white hover:bg-gray-50 text-[#0d1c32] border border-gray-200 rounded-lg text-xs font-semibold flex items-center gap-1 self-end sm:self-auto shadow-sm cursor-pointer"
+                >
+                  <Search className="w-3.5 h-3.5 text-gray-500" />
+                  <span>Search Another</span>
+                </button>
+              </div>
+            )}
+
+            {/* Google Places Autocomplete Input with Dynamic Dropdown */}
+            <div className="relative">
+              <div className="relative flex items-center">
+                <MapPin className="absolute left-4 w-4 h-4 text-[#735c00]" />
+                <input
+                  ref={manualInputRef}
+                  type="text"
+                  className={`w-full pl-11 pr-24 py-3 bg-[#fafaf5] border rounded-xl text-sm font-medium text-[#0d1c32] focus:outline-none focus:border-[#D4AF37] transition-all placeholder:text-gray-400 ${
+                    manualSelectionRequired && (!userLocation || !userLocation.currentLocationName)
+                      ? 'border-red-400 bg-red-50/20'
+                      : 'border-gray-200'
+                  }`}
+                  placeholder="Search city, town, or landmark (e.g. Mumbai, Varanasi, Jaipur, Taj Mahal)..."
+                  value={manualQuery}
+                  onChange={(e) => {
+                    setManualQuery(e.target.value);
+                    if (manualSelectionRequired) setManualSelectionRequired(false);
+                    if (!placesDropdownOpen && e.target.value.trim().length >= 2) {
+                      setPlacesDropdownOpen(true);
+                    }
+                  }}
+                  onFocus={() => {
+                    if (autocompleteSuggestions.length > 0) {
+                      setPlacesDropdownOpen(true);
+                    }
+                  }}
+                />
+                <div className="absolute right-3 flex items-center gap-1.5">
+                  {isSearchingPlaces && (
+                    <Loader2 className="w-4 h-4 text-[#735c00] animate-spin" />
+                  )}
+                  {manualQuery && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setManualQuery('');
+                        setAutocompleteSuggestions([]);
+                        setPlacesDropdownOpen(false);
+                        manualInputRef.current?.focus();
+                      }}
+                      className="p-1 text-gray-400 hover:text-gray-600 rounded-full cursor-pointer"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Dynamic Google Places Suggestions Dropdown */}
+              {placesDropdownOpen && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-2xl shadow-2xl z-50 overflow-hidden animate-fadeIn max-h-64 overflow-y-auto">
+                  <div className="p-2.5 border-b border-gray-100 bg-[#fafaf5] flex justify-between items-center text-[10px] font-bold uppercase tracking-wider text-gray-400 px-3">
+                    <span className="flex items-center gap-1 text-[#735c00]">
+                      <Sparkles className="w-3 h-3" />
+                      Google Places Suggestions
+                    </span>
+                    <span className="text-gray-400">Click to Select</span>
+                  </div>
+
+                  {autocompleteSuggestions.length > 0 ? (
+                    <div className="p-1 space-y-1 bg-white">
+                      {autocompleteSuggestions.map((item) => (
+                        <div
+                          key={item.placeId || item.description}
+                          onClick={() => handleSelectPlaceSuggestion(item)}
+                          className="places-suggestion-item flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#fed65b]/20 cursor-pointer transition-colors group"
+                        >
+                          <div className="w-7 h-7 rounded-lg bg-[#0d1c32] text-[#D4AF37] flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-[#735c00] transition-colors">
+                            <Building2 className="w-3.5 h-3.5" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-xs font-bold text-[#0d1c32] truncate">
+                              {item.mainText}
+                            </div>
+                            {item.secondaryText && (
+                              <div className="text-[11px] text-gray-500 truncate">
+                                {item.secondaryText}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="p-4 text-center text-xs text-gray-500 bg-white">
+                      {isSearchingPlaces
+                        ? 'Searching Google Places...'
+                        : `No matching places found for "${manualQuery}". Try typing a city, town, or landmark name.`}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {manualSelectionRequired && (!userLocation || !userLocation.currentLocationName) && (
+              <p className="text-xs font-semibold text-red-600 flex items-center gap-1 pl-1 animate-fadeIn">
+                <AlertCircle className="w-3.5 h-3.5" />
+                <span>Please select a location suggestion from the dropdown to continue.</span>
+              </p>
+            )}
+
+            <p className="text-[11px] text-gray-500 flex items-center gap-1.5 pl-1">
+              <Sparkles className="w-3 h-3 text-[#735c00]" />
+              <span>Select a suggestion from Google Places to calculate accurate distances, transit routes, and itineraries.</span>
+            </p>
+          </div>
+        )}
       </div>
 
-      {/* 2. Scalable Searchable Multi-Select Destination Dropdown */}
-      <div className="mb-8" ref={dropdownRef}>
-        <div className="flex justify-between items-center mb-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-[#0d1c32]">
-            2. Select Destinations (Check All That Apply)
+      {/* 2. Google Places Destination Selection ("Where do you want to go?") */}
+      <div className="mb-8 relative z-20" ref={destSearchContainerRef}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+          <label className="text-xs font-bold uppercase tracking-wider text-[#0d1c32] flex items-center gap-1.5">
+            <span className="w-5 h-5 rounded-full bg-[#0d1c32] text-[#D4AF37] flex items-center justify-center text-[10px] font-bold">2</span>
+            <span>Where do you want to go?</span>
           </label>
-          <span className="text-xs font-bold text-[#735c00] bg-[#fed65b]/20 px-2.5 py-0.5 rounded-full">
-            {selectedDestinations.length} selected
+          <span className="text-xs font-bold text-[#735c00] bg-[#fed65b]/20 px-2.5 py-0.5 rounded-full self-start sm:self-auto">
+            {destinations.length} {destinations.length === 1 ? 'destination' : 'destinations'} selected
           </span>
         </div>
 
-        {/* Selected Destination Chips */}
-        <div className="flex flex-wrap gap-2 mb-3">
-          {selectedDestinations.map((destId) => {
-            const destObj = allDestinations.find(d => d.id === destId);
-            return (
-              <span
-                key={destId}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0d1c32] text-white text-xs font-semibold rounded-xl shadow-sm animate-fadeIn"
-              >
-                <span>{destObj ? destObj.name : destId}</span>
-                {destObj && <span className="text-[10px] text-gray-400">({destObj.state})</span>}
-                {selectedDestinations.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => toggleDestination(destId)}
-                    className="p-0.5 hover:text-[#D4AF37] transition-colors cursor-pointer"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </span>
-            );
-          })}
-        </div>
-
-        {/* Dropdown Trigger */}
-        <div className="relative">
-          <div
-            className="w-full px-4 py-3 bg-[#fafaf5] border border-gray-200 rounded-xl flex items-center justify-between cursor-pointer hover:border-[#D4AF37] transition-colors"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-          >
-            <span className="text-xs font-medium text-gray-700">
-              {selectedDestinations.length > 0
-                ? `Selected: ${selectedDestinations.map(d => allDestinations.find(x => x.id === d)?.name || d).join(', ')}`
-                : 'Click to choose destinations...'}
+        {/* Selected Destinations Cards List */}
+        {destinations.length > 0 && (
+          <div className="space-y-2 mb-4">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500 block">
+              Selected Destinations
             </span>
-            <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {destinations.map((dest, idx) => {
+                const destName = typeof dest === 'object' ? (dest.name || dest.destinationName) : dest;
+                const destAddress = typeof dest === 'object' ? (dest.formattedAddress || dest.state || 'India') : 'India';
+                const destLat = typeof dest === 'object' && dest.latitude !== undefined ? Number(dest.latitude) : null;
+                const destLng = typeof dest === 'object' && dest.longitude !== undefined ? Number(dest.longitude) : null;
+                const destKey = typeof dest === 'object' ? (dest.placeId || `${destName}_${idx}`) : `${dest}_${idx}`;
+
+                return (
+                  <div
+                    key={destKey}
+                    className="p-3.5 bg-gradient-to-r from-[#fafaf5] to-white border border-[#D4AF37]/40 hover:border-[#D4AF37] rounded-2xl flex items-center justify-between gap-3 shadow-sm transition-all group"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-8 h-8 rounded-xl bg-[#0d1c32] text-[#D4AF37] font-bold text-xs flex items-center justify-center shrink-0 shadow-sm">
+                        {idx + 1}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold text-[#0d1c32] truncate flex items-center gap-1.5">
+                          <span className="truncate">{destName}</span>
+                          <span className="inline-flex items-center text-[9px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.2 rounded shrink-0">
+                            Verified
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-gray-500 truncate">
+                          {destAddress}
+                        </div>
+                        {destLat !== null && destLng !== null && (
+                          <div className="text-[9px] text-gray-400 font-mono">
+                            {destLat.toFixed(3)}° N, {destLng.toFixed(3)}° E
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveDestination(dest.placeId || idx)}
+                      title={`Remove ${destName}`}
+                      className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer shrink-0"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Duplicate or Validation Warning Alert */}
+        {destDuplicateAlert && (
+          <div className="p-3 bg-amber-50 border border-amber-300 rounded-xl text-xs font-semibold text-amber-900 flex items-center justify-between gap-2 mb-3 animate-fadeIn">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-amber-700 shrink-0" />
+              <span>{destDuplicateAlert}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setDestDuplicateAlert(null)}
+              className="text-amber-700 hover:text-amber-900 p-0.5 cursor-pointer"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        )}
+
+        {/* Google Places Autocomplete Destination Search Input */}
+        <div className="relative mb-3">
+          <div className="relative flex items-center">
+            <Search className="absolute left-4 w-4 h-4 text-[#735c00]" />
+            <input
+              ref={destSearchInputRef}
+              type="text"
+              className="w-full pl-11 pr-24 py-3 bg-[#fafaf5] border border-gray-200 focus:border-[#D4AF37] rounded-xl text-sm font-medium text-[#0d1c32] focus:outline-none transition-all placeholder:text-gray-400 shadow-sm"
+              placeholder="Search for a city or destination (e.g. Warangal, Vijayawada, Jaipur, Goa)..."
+              value={destQuery}
+              onChange={(e) => {
+                setDestQuery(e.target.value);
+                if (destDuplicateAlert) setDestDuplicateAlert(null);
+                if (!destDropdownOpen && e.target.value.trim().length >= 2) {
+                  setDestDropdownOpen(true);
+                }
+              }}
+              onFocus={() => {
+                if (destSuggestions.length > 0) {
+                  setDestDropdownOpen(true);
+                }
+              }}
+            />
+            <div className="absolute right-3 flex items-center gap-1.5">
+              {isSearchingDest && (
+                <Loader2 className="w-4 h-4 text-[#735c00] animate-spin" />
+              )}
+              {destQuery && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDestQuery('');
+                    setDestSuggestions([]);
+                    setDestDropdownOpen(false);
+                    destSearchInputRef.current?.focus();
+                  }}
+                  className="p-1 text-gray-400 hover:text-gray-600 rounded-full cursor-pointer"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
           </div>
 
-          {/* Searchable Dropdown List with Checkboxes */}
-          {dropdownOpen && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-2xl shadow-xl z-30 overflow-hidden animate-fadeIn">
-              {/* Search Bar inside dropdown */}
-              <div className="p-3 border-b border-gray-100 flex items-center gap-2 bg-[#fafaf5]">
-                <Search className="w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  className="w-full bg-transparent text-xs text-[#0d1c32] placeholder-gray-400 outline-none"
-                  placeholder="Search cities, states (e.g. Hyderabad, Goa, Jaipur, Varanasi)..."
-                  value={destSearch}
-                  onChange={(e) => setDestSearch(e.target.value)}
-                  autoFocus
-                />
+          {/* Dynamic Google Places Suggestions Dropdown */}
+          {destDropdownOpen && (
+            <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-2xl shadow-2xl z-50 overflow-hidden animate-fadeIn max-h-64 overflow-y-auto">
+              <div className="p-2.5 border-b border-gray-100 bg-[#fafaf5] flex justify-between items-center text-[10px] font-bold uppercase tracking-wider text-gray-400 px-3">
+                <span className="flex items-center gap-1 text-[#735c00]">
+                  <Sparkles className="w-3 h-3" />
+                  Google Places Suggestions
+                </span>
+                <span className="text-gray-400">Click to Select</span>
               </div>
 
-              {/* Destination Checkbox Items */}
-              <div className="max-h-60 overflow-y-auto p-2 space-y-1">
-                {filteredDestinations.length > 0 ? (
-                  filteredDestinations.map((dest) => {
-                    const isChecked = selectedDestinations.includes(dest.id);
-                    return (
-                      <div
-                        key={dest.id}
-                        onClick={() => toggleDestination(dest.id)}
-                        className={`flex items-center justify-between p-2.5 rounded-xl cursor-pointer transition-colors ${
-                          isChecked ? 'bg-[#fed65b]/20 font-semibold' : 'hover:bg-gray-50'
-                        }`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <div
-                            className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
-                              isChecked
-                                ? 'bg-[#0d1c32] border-[#0d1c32] text-white'
-                                : 'border-gray-300 bg-white'
-                            }`}
-                          >
-                            {isChecked && <Check className="w-3 h-3 stroke-[3]" />}
-                          </div>
-                          <div>
-                            <div className="text-xs font-bold text-[#0d1c32]">{dest.name}</div>
-                            <div className="text-[10px] text-gray-500">{dest.tagline || dest.state}</div>
-                          </div>
-                        </div>
-                        <span className="text-[10px] font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">
-                          {dest.state}
-                        </span>
+              {destSuggestions.length > 0 ? (
+                <div className="p-1 space-y-1 bg-white">
+                  {destSuggestions.map((item) => (
+                    <div
+                      key={item.placeId || item.description}
+                      onClick={() => handleSelectDestinationSuggestion(item)}
+                      className="dest-suggestion-item flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#fed65b]/20 cursor-pointer transition-colors group"
+                    >
+                      <div className="w-7 h-7 rounded-lg bg-[#0d1c32] text-[#D4AF37] flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-[#735c00] transition-colors">
+                        <Compass className="w-3.5 h-3.5" />
                       </div>
-                    );
-                  })
-                ) : (
-                  <div className="p-4 text-center text-xs text-gray-400">
-                    No destinations match "{destSearch}"
-                  </div>
-                )}
-              </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs font-bold text-[#0d1c32] truncate">
+                          {item.mainText}
+                        </div>
+                        {item.secondaryText && (
+                          <div className="text-[11px] text-gray-500 truncate">
+                            {item.secondaryText}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="p-4 text-center text-xs text-gray-500 bg-white">
+                  {isSearchingDest
+                    ? 'Searching Google Places...'
+                    : `No matching destinations found for "${destQuery}". Try typing another city or tourist place.`}
+                </div>
+              )}
             </div>
           )}
+        </div>
+
+        {/* "+ Add another destination" button and helper note */}
+        <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+          <button
+            type="button"
+            onClick={handleAddAnotherDestination}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-[#fafaf5] hover:bg-[#fed65b]/25 text-[#735c00] border border-[#D4AF37]/40 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm"
+          >
+            <span className="text-base leading-none font-bold">+</span>
+            <span>Add another destination</span>
+          </button>
+
+          <span className="text-[11px] text-gray-500 flex items-center gap-1">
+            <Sparkles className="w-3 h-3 text-[#735c00]" />
+            <span>Select places to map custom multi-city heritage routes.</span>
+          </span>
         </div>
       </div>
 
@@ -419,12 +1036,10 @@ export function TripPlanningPage1({ onNext }) {
 
             {/* Calendar Grid with Range Highlighting */}
             <div className="grid grid-cols-7 gap-y-1 text-center text-xs">
-              {/* Empty slots before first day */}
               {Array.from({ length: firstDayIndex }).map((_, i) => (
                 <div key={`empty-${i}`} className="h-8" />
               ))}
 
-              {/* Month Days */}
               {Array.from({ length: daysInMonth }).map((_, i) => {
                 const day = i + 1;
                 const { isStart, isEnd, inBetween, inHoverRange } = isDateSelected(day);
@@ -551,11 +1166,13 @@ export function TripPlanningPage1({ onNext }) {
       {/* CTA Button */}
       <button
         type="button"
-        onClick={onNext}
-        disabled={selectedDestinations.length === 0 || !rangeStart}
+        onClick={handleProceedNext}
+        disabled={destinations.length === 0 || !rangeStart}
         className="w-full py-4 bg-[#0d1c32] text-white rounded-2xl font-bold uppercase tracking-wider text-xs hover:bg-black transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        <span>Select Categories ({selectedDestinations.length} Destinations Selected)</span>
+        <span>
+          Continue to Categories ({destinations.length} {destinations.length === 1 ? 'Destination' : 'Destinations'} Selected)
+        </span>
         <ChevronRight className="w-4 h-4 text-[#D4AF37]" />
       </button>
     </div>

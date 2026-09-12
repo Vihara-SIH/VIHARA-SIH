@@ -6,18 +6,82 @@ import {
   collection,
   serverTimestamp
 } from 'firebase/firestore';
-import { db } from './firebase';
-import { getDestinationData } from './destinationService';
+import { db } from './firebase.js';
+import { getDestinationData } from './destinationService.js';
 
 /**
- * Persist trip data to Firestore under users/{uid}/trips/{tripId}
+ * Formats a destination object to match the required Firestore schema:
+ * { destinationName, placeId, latitude, longitude }
+ */
+export const formatDestinationForFirestore = (dest) => {
+  if (!dest) return null;
+  if (typeof dest === 'string') {
+    return {
+      destinationName: dest,
+      placeId: `loc_${dest.toLowerCase().replace(/\s+/g, '_')}`,
+      latitude: 17.3850,
+      longitude: 78.4867
+    };
+  }
+
+  const destinationName = dest.destinationName || dest.name || dest.mainText || dest.formattedAddress || 'Destination';
+  const placeId = dest.placeId || dest.id || `loc_${dest.latitude || 0}_${dest.longitude || 0}`;
+  const latitude = dest.latitude !== undefined
+    ? Number(dest.latitude)
+    : (dest.currentLocationLatitude !== undefined ? Number(dest.currentLocationLatitude) : 0);
+  const longitude = dest.longitude !== undefined
+    ? Number(dest.longitude)
+    : (dest.currentLocationLongitude !== undefined ? Number(dest.currentLocationLongitude) : 0);
+
+  return {
+    destinationName,
+    placeId,
+    latitude,
+    longitude
+  };
+};
+
+/**
+ * Persist or update destination selection to Firestore under users/{uid}/trips/{tripId}
+ */
+export const saveTripDestinations = async (uid, tripId, destinations = []) => {
+  if (!uid || !tripId) return false;
+  try {
+    const formatted = Array.isArray(destinations)
+      ? destinations.map(formatDestinationForFirestore).filter(Boolean)
+      : [];
+
+    const tripRef = doc(db, 'users', uid, 'trips', tripId);
+    await setDoc(tripRef, {
+      tripId,
+      destinations: formatted,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+    return true;
+  } catch (error) {
+    console.error('Error saving trip destinations to Firestore:', error);
+    return false;
+  }
+};
+
+/**
+ * Persist full trip data to Firestore under users/{uid}/trips/{tripId}
  */
 export const saveUserTrip = async (uid, tripData) => {
-  if (!uid || !tripData || !tripData.tripId) return;
+  if (!uid || !tripData || !tripData.tripId) return false;
   try {
     const tripRef = doc(db, 'users', uid, 'trips', tripData.tripId);
+    const dataToSave = { ...tripData };
+
+    if (Array.isArray(dataToSave.destinations)) {
+      dataToSave.destinations = dataToSave.destinations.map(formatDestinationForFirestore).filter(Boolean);
+    }
+    if (Array.isArray(dataToSave.destinationOrder)) {
+      dataToSave.destinationOrder = dataToSave.destinationOrder.map(formatDestinationForFirestore).filter(Boolean);
+    }
+
     await setDoc(tripRef, {
-      ...tripData,
+      ...dataToSave,
       updatedAt: serverTimestamp()
     }, { merge: true });
     return true;
@@ -315,11 +379,16 @@ export const generateRouteData = async (itinerary, tripParams) => {
   const originNorm = originLocation.toLowerCase();
   const originDest = destinationDataList.find(d => d.id === originNorm) || destinationDataList[0];
 
+  const originCoordinates =
+    tripParams.userLocation?.latitude !== undefined && tripParams.userLocation?.longitude !== undefined
+      ? { lat: Number(tripParams.userLocation.latitude), lng: Number(tripParams.userLocation.longitude) }
+      : (originDest?.coordinates || { lat: 17.3850, lng: 78.4867 });
+
   waypoints.push({
     stepIndex: 0,
     name: originLocation,
     type: 'Origin / Start',
-    coordinates: originDest?.coordinates || { lat: 17.3850, lng: 78.4867 }
+    coordinates: originCoordinates
   });
 
   let step = 1;
