@@ -138,7 +138,7 @@ export const viharaChat = onCall(
     maxInstances: 10
   },
   async (request) => {
-    const { message, history } = request.data || {};
+    const { message, history, tripContext } = request.data || {};
 
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
       throw new HttpsError('invalid-argument', 'A valid message string is required.');

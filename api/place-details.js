@@ -53,7 +53,7 @@ export default async function handler(req, res) {
     });
   }
 
-  const googleApiKey = (process.env.GOOGLE_MAPS_API_KEY || '').trim();
+  const googleApiKey = (process.env.GOOGLE_MAPS_API_KEY || process.env.GOOGLE_PLACES_API_KEY || '').trim();
 
   // 1. If Google API Key available and placeId is not a fallback OSM ID
   if (googleApiKey && placeId && !placeId.startsWith('osm_')) {

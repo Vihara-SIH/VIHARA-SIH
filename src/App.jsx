@@ -15,6 +15,7 @@ import { NearMe } from './components/features/NearMe';
 import { EventBookings } from './components/features/EventBookings';
 import { StaysAndTravel } from './components/features/StaysAndTravel';
 import { GlobalAIConcierge } from './components/GlobalAIConcierge';
+import { SavedItemsPortal } from './components/features/SavedItemsPortal';
 import './styles/vihara-theme.css';
 
 function MainApplication() {
@@ -22,7 +23,7 @@ function MainApplication() {
   const { activeStep, setActiveStep, resetTripState } = useTrip();
   const stays = useStays();
   const events = useEvents();
-  const [currentView, setCurrentView] = useState('home'); // 'home' | 'trip-planning' | 'near-me' | 'event-bookings' | 'stays-travel' | 'my-bookings' | 'my-events'
+  const [currentView, setCurrentView] = useState('home'); // 'home' | 'near-me' | 'trip-planning' | 'event-bookings' | 'stays-travel' | 'saved-items'
 
   // Auto-navigate to pending target view after successful login
   React.useEffect(() => {
@@ -43,25 +44,6 @@ function MainApplication() {
   const handleNavigate = (view) => {
     if (view === 'home') {
       setCurrentView('home');
-      return;
-    }
-
-    // Protected Route Gate
-    if (!isAuthenticated) {
-      triggerAuthGate(
-        view,
-        `Please sign in to access ${
-          view === 'trip-planning'
-            ? 'Trip Planning & AI Itineraries'
-            : view === 'near-me'
-            ? 'Near Me Experiences'
-            : view === 'event-bookings'
-            ? 'Cultural Events'
-            : view === 'my-bookings'
-            ? 'My Bookings & Reservations'
-            : 'Luxury Stays & Transit'
-        }.`
-      );
       return;
     }
 
@@ -145,6 +127,16 @@ function MainApplication() {
             onNavigateToTrip={() => handleNavigate('trip-planning')}
           />
         );
+      case 'saved-items':
+      case 'my-trips':
+        return (
+          <SavedItemsPortal
+            onBack={() => setCurrentView('home')}
+            onNavigateToTrip={() => handleNavigate('trip-planning')}
+            onNavigateToStays={() => handleNavigate('stays-travel')}
+            onNavigateToEvents={() => handleNavigate('event-bookings')}
+          />
+        );
       default:
         return null;
     }
@@ -166,26 +158,26 @@ function MainApplication() {
         <Homepage onSelectFeature={handleNavigate} />
       ) : (
         /* Inner Features Layout with Consistent Vihara Theme */
-        <div className="min-h-screen bg-[#fafaf5] text-[#1a1c19] flex flex-col pt-16">
+        <div className="min-h-screen bg-[#fcf9f2] text-[#1c1c18] flex flex-col pt-20">
           {/* Global Sticky Navigation Bar */}
           <Navbar currentView={currentView} onNavigate={handleNavigate} />
 
           {/* Main Content Area */}
-          <main className="flex-1 w-full max-w-7xl mx-auto px-4 py-8">
+          <main className="flex-1 w-full">
             {renderFeatureView()}
           </main>
 
           {/* Heritage Footer */}
-          <footer className="w-full bg-[#0d1c32] text-[#fafaf5] border-t-2 border-[#D4AF37] py-6 px-6 mt-12 text-xs">
+          <footer className="w-full bg-[#070235] text-[#fafaf5] border-t-2 border-[#fe932c] py-8 px-6 mt-12 text-xs">
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="flex items-center gap-2">
-                <span className="text-xl font-bold tracking-widest" style={{ fontFamily: 'Kalam, cursive' }}>
+                <span className="text-xl font-bold tracking-widest font-serif" style={{ fontFamily: 'Playfair Display, serif' }}>
                   VIHARA
                 </span>
-                <span className="text-gray-400">| Smart Heritage Tourism & AI Planner</span>
+                <span className="text-gray-400">| Smart Heritage Tourism &amp; Hyperlocal AI Discovery</span>
               </div>
               <p className="text-gray-400 text-center md:text-right">
-                All user trips & personal itineraries are privately secured per user.
+                All user trips &amp; personal itineraries are privately secured per user.
               </p>
             </div>
           </footer>

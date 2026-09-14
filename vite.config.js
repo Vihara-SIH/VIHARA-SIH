@@ -4,6 +4,10 @@ import geocodeHandler from './api/geocode.js';
 import chatHandler from './api/chat.js';
 import placesAutocompleteHandler from './api/places-autocomplete.js';
 import placeDetailsHandler from './api/place-details.js';
+import routesHandler from './api/routes.js';
+import weatherHandler from './api/weather.js';
+import placesNearbyHandler from './api/places-nearby.js';
+import sendItineraryHandler from './api/send-itinerary.js';
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -15,7 +19,11 @@ export default defineConfig(({ mode }) => {
     '/api/geocode': geocodeHandler,
     '/api/chat': chatHandler,
     '/api/places-autocomplete': placesAutocompleteHandler,
-    '/api/place-details': placeDetailsHandler
+    '/api/place-details': placeDetailsHandler,
+    '/api/routes': routesHandler,
+    '/api/weather': weatherHandler,
+    '/api/places-nearby': placesNearbyHandler,
+    '/api/send-itinerary': sendItineraryHandler
   };
 
   return {

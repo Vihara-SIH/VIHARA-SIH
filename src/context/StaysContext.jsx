@@ -335,8 +335,9 @@ export const StaysProvider = ({ children }) => {
       setCurrentBooking(savedBooking || bookingData);
       setUserBookings(prev => [savedBooking || bookingData, ...prev.filter(b => b.bookingId !== bookingReference)]);
 
-      if (trip?.tripId) {
-        await addStayToTrip(user?.uid, trip.tripId, savedBooking || bookingData);
+      const staySummary = await addStayToTrip(user?.uid, trip?.tripId, savedBooking || bookingData);
+      if (trip?.linkAccommodation) {
+        trip.linkAccommodation(staySummary);
       }
 
       navigateToStage('confirmation');
@@ -467,7 +468,7 @@ export const StaysProvider = ({ children }) => {
     handleCancelBooking,
     loadBookings,
     resetStaysFlow,
-    tripContextData: trip
+    tripContextData: trip?.tripData || trip
   };
 
   return <StaysContext.Provider value={value}>{children}</StaysContext.Provider>;

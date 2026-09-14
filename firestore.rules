@@ -1,0 +1,38 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─── User Profile & Preferences ───
+    // Each user can only read/write their own profile document
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      // ─── User Trips (private per user) ───
+      match /trips/{tripId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // ─── User Bookings (stays, events — private per user) ───
+      match /bookings/{bookingId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // ─── User Event Bookings ───
+      match /eventBookings/{bookingId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    // ─── Public Destination Knowledge (read-only for all) ───
+    match /destinations/{destId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // ─── Default deny everything else ───
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

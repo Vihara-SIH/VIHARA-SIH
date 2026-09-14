@@ -55,6 +55,9 @@ export function EventPaymentAndConfirmation({ onBack, onNavigateToTrip }) {
     // Simulate realistic bank gateway roundtrip
     setTimeout(async () => {
       const confirmedBooking = await completeBooking(paymentTab.toUpperCase());
+      if (confirmedBooking && tripContext?.addEventToTrip && selectedEvent) {
+        await tripContext.addEventToTrip(selectedEvent, 2);
+      }
       setIsProcessing(false);
     }, 1200);
   };

@@ -93,12 +93,13 @@ export const BudgetPage = ({ onBack, onComplete }) => {
               <div className="hidden md:block w-px h-16 bg-gray-200" />
 
               <div className="text-xs text-gray-600 leading-relaxed md:w-1/2">
-                Our AI has calculated this baseline based on your{' '}
+                Baseline covers estimated stay, dining, tickets & transit for{' '}
                 <span className="font-bold text-[#0d1c32]">{selectedDestinations.length} destinations</span>,{' '}
-                <span className="font-bold text-[#0d1c32]">{numberOfDays} days journey</span>, and{' '}
+                <span className="font-bold text-[#0d1c32]">{numberOfDays} days</span>, and{' '}
                 <span className="font-bold text-[#0d1c32]">
                   {numberOfTravelers} {numberOfTravelers === 1 ? 'traveler' : 'travelers'} ({travelType})
-                </span>.
+                </span>
+                . Adding stays or events later updates estimated cost — it does not silently raise this allocated budget.
               </div>
             </div>
           </div>

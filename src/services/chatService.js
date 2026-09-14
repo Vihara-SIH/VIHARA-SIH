@@ -1,23 +1,24 @@
 import { httpsCallable } from 'firebase/functions';
-import { functions } from './firebase';
+import { functions, auth } from './firebase';
 
 const isLocalhost =
   typeof window !== 'undefined' &&
   (window.location.hostname === 'localhost' ||
     window.location.hostname === '127.0.0.1');
 
+async function authHeader() {
+  try {
+    const token = await auth.currentUser?.getIdToken?.();
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  } catch {
+    return {};
+  }
+}
+
 /**
- * Sends a message to the AI Concierge backend.
- *
- * Supported environments:
- * 1. Local Development: Firebase Functions Emulator (localhost:5001) via httpsCallable
- * 2. Production (Vercel): Vercel Serverless Function (/api/chat) via fetch
- *
- * @param {string} message - User query message
- * @param {Array<{sender: string, text: string}>} [history=[]] - Conversation history
- * @returns {Promise<string>} AI assistant response text
+ * @returns {Promise<string|{reply:string, actions:Array}>}
  */
-export async function sendChatMessage(message, history = []) {
+export async function sendChatMessage(message, history = [], options = {}) {
   if (!message || typeof message !== 'string' || !message.trim()) {
     throw new Error('Please provide a valid message.');
   }
@@ -28,19 +29,20 @@ export async function sendChatMessage(message, history = []) {
     text: item.text
   }));
 
-  // =========================================================================
-  // 1. LOCAL DEVELOPMENT: Use Firebase Functions Emulator if on localhost
-  // =========================================================================
-  if (isLocalhost && functions._emulatorConnected) {
-    console.log('[VIHARA Chat] Using Local Firebase Functions Emulator (127.0.0.1:5001)...');
+  const payload = {
+    message: cleanMessage,
+    history: formattedHistory,
+    tripContext: options.tripContext || null
+  };
+
+  if (isLocalhost && functions._emulatorConnected && !options.tripContext) {
     try {
       const viharaChatCallable = httpsCallable(functions, 'viharaChat');
-      const result = await viharaChatCallable({
-        message: cleanMessage,
-        history: formattedHistory
-      });
-
+      const result = await viharaChatCallable(payload);
       if (result?.data?.reply) {
+        if (options.returnFull) {
+          return { reply: result.data.reply, actions: result.data.actions || [] };
+        }
         return result.data.reply;
       }
     } catch (localError) {
@@ -48,26 +50,18 @@ export async function sendChatMessage(message, history = []) {
     }
   }
 
-  // =========================================================================
-  // 2. PRODUCTION / VERCEL: Use Serverless Endpoint (/api/chat)
-  // =========================================================================
-  console.log('[VIHARA Chat] Dispatching request to production /api/chat endpoint...');
-
   try {
     const response = await fetch('/api/chat', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        ...(await authHeader())
       },
-      body: JSON.stringify({
-        message: cleanMessage,
-        history: formattedHistory
-      })
+      body: JSON.stringify(payload)
     });
 
     const contentType = response.headers.get('content-type') || '';
     let responseData = null;
-
     if (contentType.includes('application/json')) {
       responseData = await response.json();
     } else {
@@ -80,37 +74,31 @@ export async function sendChatMessage(message, history = []) {
     }
 
     if (!response.ok) {
-      // 1. Endpoint Not Found (404)
       if (response.status === 404) {
-        console.error('[VIHARA Chat] Error (Incorrect Endpoint): /api/chat was not found (404). Check Vercel serverless configuration.');
-        return 'Namaste! The chatbot backend endpoint is currently not reachable. Please check your Vercel deployment.';
+        return options.returnFull
+          ? { reply: 'Namaste! The chatbot backend endpoint is currently not reachable.', actions: [] }
+          : 'Namaste! The chatbot backend endpoint is currently not reachable. Please check your Vercel deployment.';
       }
-
-      // 2. Gemini API / Key Configuration Error (500)
+      if (response.status === 429) {
+        const msg = 'Namaste! Please wait a moment before sending another message.';
+        return options.returnFull ? { reply: msg, actions: [] } : msg;
+      }
       const errorMsg = responseData?.error || response.statusText || 'Server Error';
-      console.error(`[VIHARA Chat] Error (Gemini API / Server ${response.status}):`, errorMsg);
-
-      if (errorMsg.includes('GEMINI_API_KEY')) {
-        return 'Namaste! The AI Concierge requires a configured GEMINI_API_KEY. Please add GEMINI_API_KEY to your Vercel Project Environment Variables.';
+      if (String(errorMsg).includes('GEMINI_API_KEY')) {
+        const msg = 'Namaste! The AI Concierge requires a configured GEMINI_API_KEY.';
+        return options.returnFull ? { reply: msg, actions: [] } : msg;
       }
-
-      return 'Namaste! 🙏 The AI Concierge encountered a temporary server error. Please try again in a moment.';
+      const fallback = 'Namaste! 🙏 The AI Concierge encountered a temporary server error. Please try again in a moment.';
+      return options.returnFull ? { reply: fallback, actions: [] } : fallback;
     }
 
-    if (responseData && responseData.reply) {
-      return responseData.reply;
-    }
-
-    throw new Error('Empty response received from /api/chat');
+    const reply = responseData?.reply || '';
+    const actions = Array.isArray(responseData?.actions) ? responseData.actions : [];
+    if (options.returnFull) return { reply, actions };
+    return reply || 'Namaste! I could not generate a response just then.';
   } catch (error) {
-    // 3. Network or CORS Error
-    if (error.name === 'TypeError' && error.message.includes('fetch')) {
-      console.error('[VIHARA Chat] Error (CORS / Network Unreachable): Failed to fetch from /api/chat.', error);
-      return 'Namaste! Unable to connect to the AI Concierge service. Please check your network connection.';
-    }
-
-    // 4. General Backend Error
-    console.error('[VIHARA Chat] Error (Backend Unavailable):', error);
-    return 'Namaste! I encountered a temporary connection issue. Please try again in a moment.';
+    const msg = 'Namaste! I encountered a temporary connection issue. Please try again in a moment.';
+    if (options.returnFull) return { reply: msg, actions: [] };
+    return msg;
   }
 }

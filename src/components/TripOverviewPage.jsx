@@ -23,7 +23,9 @@ import {
   Mail,
   Loader2,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  Building,
+  Hotel
 } from 'lucide-react';
 import { useTrip } from '../context/TripContext';
 import { useAuth } from '../context/AuthContext';

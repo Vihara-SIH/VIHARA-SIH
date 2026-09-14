@@ -59,7 +59,7 @@ export default async function handler(req, res) {
     });
   }
 
-  const googleApiKey = (process.env.GOOGLE_MAPS_API_KEY || '').trim();
+  const googleApiKey = (process.env.GOOGLE_MAPS_API_KEY || process.env.GOOGLE_PLACES_API_KEY || '').trim();
 
   // 1. Try Google Maps Geocoding API if key is available
   if (googleApiKey) {

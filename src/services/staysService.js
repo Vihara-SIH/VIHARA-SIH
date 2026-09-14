@@ -26,15 +26,18 @@ export function calculateSmartMatch(hotel, tripData = {}) {
     };
   }
 
+  const allocatedBudget = typeof tripData.budget === 'object'
+    ? (tripData.budget.allocated || tripData.budget.allocatedBudget || tripData.userSelectedBudget)
+    : (tripData.budget || tripData.userSelectedBudget || 25000);
   const {
     destinations = [],
-    budget = 25000,
     numberOfDays = 4,
     numberOfTravelers = 2,
-    categories = ['heritage'],
-    generatedItinerary = [],
+    categories = tripData.selectedCategories || ['heritage'],
+    generatedItinerary = tripData.itinerary || [],
     placeCards = []
   } = tripData;
+  const budget = allocatedBudget;
 
   const nights = Math.max(1, (numberOfDays || 4) - 1);
   const targetNightlyBudget = Math.max(2500, Math.round((budget * 0.45) / nights));
@@ -143,17 +146,8 @@ export function searchStays(searchParams = {}, tripData = {}) {
       );
     });
 
-    // If no exact city match in mock data, return all hotels with destination adaptive scoring
     if (results.length === 0) {
-      results = HOTELS_DATABASE.map(hotel => {
-        const smartMatch = calculateSmartMatch(hotel, tripData);
-        return {
-          ...hotel,
-          smartMatchScore: smartMatch.score,
-          smartMatchBreakdown: smartMatch.breakdown,
-          smartMatchReasons: smartMatch.reasons
-        };
-      });
+      return [];
     }
   }
 

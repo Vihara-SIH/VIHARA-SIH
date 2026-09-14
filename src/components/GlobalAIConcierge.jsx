@@ -16,6 +16,7 @@ import { useTrip } from '../context/TripContext';
 import { useStays } from '../context/StaysContext';
 import { useEvents } from '../context/EventsContext';
 import { sendChatMessage } from '../services/chatService';
+import { compactTripForAI } from '../services/vihara/schemas';
 
 export function GlobalAIConcierge({ currentView = 'home' }) {
   const { isAuthenticated, userProfile, user } = useAuth();
@@ -64,6 +65,24 @@ export function GlobalAIConcierge({ currentView = 'home' }) {
       ];
     }
 
+    if (currentView === 'near-me') {
+      return [
+        `Find secret alleys and artisan bakeries near me`,
+        `Which spots within 5km fit into my remaining 2 hours?`,
+        `What is the best time to visit heritage monuments nearby?`,
+        `How much will adding this spot increase my trip budget?`
+      ];
+    }
+
+    if (currentView === 'saved-items') {
+      return [
+        `Summarize my saved places and suggest an optimal route`,
+        `Which of my saved spots are closest to my booked stay?`,
+        `Help me create a new 3-day itinerary with my saved gems`,
+        `Check opening hours and ticket rules for my wishlist`
+      ];
+    }
+
     if (currentView === 'trip-planning') {
       return [
         `Suggest the optimal 4-day route for ${dest}`,
@@ -91,30 +110,38 @@ export function GlobalAIConcierge({ currentView = 'home' }) {
     setIsLoading(true);
 
     // Build rich ecosystem context
-    const tripDest = trip?.selectedDestinations?.join(', ') || 'Hyderabad';
-    const tripBudget = trip?.userSelectedBudget || 35000;
-    const tripAttractions = trip?.placeCards?.map(p => p.placeName || p.title).join(', ') || 'Charminar, Golconda Fort, Chowmahalla Palace';
-    const hotel = stays?.selectedHotel;
-    const hotelBooking = stays?.currentBooking;
-    const activeEvent = events?.selectedEvent;
-    const latestEventBooking = events?.activeBooking || events?.userBookings?.[0];
-
-    const contextPrefix = `[Ecosystem Context]
-Current Page: ${currentView}
-Active Trip: Destination=${tripDest}, Dates=${trip?.startDate || '14 Sep'} to ${trip?.endDate || '17 Sep'}, Travelers=${trip?.numberOfTravelers || 2}, Total Budget=₹${tripBudget}, Planned Sights=[${tripAttractions}]
-Active Stays Context: Destination=${stays?.searchParams?.destination || tripDest}, Selected Stay=${hotel?.name || 'Taj Falaknuma Palace'} (₹${hotel?.pricePerNight || 12500}/night, Smart Match: ${hotel?.smartMatchScore || 96}%), Selected Room=${stays?.selectedRoom?.name || 'Nizami Suite'}
-Active Events Context: City=${events?.selectedCity || tripDest}, Selected Event=${activeEvent?.title || 'Sacred Echoes Sufi Night'} (${activeEvent?.venue}, ₹${activeEvent?.priceStarting}), Latest Booked Event=${latestEventBooking?.eventTitle || 'None yet'} (Ref: ${latestEventBooking?.bookingReference || 'N/A'}, Pass: ${latestEventBooking?.tier || 'N/A'})
-User Question: ${textToSend.trim()}`;
+    const contextTrip = trip?.tripData
+      ? compactTripForAI(trip.tripData)
+      : null;
 
     try {
-      const reply = await sendChatMessage(contextPrefix, messages);
+      const result = await sendChatMessage(textToSend.trim(), messages, {
+        tripContext: contextTrip,
+        returnFull: true
+      });
+      const reply = typeof result === 'string' ? result : result.reply;
+      const actions = typeof result === 'object' ? (result.actions || []) : [];
       setMessages(prev => [...prev, { sender: 'bot', text: reply }]);
+      if (actions.length && trip?.applyConciergeActions) {
+        const outcome = await trip.applyConciergeActions(actions);
+        if (outcome?.applied?.length) {
+          setMessages(prev => [
+            ...prev,
+            {
+              sender: 'bot',
+              text: outcome.regenerated
+                ? 'I updated your itinerary from that request. Open Trip Overview to review the new day plan.'
+                : `Applied ${outcome.applied.length} itinerary change(s).`
+            }
+          ]);
+        }
+      }
     } catch (err) {
       setMessages(prev => [
         ...prev,
         {
           sender: 'bot',
-          text: `Namaste! 🙏 Based on your ${tripDest} itinerary, ${hotel?.name || 'your selected sanctuary'} offers exceptional route efficiency and fits within your accommodation budget. How else may I assist with your bookings or daily route planning?`
+          text: `Namaste! 🙏 I could not complete that change just now. Your trip data is still on this device.`
         }
       ]);
     } finally {

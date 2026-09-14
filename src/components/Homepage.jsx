@@ -97,10 +97,6 @@ export function Homepage({ onSelectFeature }) {
   };
 
   const handleCardClick = (featureId) => {
-    if (!isAuthenticated) {
-      triggerAuthGate(featureId);
-      return;
-    }
     onSelectFeature(featureId);
   };
 
@@ -134,14 +130,14 @@ export function Homepage({ onSelectFeature }) {
   return (
     <div className="bg-primary-container text-surface m-0 p-0 overflow-hidden font-body-md relative min-h-screen">
       {/* 1. Desktop TopAppBar */}
-      <header className="fixed top-0 w-full z-50 bg-surface/10 backdrop-blur-md border-b border-outline-variant/30 hidden md:flex justify-between items-center px-margin-desktop py-4 max-w-7xl mx-auto left-0 right-0">
-        <div className="flex items-center gap-sm cursor-pointer" onClick={() => setCurrentSlide(0)}>
-          <span className="material-symbols-outlined text-surface" data-icon="menu" style={{ fontVariationSettings: '"FILL" 0' }}>
-            menu
-          </span>
-          <span className="font-headline-md text-headline-md tracking-widest text-surface uppercase" style={{ fontFamily: 'Kalam, cursive', fontSize: '1.5rem', lineHeight: '2rem' }}>
+      <header className="fixed top-0 w-full z-50 bg-[#0d1c32]/70 backdrop-blur-xl border-b border-[#D4AF37]/30 hidden md:flex justify-between items-center px-6 md:px-12 py-3.5 max-w-7xl mx-auto left-0 right-0">
+        <div className="flex items-center gap-3 cursor-pointer" onClick={() => setCurrentSlide(0)}>
+          <div className="w-9 h-9 rounded-full bg-[#fe932c] flex items-center justify-center shadow-[0_2px_10px_rgba(254,147,44,0.35)] shrink-0">
+            <span className="material-symbols-outlined text-[#663500] text-[20px]">temple_hindu</span>
+          </div>
+          <span className="font-headline-md tracking-widest text-surface uppercase font-bold" style={{ fontFamily: 'Kalam, cursive', fontSize: '1.4rem' }}>
             <span className="flex items-center gap-1">
-              <span className="text-3xl md:text-4xl text-surface" style={{ fontFamily: '"Great Vibes", cursive', lineHeight: 1, paddingRight: '0.1em' }}>
+              <span className="text-3xl text-surface" style={{ fontFamily: '"Great Vibes", cursive', lineHeight: 1, paddingRight: '0.1em' }}>
                 V
               </span>
               <span>IHARA</span>
@@ -149,7 +145,48 @@ export function Homepage({ onSelectFeature }) {
           </span>
         </div>
 
-        <div className="flex gap-md items-center">
+        {/* Central Pill Navigation Links */}
+        <nav className="flex items-center gap-1 p-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold">
+          <button
+            type="button"
+            onClick={() => onSelectFeature('near-me')}
+            className="px-4 py-1.5 rounded-full bg-[#fe932c] text-[#663500] shadow-[0_2px_8px_rgba(254,147,44,0.35)] hover:scale-105 transition-all cursor-pointer flex items-center gap-1"
+          >
+            <span className="material-symbols-outlined text-[15px]">near_me</span>
+            <span>Near Me</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => onSelectFeature('trip-planning')}
+            className="px-4 py-1.5 rounded-full text-white/90 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+          >
+            Trip Planning
+          </button>
+          <button
+            type="button"
+            onClick={() => onSelectFeature('stays-travel')}
+            className="px-4 py-1.5 rounded-full text-white/90 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+          >
+            Stays &amp; Havens
+          </button>
+          <button
+            type="button"
+            onClick={() => onSelectFeature('event-bookings')}
+            className="px-4 py-1.5 rounded-full text-white/90 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+          >
+            Events Nearby
+          </button>
+          <button
+            type="button"
+            onClick={() => onSelectFeature('saved-items')}
+            className="px-4 py-1.5 rounded-full text-white/90 hover:text-white hover:bg-white/10 transition-colors cursor-pointer flex items-center gap-1"
+          >
+            <span className="material-symbols-outlined text-[15px]">bookmark</span>
+            <span>Saved</span>
+          </button>
+        </nav>
+
+        <div className="flex gap-3 items-center">
           {isAuthenticated ? (
             <div className="flex items-center gap-3 bg-surface/10 px-4 py-1.5 rounded-full border border-[#D4AF37]/50 backdrop-blur-md">
               <div className="w-7 h-7 rounded-full bg-[#D4AF37] text-primary-container font-bold flex items-center justify-center text-xs">
@@ -161,20 +198,15 @@ export function Homepage({ onSelectFeature }) {
               </button>
             </div>
           ) : (
-            <>
-              <button
-                onClick={() => openLoginModal('login')}
-                className="px-6 py-2 rounded-full bg-[#D4AF37] text-primary-container font-label-caps text-label-caps hover:bg-[#ffe088] transition-colors shadow-lg cursor-pointer"
-              >
-                Login
-              </button>
-              <button
-                onClick={() => openLoginModal('signup')}
-                className="px-6 py-2 rounded-full bg-[#D4AF37] text-primary-container font-label-caps text-label-caps hover:bg-[#ffe088] transition-colors shadow-lg cursor-pointer"
-              >
-                Sign Up
-              </button>
-            </>
+            <button
+              onClick={() => openLoginModal('login')}
+              className="flex items-center gap-2 pl-4 pr-1.5 py-1.5 rounded-full bg-[#D4AF37] hover:bg-[#ffe088] text-[#0d1c32] font-bold text-xs uppercase tracking-wider transition-all shadow-md cursor-pointer"
+            >
+              <span>Sign In / My Journeys</span>
+              <div className="w-6 h-6 rounded-full bg-[#0d1c32] text-white flex items-center justify-center">
+                <span className="material-symbols-outlined text-[14px]">person</span>
+              </div>
+            </button>
           )}
         </div>
       </header>

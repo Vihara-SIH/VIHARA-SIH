@@ -1,6 +1,7 @@
 import { collection, addDoc, getDocs, query, where, doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from './firebase.js';
 import { EVENTS_CATALOG } from '../data/eventsData.js';
+import { calculateItineraryFit as scoreEventFit } from './vihara/eventEngine.js';
 
 const LOCAL_STORAGE_KEY = 'vihara_event_bookings_v1';
 
@@ -83,26 +84,7 @@ export const eventService = {
    * Calculate itinerary compatibility
    */
   calculateItineraryFit(event, trip) {
-    if (!trip) {
-      return { score: 92, slotNote: 'Fits open evening slot', isRecommended: true };
-    }
-
-    const tripCity = (trip.destination || '').toLowerCase();
-    const isCityMatch = event.cityNormalized.includes(tripCity) || tripCity.includes(event.cityNormalized);
-
-    if (isCityMatch) {
-      return {
-        score: 98,
-        slotNote: `Fits naturally into Day 2 evening window (6:30 PM - 10:00 PM)`,
-        isRecommended: true
-      };
-    }
-
-    return {
-      score: 85,
-      slotNote: `Available during your travel window`,
-      isRecommended: true
-    };
+    return scoreEventFit(event, trip);
   },
 
   /**

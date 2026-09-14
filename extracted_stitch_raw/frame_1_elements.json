@@ -1,0 +1,44 @@
+[
+  {
+    "tag": "A",
+    "id": "",
+    "className": "inline underline underline-offset-[2px] cursor-pointer focus-visible:outline-0 no-underline hidden md:flex",
+    "text": "",
+    "href": "https://discord.com/invite/googlelabs"
+  },
+  {
+    "tag": "A",
+    "id": "",
+    "className": "inline underline underline-offset-[2px] cursor-pointer focus-visible:outline-0 no-underline hidden md:flex",
+    "text": "",
+    "href": "https://x.com/stitchbygoogle"
+  },
+  {
+    "tag": "BUTTON",
+    "id": "",
+    "className": "relative cursor-pointer p-2 rounded-full select-none transition-colors text-primary hover:bg-state-hover",
+    "text": "",
+    "href": ""
+  },
+  {
+    "tag": "BUTTON",
+    "id": "_r_7_",
+    "className": "flex items-center justify-center outline-none select-none cursor-pointer focus-ring hover:bg-state-hover active:bg-state-pressed data-[popup-open]:bg-state-hover disabled:opacity-50 disabled:cursor-not-allowed rounded-full p-2 text-primary",
+    "text": "",
+    "href": ""
+  },
+  {
+    "tag": "BUTTON",
+    "id": "",
+    "className": "items-center justify-center bg-clip-border focus-visible:outline-2 focus-visible:outline-current focus-visible:-outline-offset-2 border border-secondary enabled:hover:bg-state-hover enabled:active:bg-state-pressed backdrop-blur-glass bg-surface-container backdrop-blur-glass text-sm text-primary font-heading font-medium flex gap-[6px] p-2 lg:px-4 lg:py-3 h-8 rounded-[20px]",
+    "text": "Sign In",
+    "href": ""
+  },
+  {
+    "tag": "BUTTON",
+    "id": "_r_b_",
+    "className": "w-8 h-8 flex items-center justify-center rounded-full bg-surface-container backdrop-blur-glass border border-secondary text-primary select-none hover:bg-state-hover focus-visible:bg-state-hover data-[popup-open]:bg-state-hover",
+    "text": "",
+    "href": ""
+  }
+]

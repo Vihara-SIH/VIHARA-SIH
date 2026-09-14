@@ -19,7 +19,8 @@ export function EventsProvider({ children }) {
   
   // Search and filter states
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCity, setSelectedCity] = useState(activeTrip?.destination || 'Hyderabad');
+  const tripCity = activeTrip?.metadata?.destinationNames?.[0] || activeTrip?.origin?.name || 'Hyderabad';
+  const [selectedCity, setSelectedCity] = useState(tripCity);
   const [selectedGenre, setSelectedGenre] = useState('all');
   const [selectedFormat, setSelectedFormat] = useState('all');
   const [selectedDate, setSelectedDate] = useState('Weekend (14-15 Sep)');
@@ -35,10 +36,10 @@ export function EventsProvider({ children }) {
   const [selectedTierId, setSelectedTierId] = useState('tier_baithak');
   const [ticketQuantity, setTicketQuantity] = useState(2);
   const [guestDetails, setGuestDetails] = useState({
-    fullName: user?.displayName || 'Aditya Sharma',
-    email: user?.email || 'aditya.sharma@vihara.heritage',
-    phone: '+91 98765 43210',
-    specialRequests: 'Traditional front cushion seating preferred',
+    fullName: user?.displayName || '',
+    email: user?.email || '',
+    phone: '',
+    specialRequests: '',
     syncToTrip: true
   });
 
@@ -48,10 +49,9 @@ export function EventsProvider({ children }) {
 
   // Update selected city if active trip changes
   useEffect(() => {
-    if (activeTrip?.destination) {
-      setSelectedCity(activeTrip.destination);
-    }
-  }, [activeTrip?.destination]);
+    const nextCity = activeTrip?.metadata?.destinationNames?.[0];
+    if (nextCity) setSelectedCity(nextCity);
+  }, [activeTrip?.metadata?.destinationNames]);
 
   // Load user bookings on mount or user change
   useEffect(() => {
