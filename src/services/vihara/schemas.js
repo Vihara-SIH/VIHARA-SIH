@@ -115,9 +115,10 @@ export function compactTripForAI(trip = {}) {
     dayNumber: day.dayNumber,
     city: day.city,
     date: day.date,
-    activities: (day.activities || []).map((a) => ({
-      placeId: a.placeId || null,
-      title: a.title || a.placeName,
+    activities: (day.activities || []).map((a, actIdx) => ({
+      position: actIdx + 1,
+      placeId: a.placeId || a.id || null,
+      title: a.title || a.placeName || a.name,
       time: a.time,
       category: a.category,
       slotType: a.slotType
@@ -142,6 +143,7 @@ export function compactTripForAI(trip = {}) {
     accommodation: trip.accommodation || null,
     events: trip.linkedEvents || [],
     allowedPlaceIds: itinerary.flatMap((d) => d.activities.map((a) => a.placeId).filter(Boolean)),
+    allowedPlaceTitles: itinerary.flatMap((d) => d.activities.map((a) => a.title).filter(Boolean)),
     allowedCategoryIds: Object.keys(CATEGORY_DEFINITIONS).concat(
       Object.values(CATEGORY_DEFINITIONS).flatMap((c) => c.subcategories.map((s) => s.id))
     )

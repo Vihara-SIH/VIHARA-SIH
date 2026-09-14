@@ -52,9 +52,19 @@ export function sanitizeActions(actions, tripContext = {}) {
       continue;
     }
     if (type === 'REMOVE_ACTIVITY' || type === 'MOVE_ACTIVITY' || type === 'REPLACE_ACTIVITY' || type === 'ADD_ACTIVITY') {
-      const targetId = raw.targetPlaceId || raw.placeId;
+      let targetId = raw.targetPlaceId || raw.placeId || null;
+      const targetPos = raw.position != null
+        ? Number(raw.position)
+        : (raw.targetPosition != null
+            ? Number(raw.targetPosition)
+            : (raw.activityIndex != null ? Number(raw.activityIndex) + 1 : undefined));
+
       if (targetId && allowedIds.size && type !== 'ADD_ACTIVITY' && type !== 'REPLACE_ACTIVITY' && !allowedIds.has(targetId)) {
-        continue;
+        if (!raw.title && !raw.targetTitle && targetPos == null) {
+          continue;
+        }
+        // Retain for fuzzy title matching if ID is not canonical
+        targetId = null;
       }
       const repl = raw.replacement || raw.replacementPlace || raw.newPlace || raw.place;
       out.push({
@@ -62,6 +72,8 @@ export function sanitizeActions(actions, tripContext = {}) {
         day: raw.day != null ? Number(raw.day) : undefined,
         fromDay: raw.fromDay != null ? Number(raw.fromDay) : undefined,
         toDay: raw.toDay != null ? Number(raw.toDay) : undefined,
+        position: targetPos,
+        targetPosition: targetPos,
         placeId: targetId || null,
         targetPlaceId: targetId || null,
         title: raw.title ? String(raw.title).slice(0, 120) : undefined,
@@ -98,17 +110,26 @@ export function sanitizeActions(actions, tripContext = {}) {
 
 export function extractJsonObject(text) {
   if (!text) return null;
-  const trimmed = text.trim();
+  let trimmed = text.trim();
+  if (trimmed.startsWith('```')) {
+    trimmed = trimmed.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+  }
   try {
     return JSON.parse(trimmed);
   } catch {
     const start = trimmed.indexOf('{');
     const end = trimmed.lastIndexOf('}');
     if (start >= 0 && end > start) {
+      const candidate = trimmed.slice(start, end + 1);
       try {
-        return JSON.parse(trimmed.slice(start, end + 1));
+        return JSON.parse(candidate);
       } catch {
-        return null;
+        try {
+          const sanitized = candidate.replace(/[\u0000-\u001F]+/g, (m) => (m === '\n' ? '\\n' : m === '\r' ? '\\r' : m === '\t' ? '\\t' : ''));
+          return JSON.parse(sanitized);
+        } catch {
+          return null;
+        }
       }
     }
     return null;

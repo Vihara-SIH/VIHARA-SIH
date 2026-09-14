@@ -947,7 +947,7 @@ export const TripProvider = ({ children }) => {
       });
     }
 
-    return { applied: valid, errors, regenerated: false };
+    return { applied, errors, regenerated: false };
   };
 
   const linkAccommodation = (staySummary) => {

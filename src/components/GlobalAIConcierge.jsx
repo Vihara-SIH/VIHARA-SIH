@@ -131,7 +131,15 @@ export function GlobalAIConcierge({ currentView = 'home' }) {
               sender: 'bot',
               text: outcome.regenerated
                 ? 'I updated your itinerary from that request. Open Trip Overview to review the new day plan.'
-                : `Applied ${outcome.applied.length} itinerary change(s).`
+                : `Applied ${outcome.applied.length} itinerary change(s). Check Trip Overview to see your updated journey.`
+            }
+          ]);
+        } else if (!outcome?.regenerated) {
+          setMessages(prev => [
+            ...prev,
+            {
+              sender: 'bot',
+              text: 'I could not find a matching activity to update. Please check the activity title or day number in Trip Overview.'
             }
           ]);
         }

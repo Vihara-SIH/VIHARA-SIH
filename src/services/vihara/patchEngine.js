@@ -25,7 +25,8 @@ export function validateActions(actions, tripCompact = {}) {
     }
 
     if (type === 'REMOVE_ACTIVITY' || type === 'MOVE_ACTIVITY' || type === 'REPLACE_ACTIVITY') {
-      if (raw.placeId && allowedIds.size && !allowedIds.has(raw.placeId) && type !== 'REPLACE_ACTIVITY') {
+      const hasTitleOrPos = raw.title || raw.targetTitle || raw.position != null || raw.targetPosition != null;
+      if (raw.placeId && allowedIds.size && !allowedIds.has(raw.placeId) && type !== 'REPLACE_ACTIVITY' && !hasTitleOrPos) {
         errors.push(`Unknown placeId ${raw.placeId}`);
         continue;
       }
@@ -79,12 +80,17 @@ export function validateActions(actions, tripCompact = {}) {
     if (type === 'REPLACE_ACTIVITY') {
       const targetId = raw.targetPlaceId || raw.oldPlaceId || raw.placeId;
       const targetTitle = raw.targetTitle || raw.oldTitle || raw.title;
+      const targetPos = raw.position != null
+        ? Number(raw.position)
+        : (raw.targetPosition != null
+            ? Number(raw.targetPosition)
+            : (raw.activityIndex != null ? Number(raw.activityIndex) + 1 : undefined));
       const repl = raw.replacement || raw.replacementPlace || raw.newPlace || raw.place || null;
       const replId = repl?.id || repl?.placeId || raw.newPlaceId || raw.replacementPlaceId;
       const replTitle = repl?.name || repl?.title || raw.newTitle || raw.replacementTitle;
 
-      if (!targetId && !targetTitle) {
-        errors.push('REPLACE_ACTIVITY needs target placeId or title');
+      if (!targetId && !targetTitle && targetPos == null) {
+        errors.push('REPLACE_ACTIVITY needs target placeId, title, or position');
         continue;
       }
       if (!repl && !replId && !replTitle) {
@@ -96,6 +102,8 @@ export function validateActions(actions, tripCompact = {}) {
         type: 'REPLACE_ACTIVITY',
         day: raw.day != null ? Number(raw.day) : undefined,
         fromDay: raw.fromDay != null ? Number(raw.fromDay) : undefined,
+        position: targetPos,
+        targetPosition: targetPos,
         placeId: targetId,
         title: targetTitle,
         targetPlaceId: targetId,
@@ -107,9 +115,15 @@ export function validateActions(actions, tripCompact = {}) {
     }
 
     if (type === 'MOVE_ACTIVITY') {
+      const targetPos = raw.position != null
+        ? Number(raw.position)
+        : (raw.targetPosition != null ? Number(raw.targetPosition) : undefined);
       clean.push({
         type,
         placeId: raw.placeId,
+        title: raw.title || raw.targetTitle,
+        position: targetPos,
+        targetPosition: targetPos,
         fromDay: Number(raw.fromDay) || Number(raw.day),
         toDay: Number(raw.toDay) || Number(raw.day) + 1
       });
@@ -117,11 +131,18 @@ export function validateActions(actions, tripCompact = {}) {
     }
 
     if (type === 'REMOVE_ACTIVITY') {
+      const targetPos = raw.position != null
+        ? Number(raw.position)
+        : (raw.targetPosition != null
+            ? Number(raw.targetPosition)
+            : (raw.activityIndex != null ? Number(raw.activityIndex) + 1 : undefined));
       clean.push({
         type,
-        day: Number(raw.day) || undefined,
-        placeId: raw.placeId,
-        title: raw.title
+        day: raw.day != null ? Number(raw.day) : undefined,
+        placeId: raw.placeId || raw.targetPlaceId,
+        title: raw.title || raw.targetTitle,
+        position: targetPos,
+        targetPosition: targetPos
       });
       continue;
     }
@@ -142,15 +163,93 @@ export function applyActionsToItinerary(itinerary = [], actions = []) {
   let needsRegenerate = false;
   const applied = [];
 
-  const findActivity = (placeId, title, dayHint) => {
-    const days = dayHint ? next.filter((d) => d.dayNumber === dayHint) : next;
-    for (const day of days) {
-      const idx = day.activities.findIndex((a) =>
-        (placeId && a.placeId === placeId) ||
-        (title && String(a.title).toLowerCase() === String(title).toLowerCase())
-      );
-      if (idx >= 0) return { day, idx };
+  const norm = (s) => (s ? String(s).toLowerCase().replace(/[^a-z0-9]/g, ' ').trim() : '');
+
+  const findActivity = (placeId, title, dayHint, position) => {
+    const days = (dayHint != null && dayHint !== '')
+      ? next.filter((d) => Number(d.dayNumber) === Number(dayHint))
+      : next;
+
+    const searchTitle = norm(title);
+
+    // 1. Position / ordinal matching (e.g. 1st activity of Day 1)
+    if (days.length > 0) {
+      const targetPos = Number(position);
+      if (Number.isFinite(targetPos) && targetPos >= 1) {
+        for (const day of days) {
+          const nonLunchActs = day.activities
+            .map((act, i) => ({ act, i }))
+            .filter(({ act }) => act.slotType !== 'Culinary Immersion & Local Flavors' && act.slotType !== 'Lunch Break');
+          if (nonLunchActs[targetPos - 1]) return { day, idx: nonLunchActs[targetPos - 1].i };
+          if (day.activities[targetPos - 1]) return { day, idx: targetPos - 1 };
+        }
+      }
+
+      if (searchTitle) {
+        let ordinal = 0;
+        if (/\b(first|1st)\b/.test(searchTitle)) ordinal = 1;
+        else if (/\b(second|2nd)\b/.test(searchTitle)) ordinal = 2;
+        else if (/\b(third|3rd)\b/.test(searchTitle)) ordinal = 3;
+        else if (/\b(fourth|4th)\b/.test(searchTitle)) ordinal = 4;
+        else if (/\b(last)\b/.test(searchTitle)) ordinal = 999;
+
+        if (ordinal > 0) {
+          for (const day of days) {
+            const nonLunchActs = day.activities
+              .map((act, i) => ({ act, i }))
+              .filter(({ act }) => act.slotType !== 'Culinary Immersion & Local Flavors' && act.slotType !== 'Lunch Break');
+            if (ordinal === 999 && nonLunchActs.length > 0) {
+              return { day, idx: nonLunchActs[nonLunchActs.length - 1].i };
+            }
+            if (nonLunchActs[ordinal - 1]) return { day, idx: nonLunchActs[ordinal - 1].i };
+          }
+        }
+      }
     }
+
+    // 2. Exact placeId
+    if (placeId) {
+      for (const day of days) {
+        const idx = day.activities.findIndex((a) =>
+          a.placeId === placeId || a.id === placeId || (a.place && (a.place.id === placeId || a.place.placeId === placeId))
+        );
+        if (idx >= 0) return { day, idx };
+      }
+    }
+
+    // 3. Exact normalized title
+    if (searchTitle) {
+      for (const day of days) {
+        const idx = day.activities.findIndex((a) => norm(a.title || a.placeName || a.name) === searchTitle);
+        if (idx >= 0) return { day, idx };
+      }
+    }
+
+    // 4. Substring inclusion
+    if (searchTitle && searchTitle.length >= 3) {
+      for (const day of days) {
+        const idx = day.activities.findIndex((a) => {
+          const actTitle = norm(a.title || a.placeName || a.name);
+          return actTitle && (actTitle.includes(searchTitle) || searchTitle.includes(actTitle));
+        });
+        if (idx >= 0) return { day, idx };
+      }
+    }
+
+    // 5. Word-level overlap
+    if (searchTitle) {
+      const searchWords = searchTitle.split(/\s+/).filter((w) => w.length > 2 && !['the', 'and', 'activity', 'place', 'visit', 'nearby', 'from'].includes(w));
+      if (searchWords.length > 0) {
+        for (const day of days) {
+          const idx = day.activities.findIndex((a) => {
+            const actWords = norm(a.title || a.placeName || a.name).split(/\s+/);
+            return searchWords.some((sw) => actWords.includes(sw));
+          });
+          if (idx >= 0) return { day, idx };
+        }
+      }
+    }
+
     return null;
   };
 
@@ -162,7 +261,7 @@ export function applyActionsToItinerary(itinerary = [], actions = []) {
     }
 
     if (action.type === 'REMOVE_ACTIVITY') {
-      const found = findActivity(action.placeId, action.title, action.day);
+      const found = findActivity(action.placeId, action.title || action.targetTitle, action.day, action.position || action.targetPosition);
       if (!found) continue;
       found.day.activities.splice(found.idx, 1);
       applied.push(action);
@@ -170,10 +269,10 @@ export function applyActionsToItinerary(itinerary = [], actions = []) {
     }
 
     if (action.type === 'MOVE_ACTIVITY') {
-      const found = findActivity(action.placeId, action.title, action.fromDay);
+      const found = findActivity(action.placeId, action.title || action.targetTitle, action.fromDay || action.day, action.position || action.targetPosition);
       if (!found) continue;
       const [act] = found.day.activities.splice(found.idx, 1);
-      const target = next.find((d) => d.dayNumber === action.toDay) || next[next.length - 1];
+      const target = next.find((d) => Number(d.dayNumber) === Number(action.toDay)) || next[next.length - 1];
       if (target) {
         target.activities.push(act);
         applied.push(action);
@@ -182,7 +281,7 @@ export function applyActionsToItinerary(itinerary = [], actions = []) {
     }
 
     if (action.type === 'ADD_ACTIVITY' && (action.place || action.title)) {
-      const target = next.find((d) => d.dayNumber === action.day) || next[0];
+      const target = next.find((d) => Number(d.dayNumber) === Number(action.day)) || next[0];
       if (!target) continue;
       const place = action.place || {};
       target.activities.push({
@@ -207,7 +306,8 @@ export function applyActionsToItinerary(itinerary = [], actions = []) {
     if (action.type === 'REPLACE_ACTIVITY') {
       const targetId = action.targetPlaceId || action.placeId;
       const targetTitle = action.targetTitle || action.title;
-      const found = findActivity(targetId, targetTitle, action.day || action.fromDay);
+      const targetPos = action.targetPosition || action.position;
+      const found = findActivity(targetId, targetTitle, action.day || action.fromDay, targetPos);
       if (!found) continue;
 
       const oldAct = found.day.activities[found.idx];
@@ -215,17 +315,21 @@ export function applyActionsToItinerary(itinerary = [], actions = []) {
       const newPlaceId = repl.id || repl.placeId || action.newPlaceId || `replace_${Date.now()}`;
       const newTitle = repl.name || repl.title || action.replacementTitle || 'Curated Attraction';
 
-      // Duplicate prevention within the target day
-      const isDuplicate = found.day.activities.some((a, i) => i !== found.idx && (
-        (newPlaceId && a.placeId === newPlaceId) ||
-        (newTitle && String(a.title).toLowerCase() === String(newTitle).toLowerCase())
+      // Duplicate resolution: if the replacement place is already in this day, remove the duplicate
+      const dupIdx = found.day.activities.findIndex((a, i) => i !== found.idx && (
+        (newPlaceId && (a.placeId === newPlaceId || a.id === newPlaceId)) ||
+        (newTitle && norm(a.title || a.placeName) === norm(newTitle))
       ));
-      if (isDuplicate) continue;
+      if (dupIdx >= 0) {
+        found.day.activities.splice(dupIdx, 1);
+        if (dupIdx < found.idx) found.idx -= 1;
+      }
 
       // Swap in-place preserving slot, timing and order
       const newAct = {
         ...oldAct,
         placeId: newPlaceId,
+        id: newPlaceId,
         title: newTitle,
         placeName: newTitle,
         description: repl.description || `Replaced ${oldAct.title} with ${newTitle}.`,
@@ -237,6 +341,8 @@ export function applyActionsToItinerary(itinerary = [], actions = []) {
         travelTip: repl.travelTip || repl.tip || oldAct.travelTip || 'Recommended cultural replacement.',
         source: 'concierge-replacement',
         time: oldAct.time,
+        startTime: oldAct.startTime,
+        endTime: oldAct.endTime,
         slotType: oldAct.slotType
       };
 
