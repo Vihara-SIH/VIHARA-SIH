@@ -774,11 +774,12 @@ export const fetchDestinationCategoryDiscovery = async (destinationInput) => {
             placeId: placeId || data.destination?.placeId || null,
             availableCategories: data.availableCategories || [],
             unavailableCategories: data.unavailableCategories || [],
+            categoryStatus: data.categoryStatus || {},
             subcategories: data.subcategories || [],
             categoryEvidence: data.categoryEvidence || {},
-            source: data.source || 'google-places-nearby',
+            source: data.source || (data.provider === 'google-places-new' ? 'google-places-new' : 'google-places-nearby'),
             fallback: !!data.fallback,
-            provider: data.provider || 'google'
+            provider: data.provider || 'google-places-new'
           };
           clientCategoryCache.set(cacheKey, result);
           return result;
@@ -793,19 +794,23 @@ export const fetchDestinationCategoryDiscovery = async (destinationInput) => {
   const simpleKey = name.toLowerCase().split(',')[0].trim();
   const catalog = DESTINATION_CATALOG[simpleKey];
   if (catalog && Array.isArray(catalog.subcategories)) {
+    const avail = ['spiritual', 'heritage', 'nature', 'adventure'].filter(c => {
+      const def = CATEGORY_DEFINITIONS[c];
+      return def?.subcategories.some(s => catalog.subcategories.includes(s.id));
+    });
+    const statusMap = {};
+    for (const c of ['spiritual', 'heritage', 'nature', 'adventure']) {
+      statusMap[c] = avail.includes(c) ? 'CONFIRMED_AVAILABLE' : 'TEMPORARILY_UNAVAILABLE';
+    }
+
     const fallbackResult = {
       destinationName: catalog.name || name,
       latitude: lat || catalog.coordinates?.lat,
       longitude: lng || catalog.coordinates?.lng,
       placeId: placeId || catalog.id,
-      availableCategories: ['spiritual', 'heritage', 'nature', 'adventure'].filter(c => {
-        const def = CATEGORY_DEFINITIONS[c];
-        return def?.subcategories.some(s => catalog.subcategories.includes(s.id));
-      }),
-      unavailableCategories: ['spiritual', 'heritage', 'nature', 'adventure'].filter(c => {
-        const def = CATEGORY_DEFINITIONS[c];
-        return !def?.subcategories.some(s => catalog.subcategories.includes(s.id));
-      }),
+      availableCategories: avail,
+      unavailableCategories: ['spiritual', 'heritage', 'nature', 'adventure'].filter(c => !avail.includes(c)),
+      categoryStatus: statusMap,
       subcategories: catalog.subcategories,
       categoryEvidence: {},
       source: 'catalog-fallback',
@@ -818,6 +823,12 @@ export const fetchDestinationCategoryDiscovery = async (destinationInput) => {
 
   // 3. Dynamic destination with zero Google API access and no catalog entry:
   // Must NOT invent hardcoded categories! Return honestly empty with fallback flag.
+  const emptyStatus = {
+    spiritual: 'TEMPORARILY_UNAVAILABLE',
+    heritage: 'TEMPORARILY_UNAVAILABLE',
+    nature: 'TEMPORARILY_UNAVAILABLE',
+    adventure: 'TEMPORARILY_UNAVAILABLE'
+  };
   const emptyFallback = {
     destinationName: name || 'Destination',
     latitude: lat,
@@ -825,6 +836,7 @@ export const fetchDestinationCategoryDiscovery = async (destinationInput) => {
     placeId,
     availableCategories: [],
     unavailableCategories: ['spiritual', 'heritage', 'nature', 'adventure'],
+    categoryStatus: emptyStatus,
     subcategories: [],
     categoryEvidence: {},
     source: 'fallback-empty',
@@ -847,6 +859,7 @@ export const analyzeCategoriesForDestinations = async (selectedDestinationIds = 
         id: cat.id,
         name: cat.name,
         enabled: false,
+        status: 'NOT_CONFIRMED',
         subcategories: cat.subcategories.map(sub => ({
           id: sub.id,
           name: sub.name,
@@ -896,13 +909,22 @@ export const analyzeCategoriesForDestinations = async (selectedDestinationIds = 
 
     const hasLiveSource = destCategoryResults.some(d => !d.fallback && (d.source === 'google-places-nearby' || d.source === 'google-places-new' || d.provider === 'google-places-new'));
 
+    // Determine aggregate category status
+    let categoryStatus = 'NOT_CONFIRMED';
+    if (isMainCategoryEnabled) {
+      categoryStatus = 'CONFIRMED_AVAILABLE';
+    } else if (destCategoryResults.every(d => d.categoryStatus?.[cat.id] === 'TEMPORARILY_UNAVAILABLE' || d.fallback)) {
+      categoryStatus = 'TEMPORARILY_UNAVAILABLE';
+    }
+
     matrix[cat.id] = {
       id: cat.id,
       name: cat.name,
       enabled: isMainCategoryEnabled,
+      status: categoryStatus,
       subcategories: subcategoryAnalysis,
       evidence: aggregatedEvidence,
-      source: hasLiveSource ? 'google-places-nearby' : 'catalog-fallback',
+      source: hasLiveSource ? 'google-places-new' : 'catalog-fallback',
       isRealTime: hasLiveSource
     };
   }
