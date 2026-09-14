@@ -22,13 +22,14 @@ export async function generateRouteData(itinerary, tripParams = {}) {
   }
 
   let step = waypoints.length;
-  for (const day of itinerary || []) {
+  const dayList = Array.isArray(itinerary) ? itinerary : (itinerary?.days || []);
+  for (const day of dayList) {
     for (const act of day.activities || []) {
-      if (!act.placeId) continue;
+      if (!act.placeId && !act.id && !act.title && !act.name) continue;
       waypoints.push({
         stepIndex: step++,
-        name: act.title,
-        type: act.category,
+        name: act.title || act.name || act.placeName || 'Attraction',
+        type: act.category || 'Attraction',
         city: day.city,
         dayNumber: day.dayNumber,
         coordinates: act.coordinates || null
@@ -52,20 +53,26 @@ export async function generateRouteData(itinerary, tripParams = {}) {
     const from = waypoints[i];
     const to = waypoints[i + 1];
     const isDifferentCity = from?.city && to?.city && from.city !== to.city;
+    const isLongDistance = (Number(leg.distanceKm) || 0) > 80;
+    const isIntercity = isDifferentCity || isLongDistance;
     return {
       legIndex: i + 1,
       from: leg.from || from?.name,
       to: leg.to || to?.name,
-      mode: leg.mode || (isDifferentCity ? 'Intercity transfer' : 'Local transit'),
+      mode: leg.mode || (isIntercity ? 'Intercity transfer' : 'Driving'),
+      legType: isIntercity ? 'intercity' : 'intra-city',
       distance: leg.distance,
       duration: leg.duration,
       distanceKm: leg.distanceKm,
       durationMinutes: leg.durationMinutes,
+      polyline: leg.polyline || null,
       estimated: leg.estimated ?? routed.estimated,
+      fallback: leg.fallback ?? routed.fallback,
       source: leg.source || routed.source,
-      tip: leg.tip || (routed.estimated
+      provider: leg.provider || routed.provider || (routed.fallback ? 'haversine-fallback' : 'google-routes-v2'),
+      tip: leg.tip || (routed.fallback
         ? 'Approximate travel time. Not a live traffic route.'
-        : 'Live distance from routing provider.')
+        : 'Live distance from Google Routes API v2.')
     };
   });
 
@@ -76,10 +83,13 @@ export async function generateRouteData(itinerary, tripParams = {}) {
     origin: originName,
     waypoints,
     legs,
-    totalDistance: totalKm ? `${Math.round(totalKm)} km` : 'See leg estimates',
-    totalTransitTime: totalMin ? `Approx. ${Math.round(totalMin / 60)} h ${totalMin % 60} m` : 'See leg estimates',
-    estimated: routed.estimated,
-    source: routed.source
+    totalDistance: totalKm ? `${Math.round(totalKm * 10) / 10} km` : 'See leg estimates',
+    totalTransitTime: totalMin ? (totalMin >= 60 ? `${Math.floor(totalMin / 60)} h ${totalMin % 60} m` : `${totalMin} mins`) : 'See leg estimates',
+    polyline: routed.polyline || null,
+    estimated: !!routed.estimated,
+    fallback: !!routed.fallback,
+    provider: routed.provider || (routed.fallback ? 'haversine-fallback' : 'google-routes-v2'),
+    source: routed.source || (routed.fallback ? 'haversine-fallback' : 'google-routes-v2')
   };
 }
 

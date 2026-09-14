@@ -298,6 +298,23 @@ export const TripProvider = ({ children }) => {
       const matrix = await analyzeCategoriesForDestinations(destinations);
       if (isMounted) {
         setCategoryMatrix(matrix);
+
+        // Prune any selected categories/subcategories that are no longer available in the new matrix
+        setSelectedCategories(prev => {
+          if (!prev || !prev.length) return [];
+          const allAvailableSubIds = new Set();
+          const allAvailableMainIds = new Set();
+          for (const [mainId, cat] of Object.entries(matrix || {})) {
+            if (cat.enabled) {
+              allAvailableMainIds.add(mainId);
+              (cat.subcategories || []).forEach(s => {
+                if (s.available) allAvailableSubIds.add(s.id);
+              });
+            }
+          }
+          return prev.filter(id => allAvailableSubIds.has(id) || allAvailableMainIds.has(id));
+        });
+
         // Ensure destinationOrder includes all current destinations
         setDestinationOrder(prev => {
           const prevIds = prev.map(p => (typeof p === 'object' ? (p.placeId || p.name) : p));
@@ -986,7 +1003,15 @@ export const TripProvider = ({ children }) => {
       setPlaceCards(savedTrip.placeCards || savedTrip.places);
     }
     if (savedTrip.routeData || savedTrip.routes) {
-      setRouteData(savedTrip.routeData || savedTrip.routes);
+      const rawRoute = savedTrip.routeData || savedTrip.routes;
+      const normalizedRoute = (typeof rawRoute === 'object' && rawRoute !== null)
+        ? {
+            ...rawRoute,
+            provider: rawRoute.provider || 'legacy/unknown',
+            fallback: rawRoute.fallback !== undefined ? rawRoute.fallback : (rawRoute.provider !== 'google-routes-v2')
+          }
+        : rawRoute;
+      setRouteData(normalizedRoute);
     }
     if (savedTrip.budgetBreakdown) setBudgetBreakdown(savedTrip.budgetBreakdown);
     if (savedTrip.linkedEvents || savedTrip.events) setLinkedEvents(savedTrip.linkedEvents || savedTrip.events);

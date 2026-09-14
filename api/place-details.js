@@ -58,15 +58,22 @@ export default async function handler(req, res) {
   // 1. If Google API Key available and placeId is not a fallback OSM ID
   if (googleApiKey && placeId && !placeId.startsWith('osm_')) {
     try {
-      const googleUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${encodeURIComponent(placeId)}&fields=name,formatted_address,geometry,address_components,place_id&key=${encodeURIComponent(googleApiKey)}`;
-      const googleRes = await fetch(googleUrl);
-      const googleData = await googleRes.json();
+      const cleanPlaceId = placeId.replace(/^places\//, '');
+      const googleUrl = `https://places.googleapis.com/v1/places/${encodeURIComponent(cleanPlaceId)}`;
+      const googleRes = await fetch(googleUrl, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Goog-Api-Key': googleApiKey,
+          'X-Goog-FieldMask': 'id,displayName,formattedAddress,location,addressComponents,types,rating,userRatingCount,currentOpeningHours,googleMapsUri'
+        },
+        signal: AbortSignal.timeout(8000)
+      });
 
-      if (googleData.status === 'OK' && googleData.result) {
-        const r = googleData.result;
-        const latitude = r.geometry?.location?.lat;
-        const longitude = r.geometry?.location?.lng;
-        const components = r.address_components || [];
+      if (googleRes.ok) {
+        const r = await googleRes.json();
+        const latitude = r.location?.latitude ?? r.geometry?.location?.lat;
+        const longitude = r.location?.longitude ?? r.geometry?.location?.lng;
+        const components = r.addressComponents || r.address_components || [];
 
         let city = '';
         let state = '';
@@ -74,26 +81,27 @@ export default async function handler(req, res) {
 
         for (const comp of components) {
           const types = comp.types || [];
+          const text = comp.longText || comp.long_name || '';
           if (!city && (types.includes('locality') || types.includes('sublocality_level_1') || types.includes('postal_town') || types.includes('administrative_area_level_2'))) {
-            city = comp.long_name;
+            city = text;
           }
           if (!state && types.includes('administrative_area_level_1')) {
-            state = comp.long_name;
+            state = text;
           }
           if (!country && types.includes('country')) {
-            country = comp.long_name;
+            country = text;
           }
         }
 
-        const name = r.name || city || 'Selected Place';
-        const formattedAddress = r.formatted_address || [name, state, country].filter(Boolean).join(', ');
+        const name = r.displayName?.text || r.name || city || 'Selected Place';
+        const formattedAddress = r.formattedAddress || r.formatted_address || [name, state, country].filter(Boolean).join(', ');
         const currentLocationName = formattedAddress || `${name}, ${state || ''}, ${country || 'India'}`;
 
         return res.status(200).json({
           success: true,
-          provider: 'google',
+          provider: 'google-places-new',
           place: {
-            placeId: r.place_id || placeId,
+            placeId: r.id || placeId,
             name,
             formattedAddress,
             currentLocationName,
@@ -103,14 +111,19 @@ export default async function handler(req, res) {
             longitude,
             city: city || name,
             state: state || '',
-            country: country || 'India'
+            country: country || 'India',
+            rating: r.rating || null,
+            userRatingCount: r.userRatingCount || 0,
+            types: r.types || [],
+            googleMapsUri: r.googleMapsUri || null
           }
         });
       } else {
-        console.warn('[VIHARA Place Details] Google Place Details status:', googleData.status, googleData.error_message);
+        const errText = await googleRes.text().catch(() => '');
+        console.warn(`[VIHARA Place Details] Google Places (New) returned ${googleRes.status}:`, errText.slice(0, 200));
       }
     } catch (err) {
-      console.warn('[VIHARA Place Details] Google Place Details error:', err.message);
+      console.warn('[VIHARA Place Details] Google Places (New) error:', err.message);
     }
   }
 

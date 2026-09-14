@@ -3,6 +3,7 @@ import { orderByProximity, clusterPlaces, estimateTravelMinutes } from './geo.js
 import { rankPlaces, selectDailyCandidates } from './placeRanker.js';
 import { fetchNearbyPlaces, mergeCatalogAndLive } from './nearbyClient.js';
 import { fetchWeather } from './weatherClient.js';
+import { getRouteDuration } from './routeClient.js';
 import { parseDurationMinutes, parseClock, formatClock, destName, placeMatchesCategories } from './schemas.js';
 import { parseEntryCost, getActivityCost } from './budgetEngine.js';
 
@@ -82,15 +83,18 @@ function allocateDays(destinations, totalDays) {
 }
 
 function hoursOpenAt(place, minutes) {
-  const hours = place.visitingHours;
+  const hours = place.visitingHours || place.openingHours;
   if (!hours) return true;
-  const open = parseClock(typeof hours === 'object' ? hours.open : String(hours).split('-')[0]);
-  const close = parseClock(typeof hours === 'object' ? hours.close : String(hours).split('-')[1]);
+  const open = parseClock(typeof hours === 'object' ? (hours.open || hours.openingTime) : String(hours).split('-')[0]);
+  const close = parseClock(typeof hours === 'object' ? (hours.close || hours.closingTime) : String(hours).split('-')[1]);
   if (open == null || close == null) return true;
   return minutes + 30 >= open && minutes + 40 <= close;
 }
 
-function packDay(places, dest, originCoords) {
+/**
+ * Packs activities for a single day using real Google Routes API v2 travel durations.
+ */
+export async function packDay(places, dest, originCoords, options = {}) {
   const ordered = orderByProximity(places, originCoords || dest.coordinates);
   const activities = [];
   let cursor = DAY_START;
@@ -98,8 +102,13 @@ function packDay(places, dest, originCoords) {
   let lunchInserted = false;
 
   for (const place of ordered) {
-    const travel = estimateTravelMinutes(prevCoord, place.coordinates || dest.coordinates);
-    let start = cursor + travel.minutes + (activities.length ? BUFFER : 0);
+    // Retrieve real Google Routes API v2 driving duration (with Haversine fallback)
+    const travel = await getRouteDuration(prevCoord, place.coordinates || dest.coordinates, {
+      travelMode: options.travelMode || 'DRIVE'
+    });
+
+    const travelMinutes = Number.isFinite(travel.durationMinutes) ? travel.durationMinutes : 15;
+    let start = cursor + travelMinutes + (activities.length ? BUFFER : 0);
 
     if (!lunchInserted && start >= LUNCH_START && start < LUNCH_END + 40) {
       activities.push({
@@ -125,12 +134,17 @@ function packDay(places, dest, originCoords) {
 
     const duration = parseDurationMinutes(place.estimatedVisitDuration, 90);
     if (!hoursOpenAt(place, start)) {
-      const openMins = parseClock(place.visitingHours?.open) ?? DAY_START;
+      const openHours = place.visitingHours || place.openingHours;
+      const openMins = parseClock(typeof openHours === 'object' ? (openHours.open || openHours.openingTime) : String(openHours || '').split('-')[0]) ?? DAY_START;
       if (openMins > start) start = openMins;
     }
 
     const end = start + duration;
-    if (end > DAY_END) break;
+
+    // Real travel-time aware feasibility: stop if daily daylight/operating bounds are exceeded
+    if (end > DAY_END && activities.length >= 2) {
+      break;
+    }
 
     const slotType = start < 12 * 60
       ? 'Morning Exploration'
@@ -143,7 +157,8 @@ function packDay(places, dest, originCoords) {
       startTime: formatClock(start),
       endTime: formatClock(end),
       slotType,
-      title: place.name,
+      title: place.name || place.title || place.placeName || 'Attraction',
+      placeName: place.name || place.title || place.placeName || 'Attraction',
       description: place.description,
       image: place.image,
       category: place.category || 'Heritage',
@@ -152,10 +167,12 @@ function packDay(places, dest, originCoords) {
         : (typeof place.visitingHours === 'string' ? place.visitingHours : '09:00 AM - 05:00 PM'),
       entryInfo: place.entryInfo || 'Standard Entry',
       travelTip: place.travelTips || place.rankReasons?.[0] || 'Arrive with buffer time for security checks.',
-      placeId: place.id,
-      coordinates: place.coordinates,
+      placeId: place.id || place.placeId,
+      coordinates: place.coordinates || (place.latitude && place.longitude ? { lat: place.latitude, lng: place.longitude } : null),
       visitDurationMinutes: duration,
-      travelMinutesBefore: travel.minutes,
+      travelMinutesBefore: travelMinutes,
+      travelDistanceKmBefore: travel.distanceKm,
+      travelRoute: travel,
       travelEstimate: travel,
       rankScore: place.rankScore,
       source: place.source || 'catalog'
@@ -266,7 +283,7 @@ export async function generateIntelligentItinerary(tripData) {
 
       // Adapt place order based on weather (indoor on rainy days, outdoor on clear)
       const weatherAdapted = weatherAdaptRanking(picked, weather);
-      const activities = packDay(weatherAdapted, dest, originCoords);
+      const activities = await packDay(weatherAdapted, dest, originCoords, { travelMode: tripData.travelMode || 'DRIVE' });
 
       itinerary.push({
         dayNumber,
@@ -300,7 +317,7 @@ export async function generateIntelligentItinerary(tripData) {
         city: last.name
       }),
       highlights: picked.map((p) => p.name),
-      activities: packDay(picked, last, last.coordinates)
+      activities: await packDay(picked, last, last.coordinates, { travelMode: tripData.travelMode || 'DRIVE' })
     });
   }
 

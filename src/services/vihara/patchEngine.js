@@ -167,7 +167,7 @@ export function applyActionsToItinerary(itinerary = [], actions = []) {
 
   const findActivity = (placeId, title, dayHint, position) => {
     const days = (dayHint != null && dayHint !== '')
-      ? next.filter((d) => Number(d.dayNumber) === Number(dayHint))
+      ? next.filter((d) => Number(d.dayNumber || d.day) === Number(dayHint))
       : next;
 
     const searchTitle = norm(title);

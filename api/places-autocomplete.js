@@ -45,38 +45,58 @@ export default async function handler(req, res) {
 
   const googleApiKey = (process.env.GOOGLE_MAPS_API_KEY || process.env.GOOGLE_PLACES_API_KEY || '').trim();
 
-  // 1. Try Google Places Autocomplete API if key is available
+  // 1. Try Google Places API (New) Autocomplete if key is available
   if (googleApiKey) {
     try {
-      const googleUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&language=en&key=${encodeURIComponent(googleApiKey)}`;
-      const googleRes = await fetch(googleUrl);
-      const googleData = await googleRes.json();
+      const googleUrl = 'https://places.googleapis.com/v1/places:autocomplete';
+      const googleRes = await fetch(googleUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Goog-Api-Key': googleApiKey
+        },
+        body: JSON.stringify({
+          input,
+          languageCode: 'en'
+        }),
+        signal: AbortSignal.timeout(8000)
+      });
 
-      if (googleData.status === 'OK' && Array.isArray(googleData.predictions)) {
-        const predictions = googleData.predictions.map((p) => ({
-          placeId: p.place_id,
-          description: p.description,
-          mainText: p.structured_formatting?.main_text || p.description,
-          secondaryText: p.structured_formatting?.secondary_text || '',
-          types: p.types || []
-        }));
+      if (googleRes.ok) {
+        const googleData = await googleRes.json();
+        const suggestions = Array.isArray(googleData.suggestions) ? googleData.suggestions : [];
+
+        const predictions = suggestions
+          .map((s) => {
+            const p = s.placePrediction;
+            if (!p) return null;
+            const placeId = p.placeId || (p.place ? p.place.replace(/^places\//, '') : '');
+            const description = p.text?.text || p.structuredFormat?.mainText?.text || '';
+            const mainText = p.structuredFormat?.mainText?.text || description;
+            const secondaryText = p.structuredFormat?.secondaryText?.text || '';
+            const types = p.types || [];
+
+            return {
+              placeId,
+              description,
+              mainText,
+              secondaryText,
+              types
+            };
+          })
+          .filter(Boolean);
 
         return res.status(200).json({
           success: true,
-          provider: 'google',
+          provider: 'google-places-new',
           predictions
         });
-      } else if (googleData.status === 'ZERO_RESULTS') {
-        return res.status(200).json({
-          success: true,
-          provider: 'google',
-          predictions: []
-        });
       } else {
-        console.warn('[VIHARA Places API] Google Places Autocomplete status:', googleData.status, googleData.error_message);
+        const errText = await googleRes.text().catch(() => '');
+        console.warn(`[VIHARA Places API] Google Places (New) Autocomplete returned ${googleRes.status}:`, errText.slice(0, 200));
       }
     } catch (err) {
-      console.warn('[VIHARA Places API] Google Places Autocomplete query error:', err.message);
+      console.warn('[VIHARA Places API] Google Places (New) Autocomplete error:', err.message);
     }
   }
 

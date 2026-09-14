@@ -699,7 +699,7 @@ export const getDestinationData = async (destinationInput) => {
     };
   }
 
-  // Dynamic Google Places Destination Fallback
+  // Dynamic Google Places Destination
   const displayName = customObj?.name || (simpleName ? simpleName.charAt(0).toUpperCase() + simpleName.slice(1) : 'Destination');
   const lat = customObj?.latitude !== undefined ? Number(customObj.latitude) : 20.5937;
   const lng = customObj?.longitude !== undefined ? Number(customObj.longitude) : 78.9629;
@@ -713,66 +713,131 @@ export const getDestinationData = async (destinationInput) => {
     state,
     tagline: formattedAddress || 'Cultural Heritage Destination',
     coordinates: { lat, lng },
-    subcategories: [
-      'temples', 'pilgrimage-sites', 'spiritual-towns',
-      'forts', 'palaces', 'historical-monuments', 'unesco-sites', 'heritage-walks',
-      'hills-valleys', 'lakes', 'waterfalls', 'beaches', 'national-parks'
-    ],
-    places: [
-      {
-        id: `${simpleName || 'place'}-heritage-landmark`,
-        name: `${displayName} Historical Landmarks & Heritage`,
-        category: 'Heritage',
-        subcategories: ['historical-monuments', 'heritage-walks', 'forts'],
-        description: `Explore the vibrant architectural legacy, royal history, and iconic landmarks of ${displayName}.`,
-        image: 'https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?auto=format&fit=crop&w=800&q=80',
-        coordinates: { lat, lng },
-        city: displayName,
-        state,
-        country: 'India',
-        visitingHours: { open: '09:00 AM', close: '05:30 PM' },
-        entryInfo: 'Standard Entry',
-        travelTips: 'Arrive early for serenity and great photography.',
-        culinarySpecialty: 'Regional Specialties & Artisanal Cuisine'
-      },
-      {
-        id: `${simpleName || 'place'}-spiritual-temple`,
-        name: `${displayName} Sacred Sanctum & Ancient Temples`,
-        category: 'Spiritual',
-        subcategories: ['temples', 'pilgrimage-sites', 'spiritual-towns'],
-        description: `Experience revered spiritual sanctuaries and serene temple architecture in ${displayName}.`,
-        image: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=800&q=80',
-        coordinates: { lat: lat + 0.005, lng: lng + 0.005 },
-        city: displayName,
-        state,
-        country: 'India',
-        visitingHours: { open: '06:00 AM', close: '08:30 PM' },
-        entryInfo: 'Free Entry',
-        travelTips: 'Experience tranquil morning and sunset prayer rituals.',
-        culinarySpecialty: 'Temple Prasadam & Traditional Meals'
-      },
-      {
-        id: `${simpleName || 'place'}-sunset-promenade`,
-        name: `${displayName} Promenade & Cultural Bazaar`,
-        category: 'Nature',
-        subcategories: ['heritage-walks', 'lakes', 'hills-valleys'],
-        description: `Vibrant twilight promenade, local handicraft markets, and scenic sunset views in ${displayName}.`,
-        image: 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=800&q=80',
-        coordinates: { lat: lat - 0.005, lng: lng - 0.005 },
-        city: displayName,
-        state,
-        country: 'India',
-        visitingHours: { open: 'Open until 10:00 PM' },
-        entryInfo: 'Free Public Access',
-        travelTips: 'Great spot for purchasing local souvenirs and street food delicacies.',
-        culinarySpecialty: 'Local Sweets & Street Delicacies'
-      }
-    ]
+    subcategories: customObj?.subcategories || [],
+    places: customObj?.places || []
   };
 };
 
+// Client-side cache for category discovery (15-minute TTL per session)
+const clientCategoryCache = new Map();
+
 /**
- * Evaluates dynamic category and subcategory availability for multiple selected destinations.
+ * Real-Time Category Discovery for a destination via /api/destination-categories
+ * Fetches verified Google Places Nearby results and maps them deterministically to VIHARA categories.
+ */
+export const fetchDestinationCategoryDiscovery = async (destinationInput) => {
+  let name = '';
+  let lat = null;
+  let lng = null;
+  let placeId = '';
+
+  if (typeof destinationInput === 'object' && destinationInput !== null) {
+    name = destinationInput.name || destinationInput.destinationName || destinationInput.formattedAddress || '';
+    lat = destinationInput.latitude !== undefined ? Number(destinationInput.latitude) : (destinationInput.lat !== undefined ? Number(destinationInput.lat) : null);
+    lng = destinationInput.longitude !== undefined ? Number(destinationInput.longitude) : (destinationInput.lng !== undefined ? Number(destinationInput.lng) : null);
+    placeId = destinationInput.placeId || destinationInput.id || '';
+  } else if (typeof destinationInput === 'string') {
+    name = destinationInput.trim();
+    const simpleKey = name.toLowerCase().split(',')[0].trim();
+    if (DESTINATION_CATALOG[simpleKey]) {
+      const cat = DESTINATION_CATALOG[simpleKey];
+      name = cat.name || name;
+      lat = cat.coordinates?.lat ?? null;
+      lng = cat.coordinates?.lng ?? null;
+      placeId = cat.id || simpleKey;
+    }
+  }
+
+  const cacheKey = `${lat !== null ? lat.toFixed(3) : 'x'}_${lng !== null ? lng.toFixed(3) : 'x'}_${name.toLowerCase()}`;
+  if (clientCategoryCache.has(cacheKey)) {
+    return clientCategoryCache.get(cacheKey);
+  }
+
+  // 1. Primary: Query the secure /api/destination-categories backend endpoint
+  if (lat !== null && lng !== null && Number.isFinite(lat) && Number.isFinite(lng)) {
+    try {
+      const params = new URLSearchParams({
+        latitude: String(lat),
+        longitude: String(lng),
+        destination: name,
+        placeId: placeId || ''
+      });
+      const baseUrl = typeof window !== 'undefined' ? '' : (process.env.TEST_BASE_URL || 'http://localhost:5173');
+      const res = await fetch(`${baseUrl}/api/destination-categories?${params.toString()}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          const result = {
+            destinationName: name || data.destination?.name || 'Destination',
+            latitude: lat,
+            longitude: lng,
+            placeId: placeId || data.destination?.placeId || null,
+            availableCategories: data.availableCategories || [],
+            unavailableCategories: data.unavailableCategories || [],
+            subcategories: data.subcategories || [],
+            categoryEvidence: data.categoryEvidence || {},
+            source: data.source || 'google-places-nearby',
+            fallback: !!data.fallback,
+            provider: data.provider || 'google'
+          };
+          clientCategoryCache.set(cacheKey, result);
+          return result;
+        }
+      }
+    } catch (err) {
+      console.warn(`[destinationService] Category discovery API call failed for "${name}":`, err.message);
+    }
+  }
+
+  // 2. Fallback: Check knowledge catalog ONLY when Google Places API is unavailable
+  const simpleKey = name.toLowerCase().split(',')[0].trim();
+  const catalog = DESTINATION_CATALOG[simpleKey];
+  if (catalog && Array.isArray(catalog.subcategories)) {
+    const fallbackResult = {
+      destinationName: catalog.name || name,
+      latitude: lat || catalog.coordinates?.lat,
+      longitude: lng || catalog.coordinates?.lng,
+      placeId: placeId || catalog.id,
+      availableCategories: ['spiritual', 'heritage', 'nature', 'adventure'].filter(c => {
+        const def = CATEGORY_DEFINITIONS[c];
+        return def?.subcategories.some(s => catalog.subcategories.includes(s.id));
+      }),
+      unavailableCategories: ['spiritual', 'heritage', 'nature', 'adventure'].filter(c => {
+        const def = CATEGORY_DEFINITIONS[c];
+        return !def?.subcategories.some(s => catalog.subcategories.includes(s.id));
+      }),
+      subcategories: catalog.subcategories,
+      categoryEvidence: {},
+      source: 'catalog-fallback',
+      fallback: true,
+      provider: 'catalog-fallback'
+    };
+    clientCategoryCache.set(cacheKey, fallbackResult);
+    return fallbackResult;
+  }
+
+  // 3. Dynamic destination with zero Google API access and no catalog entry:
+  // Must NOT invent hardcoded categories! Return honestly empty with fallback flag.
+  const emptyFallback = {
+    destinationName: name || 'Destination',
+    latitude: lat,
+    longitude: lng,
+    placeId,
+    availableCategories: [],
+    unavailableCategories: ['spiritual', 'heritage', 'nature', 'adventure'],
+    subcategories: [],
+    categoryEvidence: {},
+    source: 'fallback-empty',
+    fallback: true,
+    provider: 'none'
+  };
+  clientCategoryCache.set(cacheKey, emptyFallback);
+  return emptyFallback;
+};
+
+/**
+ * Evaluates dynamic category and subcategory availability for multiple selected destinations
+ * based on verified real-time Google Places data.
  */
 export const analyzeCategoriesForDestinations = async (selectedDestinationIds = []) => {
   if (!selectedDestinationIds || selectedDestinationIds.length === 0) {
@@ -794,17 +859,18 @@ export const analyzeCategoriesForDestinations = async (selectedDestinationIds = 
     return matrix;
   }
 
-  const destDataList = await Promise.all(
-    selectedDestinationIds.map(id => getDestinationData(id))
+  // Independently discover real-time categories for each selected destination
+  const destCategoryResults = await Promise.all(
+    selectedDestinationIds.map(destInput => fetchDestinationCategoryDiscovery(destInput))
   );
 
   const matrix = {};
 
   for (const [key, cat] of Object.entries(CATEGORY_DEFINITIONS)) {
     const subcategoryAnalysis = cat.subcategories.map(sub => {
-      const availableIn = destDataList
+      const availableIn = destCategoryResults
         .filter(dest => dest.subcategories && dest.subcategories.includes(sub.id))
-        .map(dest => dest.name);
+        .map(dest => dest.destinationName);
 
       const isAvailable = availableIn.length > 0;
 
@@ -821,11 +887,23 @@ export const analyzeCategoriesForDestinations = async (selectedDestinationIds = 
 
     const isMainCategoryEnabled = subcategoryAnalysis.some(sub => sub.available);
 
+    // Aggregate real place evidence across all selected destinations
+    const aggregatedEvidence = [];
+    destCategoryResults.forEach(d => {
+      const ev = d.categoryEvidence?.[cat.id] || [];
+      aggregatedEvidence.push(...ev);
+    });
+
+    const hasLiveSource = destCategoryResults.some(d => !d.fallback && (d.source === 'google-places-nearby' || d.source === 'google-places-new' || d.provider === 'google-places-new'));
+
     matrix[cat.id] = {
       id: cat.id,
       name: cat.name,
       enabled: isMainCategoryEnabled,
-      subcategories: subcategoryAnalysis
+      subcategories: subcategoryAnalysis,
+      evidence: aggregatedEvidence,
+      source: hasLiveSource ? 'google-places-nearby' : 'catalog-fallback',
+      isRealTime: hasLiveSource
     };
   }
 

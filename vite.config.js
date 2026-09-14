@@ -7,6 +7,7 @@ import placeDetailsHandler from './api/place-details.js';
 import routesHandler from './api/routes.js';
 import weatherHandler from './api/weather.js';
 import placesNearbyHandler from './api/places-nearby.js';
+import destinationCategoriesHandler from './api/destination-categories.js';
 import sendItineraryHandler from './api/send-itinerary.js';
 
 // https://vite.dev/config/
@@ -23,6 +24,7 @@ export default defineConfig(({ mode }) => {
     '/api/routes': routesHandler,
     '/api/weather': weatherHandler,
     '/api/places-nearby': placesNearbyHandler,
+    '/api/destination-categories': destinationCategoriesHandler,
     '/api/send-itinerary': sendItineraryHandler
   };
 

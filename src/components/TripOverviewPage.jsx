@@ -33,6 +33,7 @@ import { useStays } from '../context/StaysContext';
 import { sendItineraryWebhook } from '../services/webhookService';
 import { generateItineraryPDFBlob } from '../services/pdfService';
 import { PDFItineraryModal } from './PDFItineraryModal';
+import { decodePolyline } from '../services/vihara/geo';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -155,8 +156,33 @@ export function TripOverviewPage({ onPlanNewTrip, onBookStay }) {
           }
         });
 
-        // Draw connecting polyline
-        if (latLngs.length > 1) {
+        // Draw connecting polyline (real Google road polyline if available, fallback to waypoint straight line)
+        let routePolylinePoints = [];
+        if (selectedDayFilter === 'all' && routeData?.polyline) {
+          routePolylinePoints = decodePolyline(routeData.polyline);
+        } else if (routeData?.legs && routeData.legs.length > 0) {
+          const filteredLegs = selectedDayFilter === 'all'
+            ? routeData.legs
+            : routeData.legs.filter(l => !l.dayNumber || l.dayNumber === parseInt(selectedDayFilter, 10));
+          filteredLegs.forEach(l => {
+            if (l.polyline) {
+              const pts = decodePolyline(l.polyline);
+              if (pts && pts.length > 0) {
+                routePolylinePoints.push(...pts);
+              }
+            }
+          });
+        }
+
+        if (routePolylinePoints.length > 1) {
+          L.polyline(routePolylinePoints, {
+            color: '#735c00',
+            weight: 4,
+            opacity: 0.85,
+            lineJoin: 'round'
+          }).addTo(map);
+          map.fitBounds(L.latLngBounds(routePolylinePoints), { padding: [40, 40] });
+        } else if (latLngs.length > 1) {
           L.polyline(latLngs, {
             color: '#735c00',
             weight: 4,
@@ -761,9 +787,21 @@ export function TripOverviewPage({ onPlanNewTrip, onBookStay }) {
                   <Navigation className="w-3.5 h-3.5 text-[#735c00]" />
                   Interactive Travel Route Visualizer
                 </span>
-                <span className="text-[11px] text-gray-500 font-semibold">
-                  Total: {routeData?.totalDistance || '1,240 km'}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] text-gray-500 font-semibold">
+                    Total: {routeData?.totalDistance || '1,240 km'}
+                  </span>
+                  {routeData?.provider === 'google-routes-v2' && (
+                    <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                      Google Routes v2
+                    </span>
+                  )}
+                  {routeData?.fallback && (
+                    <span className="bg-amber-50 text-amber-800 border border-amber-200 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                      Haversine Fallback
+                    </span>
+                  )}
+                </div>
               </div>
               <div
                 ref={mapContainerRef}

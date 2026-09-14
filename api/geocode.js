@@ -29,33 +29,31 @@ export default async function handler(req, res) {
     });
   }
 
-  // Extract latitude and longitude from request body (POST) or query string (GET)
+  // Extract latitude and longitude or address from request body (POST) or query string (GET)
   let latitude = null;
   let longitude = null;
+  let address = null;
 
   if (req.method === 'POST') {
     const body = req.body || {};
     latitude = body.latitude !== undefined ? body.latitude : body.lat;
     longitude = body.longitude !== undefined ? body.longitude : body.lng;
+    address = body.address || body.query || body.q || null;
   } else {
     latitude = req.query?.latitude || req.query?.lat;
     longitude = req.query?.longitude || req.query?.lng;
+    address = req.query?.address || req.query?.query || req.query?.q || null;
   }
 
   const latNum = parseFloat(latitude);
   const lngNum = parseFloat(longitude);
+  const hasValidCoords = !isNaN(latNum) && !isNaN(lngNum) && latNum >= -90 && latNum <= 90 && lngNum >= -180 && lngNum <= 180;
+  const hasAddress = typeof address === 'string' && address.trim().length > 1;
 
-  if (
-    isNaN(latNum) ||
-    isNaN(lngNum) ||
-    latNum < -90 ||
-    latNum > 90 ||
-    lngNum < -180 ||
-    lngNum > 180
-  ) {
+  if (!hasValidCoords && !hasAddress) {
     return res.status(400).json({
       success: false,
-      error: 'Invalid coordinates. Latitude must be between -90 and 90, and longitude between -180 and 180.'
+      error: 'Invalid parameters. Please provide valid coordinates (lat/lng) or an address string.'
     });
   }
 
@@ -64,13 +62,17 @@ export default async function handler(req, res) {
   // 1. Try Google Maps Geocoding API if key is available
   if (googleApiKey) {
     try {
-      const googleUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latNum},${lngNum}&key=${encodeURIComponent(googleApiKey)}`;
-      const googleRes = await fetch(googleUrl);
+      const googleUrl = hasValidCoords
+        ? `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latNum},${lngNum}&key=${encodeURIComponent(googleApiKey)}`
+        : `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${encodeURIComponent(googleApiKey)}`;
+      const googleRes = await fetch(googleUrl, { signal: AbortSignal.timeout(8000) });
       const googleData = await googleRes.json();
 
       if (googleData.status === 'OK' && Array.isArray(googleData.results) && googleData.results.length > 0) {
         const result = googleData.results[0];
         const components = result.address_components || [];
+        const resLat = result.geometry?.location?.lat ?? latNum;
+        const resLng = result.geometry?.location?.lng ?? lngNum;
 
         let city = '';
         let state = '';
@@ -89,7 +91,6 @@ export default async function handler(req, res) {
           }
         }
 
-        // If locality was missing in deep components, find any reasonable name
         if (!city && state) city = state;
 
         const formattedAddress = result.formatted_address || [city, state, country].filter(Boolean).join(', ');
@@ -100,10 +101,10 @@ export default async function handler(req, res) {
           provider: 'google',
           location: {
             currentLocationName,
-            currentLocationLatitude: latNum,
-            currentLocationLongitude: lngNum,
-            latitude: latNum,
-            longitude: lngNum,
+            currentLocationLatitude: resLat,
+            currentLocationLongitude: resLng,
+            latitude: resLat,
+            longitude: resLng,
             city: city || 'Unknown City',
             state: state || '',
             country: country || 'India',
@@ -120,16 +121,22 @@ export default async function handler(req, res) {
 
   // 2. High-reliability fallback using OpenStreetMap Nominatim
   try {
-    const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latNum}&lon=${lngNum}&zoom=18&addressdetails=1`;
+    const nominatimUrl = hasValidCoords
+      ? `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latNum}&lon=${lngNum}&zoom=18&addressdetails=1`
+      : `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&addressdetails=1&limit=1`;
     const nominatimRes = await fetch(nominatimUrl, {
       headers: {
         'User-Agent': 'VIHARA-Tourism-App/1.0 (vihara-heritage-travel)'
-      }
+      },
+      signal: AbortSignal.timeout(8000)
     });
 
     if (nominatimRes.ok) {
       const data = await nominatimRes.json();
-      const addr = data.address || {};
+      const item = Array.isArray(data) ? (data[0] || {}) : (data || {});
+      const addr = item.address || {};
+      const resLat = hasValidCoords ? latNum : (parseFloat(item.lat) || latNum);
+      const resLng = hasValidCoords ? lngNum : (parseFloat(item.lon) || lngNum);
 
       const city =
         addr.city ||
@@ -139,24 +146,23 @@ export default async function handler(req, res) {
         addr.suburb ||
         addr.county ||
         addr.state_district ||
-        'Detected Location';
+        (hasAddress ? address : 'Detected Location');
 
       const state = addr.state || '';
       const country = addr.country || 'India';
 
-      // Clean formatted address
       const parts = [city, state, country].filter(Boolean);
-      const cleanFormatted = parts.length > 0 ? parts.join(', ') : (data.display_name || 'Detected Location');
+      const cleanFormatted = parts.length > 0 ? parts.join(', ') : (item.display_name || 'Detected Location');
 
       return res.status(200).json({
         success: true,
         provider: 'nominatim',
         location: {
           currentLocationName: cleanFormatted,
-          currentLocationLatitude: latNum,
-          currentLocationLongitude: lngNum,
-          latitude: latNum,
-          longitude: lngNum,
+          currentLocationLatitude: resLat,
+          currentLocationLongitude: resLng,
+          latitude: resLat,
+          longitude: resLng,
           city,
           state,
           country,

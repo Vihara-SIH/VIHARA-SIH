@@ -60,10 +60,15 @@ export function scorePlace(place, tripParams = {}, extras = {}) {
     reasons.push('Saved on your wishlist');
   }
 
+  let routeProximityKm = null;
   if (originCoords && place.coordinates) {
     const km = haversineKm(originCoords, place.coordinates);
-    if (km !== null && km < 8) score += 8;
-    else if (km !== null && km > 40) score -= 6;
+    routeProximityKm = km;
+    if (km !== null && km < 3) { score += 10; reasons.push('Very close to your base'); }
+    else if (km !== null && km < 8) score += 8;
+    else if (km !== null && km < 20) score += 4;
+    else if (km !== null && km < 40) score += 0;
+    else if (km !== null) score -= 6;
   }
 
   // Budget-aware scoring
@@ -89,7 +94,8 @@ export function scorePlace(place, tripParams = {}, extras = {}) {
   return {
     ...place,
     rankScore: Math.max(0, Math.min(100, Math.round(score))),
-    rankReasons: reasons.slice(0, 3)
+    rankReasons: reasons.slice(0, 3),
+    routeProximityKm
   };
 }
 

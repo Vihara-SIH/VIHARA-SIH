@@ -42,35 +42,75 @@ export default async function handler(req, res) {
 
   if (key) {
     try {
-      const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&type=${encodeURIComponent(hint.type)}&keyword=${encodeURIComponent(hint.keyword)}&key=${encodeURIComponent(key)}`;
-      const googleRes = await fetch(url);
-      const googleData = await googleRes.json();
-      if (googleData.status === 'OK' || googleData.status === 'ZERO_RESULTS') {
-        const places = (googleData.results || []).slice(0, 12).map((p) => ({
-          placeId: p.place_id,
-          place_id: p.place_id,
-          name: p.name,
-          vicinity: p.vicinity,
-          types: p.types,
-          rating: p.rating,
-          user_ratings_total: p.user_ratings_total,
-          geometry: p.geometry,
-          latitude: p.geometry?.location?.lat,
-          longitude: p.geometry?.location?.lng,
-          openingHours: p.opening_hours,
-          source: 'google'
-        }));
-        return res.status(200).json({
-          success: true,
-          provider: 'google',
-          estimated: false,
-          fallback: false,
-          places
-        });
+      const q = destination ? `${hint.keyword} in ${destination}` : hint.keyword;
+      const url = 'https://places.googleapis.com/v1/places:searchText';
+      const googleRes = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Goog-Api-Key': key,
+          'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.location,places.types,places.rating,places.userRatingCount,places.currentOpeningHours,places.googleMapsUri,places.priceLevel'
+        },
+        body: JSON.stringify({
+          textQuery: q,
+          locationBias: {
+            circle: {
+              center: { latitude: lat, longitude: lng },
+              radius
+            }
+          },
+          maxResultCount: 12
+        }),
+        signal: AbortSignal.timeout(8000)
+      });
+
+      if (googleRes.ok) {
+        const googleData = await googleRes.json();
+        const rawList = Array.isArray(googleData.places) ? googleData.places : [];
+        if (rawList.length > 0) {
+          const places = rawList.slice(0, 12).map((p) => {
+            const pLat = p.location?.latitude;
+            const pLng = p.location?.longitude;
+            const name = p.displayName?.text || p.name || 'Heritage Attraction';
+            const vicinity = p.formattedAddress || '';
+            return {
+              placeId: p.id,
+              place_id: p.id,
+              id: p.id,
+              name,
+              title: name,
+              vicinity,
+              formattedAddress: vicinity,
+              types: p.types || [],
+              rating: p.rating || null,
+              user_ratings_total: p.userRatingCount || 0,
+              userRatingCount: p.userRatingCount || 0,
+              geometry: { location: { lat: pLat, lng: pLng } },
+              latitude: pLat,
+              longitude: pLng,
+              coordinates: Number.isFinite(pLat) && Number.isFinite(pLng) ? { lat: pLat, lng: pLng } : null,
+              openingHours: p.currentOpeningHours ? { open_now: !!p.currentOpeningHours.openNow } : null,
+              googleMapsUri: p.googleMapsUri || null,
+              priceLevel: p.priceLevel || null,
+              source: 'google-places-new',
+              provider: 'google-places-new'
+            };
+          });
+
+          return res.status(200).json({
+            success: true,
+            provider: 'google-places-new',
+            estimated: false,
+            fallback: false,
+            places
+          });
+        }
+      } else {
+        const errText = await googleRes.text().catch(() => '');
+        console.warn(`[places-nearby] Google Places (New) returned ${googleRes.status}:`, errText.slice(0, 200));
       }
-      console.warn('[places-nearby] Google status', googleData.status, googleData.error_message);
     } catch (err) {
-      console.warn('[places-nearby] Google error', err.message);
+      console.warn('[places-nearby] Google Places (New) error:', err.message);
     }
   }
 
