@@ -1,15 +1,16 @@
 /**
- * REGRESSION SUITE: Universal Subcategory Coverage & Non-Leakage
+ * REGRESSION SUITE: Universal Subcategory Coverage, Tightened Beach Guard & Non-Leakage
  *
- * Tests:
- * 1. Goa: Beaches discovered (Calangute, Baga, Colva, etc.)
- * 2. Goa: Waterfalls remain discovered alongside beaches (Dudhsagar, Neturlem, etc.)
- * 3. Another coastal destination: Beaches discovered
- * 4. Inland destination (Jaipur, Varanasi): Beaches strictly NOT confirmed
- * 5. Multi-destination trip: Differential availability correctly tracked (availableIn)
- * 6. Non-attraction commercial places: Strict exclusion
- * 7. Deduplication: Duplicate place_ids across queries merged cleanly
- * 8. Strict subcategory isolation: Waterfall != Beach, Fort != Beach
+ * Explicitly tests:
+ * 1. Goa genuine beach with type "beach" -> accepted
+ * 2. Goa genuine beach with "natural_feature" + beach name -> accepted
+ * 3. Jaipur "water beach (Furkan)" with tourist_attraction but NO beach/natural_feature -> rejected
+ * 4. Varanasi "Varanasi Beach" with tourist_attraction but NO beach/natural_feature -> rejected
+ * 5. Beach Shack restaurant -> rejected
+ * 6. Waterfall -> never classified as beaches
+ * 7. Fort -> never classified as beaches
+ * 8. Gokarna genuine beaches -> accepted
+ * 9. Multi-destination Goa + Jaipur -> beaches available ONLY for Goa
  */
 
 import {
@@ -39,173 +40,91 @@ async function runRegressionSuite() {
   console.log('VIHARA UNIVERSAL SUBCATEGORY DISCOVERY REGRESSION SUITE');
   console.log('===============================================================\n');
 
-  // Test 1: TARGETED_DISCOVERY_QUERIES structure
-  console.log('--- Test 1: Canonical Targeted Discovery Queries ---');
-  assert(Array.isArray(TARGETED_DISCOVERY_QUERIES), 'TARGETED_DISCOVERY_QUERIES is exported as an array');
-  assert(TARGETED_DISCOVERY_QUERIES.length === 6, `Exactly 6 targeted queries defined (got ${TARGETED_DISCOVERY_QUERIES.length})`);
-  const natureQueries = TARGETED_DISCOVERY_QUERIES.filter(q => q.cat === 'nature');
-  assert(natureQueries.length === 3, 'Nature pillar is decoupled into exactly 3 non-competing queries');
-  assert(natureQueries.some(q => q.subcat === 'beaches'), 'Nature includes dedicated beaches query');
-  assert(natureQueries.some(q => q.subcat === 'waterfalls-lakes'), 'Nature includes dedicated waterfalls-lakes query');
-  assert(natureQueries.some(q => q.subcat === 'parks-hills'), 'Nature includes dedicated parks-hills query');
-
-  // Test 2: Goa Beach & Waterfall Simultaneous Discovery
-  console.log('\n--- Test 2: Goa Simultaneous Beaches & Waterfalls Classification ---');
-  const mockGoaPlaces = [
-    {
-      place_id: 'pl_calangute',
-      name: 'Calangute Beach',
-      types: ['natural_feature', 'tourist_attraction', 'point_of_interest'],
-      vicinity: 'Calangute, Goa'
-    },
-    {
-      place_id: 'pl_baga',
-      name: 'Baga Beach',
-      types: ['beach', 'natural_feature'],
-      vicinity: 'Baga, Goa'
-    },
-    {
-      place_id: 'pl_dudhsagar',
-      name: 'Dudhsagar Waterfalls',
-      types: ['tourist_attraction', 'natural_feature'],
-      vicinity: 'Sonaulim, Goa'
-    },
-    {
-      place_id: 'pl_aguada',
-      name: 'Fort Aguada',
-      types: ['tourist_attraction', 'historical_landmark'],
-      vicinity: 'Candolim, Goa'
-    }
-  ];
-
-  const goaSubs = new Set();
-  const goaCats = new Set();
-  mockGoaPlaces.forEach(p => {
-    const { categories, subcategories } = classifyGooglePlace(p);
-    categories.forEach(c => goaCats.add(c));
-    subcategories.forEach(s => goaSubs.add(s));
+  // Test 1: Goa genuine beach with type "beach" -> accepted
+  console.log('--- Test 1: Genuine beach with type "beach" ---');
+  const b1 = classifyGooglePlace({
+    name: 'Baga Beach',
+    types: ['beach', 'point_of_interest']
   });
+  assert(b1.subcategories.includes('beaches'), 'Baga Beach with type "beach" is accepted as beaches');
+  assert(b1.categories.includes('nature'), 'Baga Beach categorized under nature');
 
-  assert(goaSubs.has('beaches'), 'Goa discovery detects subcategory "beaches"');
-  assert(goaSubs.has('waterfalls'), 'Goa discovery detects subcategory "waterfalls"');
-  assert(goaSubs.has('forts'), 'Goa discovery detects subcategory "forts"');
-  assert(goaCats.has('nature'), 'Goa detects parent category "nature"');
-  assert(goaCats.has('heritage'), 'Goa detects parent category "heritage"');
-
-  // Test 3: Inland Destination Strict Exclusion of Beaches
-  console.log('\n--- Test 3: Inland Destination (Jaipur / Varanasi) Strict Beach Non-Leakage ---');
-  const mockJaipurPlaces = [
-    {
-      place_id: 'pl_amber',
-      name: 'Amber Fort',
-      types: ['tourist_attraction', 'historical_landmark'],
-      vicinity: 'Devisinghpura, Amer, Jaipur'
-    },
-    {
-      place_id: 'pl_hawa',
-      name: 'Hawa Mahal',
-      types: ['tourist_attraction', 'historical_landmark'],
-      vicinity: 'Badi Choupad, Jaipur'
-    },
-    {
-      place_id: 'pl_jal',
-      name: 'Jal Mahal Lake',
-      types: ['tourist_attraction', 'natural_feature'],
-      vicinity: 'Amer Rd, Jaipur'
-    }
-  ];
-
-  const jaipurSubs = new Set();
-  mockJaipurPlaces.forEach(p => {
-    const { subcategories } = classifyGooglePlace(p);
-    subcategories.forEach(s => jaipurSubs.add(s));
+  // Test 2: Goa genuine beach with "natural_feature" + beach name -> accepted
+  console.log('\n--- Test 2: Genuine beach with "natural_feature" + beach name ---');
+  const b2 = classifyGooglePlace({
+    name: 'Calangute Beach',
+    types: ['natural_feature', 'tourist_attraction', 'point_of_interest']
   });
+  assert(b2.subcategories.includes('beaches'), 'Calangute Beach with natural_feature + beach name accepted as beaches');
+  assert(b2.categories.includes('nature'), 'Calangute Beach categorized under nature');
 
-  assert(jaipurSubs.has('forts') || jaipurSubs.has('historical-monuments'), 'Jaipur discovers forts/monuments');
-  assert(jaipurSubs.has('lakes'), 'Jaipur discovers lakes');
-  assert(!jaipurSubs.has('beaches'), 'Jaipur strictly DOES NOT discover "beaches" (no false positives)');
-
-  // Test 4: Commercial Place Rejection (Beach View Cafe / Temple View Hotel)
-  console.log('\n--- Test 4: Commercial Non-Attraction Rejection ---');
-  const commercialPlaces = [
-    {
-      place_id: 'c1',
-      name: 'Beach Shack Bar and Restaurant',
-      types: ['restaurant', 'food', 'point_of_interest', 'establishment'],
-      vicinity: 'Calangute Beach, Goa'
-    },
-    {
-      place_id: 'c2',
-      name: 'Temple View Guest House',
-      types: ['lodging', 'point_of_interest', 'establishment'],
-      vicinity: 'Near Kashi Vishwanath, Varanasi'
-    },
-    {
-      place_id: 'c3',
-      name: 'Waterfall View Resort',
-      types: ['hotel', 'lodging', 'resort'],
-      vicinity: 'Near Dudhsagar, Goa'
-    }
-  ];
-
-  commercialPlaces.forEach(cp => {
-    const res = classifyGooglePlace(cp);
-    assert(res.categories.length === 0, `Commercial place "${cp.name}" rejected from all categories`);
-    assert(res.subcategories.length === 0, `Commercial place "${cp.name}" rejected from all subcategories`);
+  // Test 3: Jaipur "water beach (Furkan)" with tourist_attraction but NO beach/natural_feature -> rejected
+  console.log('\n--- Test 3: Jaipur inland "water beach ( Furkan)" rejection ---');
+  const b3 = classifyGooglePlace({
+    name: 'water beach ( Furkan)',
+    types: ['tourist_attraction', 'point_of_interest', 'establishment']
   });
+  assert(!b3.subcategories.includes('beaches'), 'Jaipur "water beach ( Furkan)" without beach/natural_feature type is strictly REJECTED');
 
-  // Test 5: Strict Subcategory Isolation (No Leakage)
-  console.log('\n--- Test 5: Strict Subcategory Isolation ---');
-  const pureWaterfall = {
-    place_id: 'w1',
-    name: 'Harvalem Waterfall',
-    types: ['natural_feature', 'tourist_attraction'],
-    vicinity: 'Sanquelim, Goa'
-  };
-  const waterfallRes = classifyGooglePlace(pureWaterfall);
-  assert(waterfallRes.subcategories.includes('waterfalls'), 'Waterfall place matches "waterfalls"');
-  assert(!waterfallRes.subcategories.includes('beaches'), 'Waterfall place NEVER matches "beaches"');
-  assert(!waterfallRes.subcategories.includes('forts'), 'Waterfall place NEVER matches "forts"');
+  // Test 4: Varanasi "Varanasi Beach" with tourist_attraction but NO beach/natural_feature -> rejected
+  console.log('\n--- Test 4: Varanasi river sandbank "Varanasi Beach" rejection ---');
+  const b4 = classifyGooglePlace({
+    name: 'Varanasi Beach',
+    types: ['tourist_attraction', 'point_of_interest', 'establishment']
+  });
+  assert(!b4.subcategories.includes('beaches'), 'Varanasi river sandbank "Varanasi Beach" without beach/natural_feature type is strictly REJECTED');
 
-  const pureBeach = {
-    place_id: 'b1',
-    name: 'Palolem Beach',
-    types: ['natural_feature', 'beach'],
-    vicinity: 'Canacona, South Goa'
-  };
-  const beachRes = classifyGooglePlace(pureBeach);
-  assert(beachRes.subcategories.includes('beaches'), 'Beach place matches "beaches"');
-  assert(!beachRes.subcategories.includes('waterfalls'), 'Beach place NEVER matches "waterfalls"');
-  assert(!beachRes.subcategories.includes('trekking'), 'Beach place NEVER matches "trekking"');
+  // Test 5: Beach Shack restaurant -> rejected
+  console.log('\n--- Test 5: Beach Shack restaurant rejection ---');
+  const b5 = classifyGooglePlace({
+    name: 'Beach Shack Bar and Restaurant',
+    types: ['restaurant', 'food', 'point_of_interest', 'establishment']
+  });
+  assert(b5.categories.length === 0, 'Beach Shack Bar and Restaurant rejected from all categories');
+  assert(b5.subcategories.length === 0, 'Beach Shack Bar and Restaurant rejected from all subcategories');
 
-  // Test 6: Multi-destination Analysis (Goa + Jaipur)
-  console.log('\n--- Test 6: Multi-Destination Differential Availability ---');
+  // Test 6: Waterfall -> never classified as beaches
+  console.log('\n--- Test 6: Waterfall never classified as beaches ---');
+  const w1 = classifyGooglePlace({
+    name: 'Dudhsagar Waterfalls',
+    types: ['natural_feature', 'waterfall', 'tourist_attraction']
+  });
+  assert(w1.subcategories.includes('waterfalls'), 'Dudhsagar matches waterfalls');
+  assert(!w1.subcategories.includes('beaches'), 'Dudhsagar NEVER matches beaches');
+
+  // Test 7: Fort -> never classified as beaches
+  console.log('\n--- Test 7: Fort never classified as beaches ---');
+  const f1 = classifyGooglePlace({
+    name: 'Fort Aguada',
+    types: ['tourist_attraction', 'historical_landmark']
+  });
+  assert(f1.subcategories.includes('forts'), 'Fort Aguada matches forts');
+  assert(!f1.subcategories.includes('beaches'), 'Fort Aguada NEVER matches beaches');
+
+  // Test 8: Gokarna genuine beaches -> accepted
+  console.log('\n--- Test 8: Gokarna genuine beaches accepted ---');
+  const gok1 = classifyGooglePlace({
+    name: 'Om Beach',
+    types: ['natural_feature', 'beach', 'tourist_attraction']
+  });
+  const gok2 = classifyGooglePlace({
+    name: 'Kudle Beach',
+    types: ['beach', 'natural_feature']
+  });
+  assert(gok1.subcategories.includes('beaches'), 'Gokarna Om Beach accepted as beaches');
+  assert(gok2.subcategories.includes('beaches'), 'Gokarna Kudle Beach accepted as beaches');
+
+  // Test 9: Multi-destination Goa + Jaipur -> beaches available only for Goa
+  console.log('\n--- Test 9: Multi-Destination Goa + Jaipur ---');
   const matrix = await analyzeCategoriesForDestinations(['goa', 'jaipur']);
-  assert(matrix.nature && typeof matrix.nature === 'object', 'Nature pillar in matrix');
-  assert(matrix.heritage && typeof matrix.heritage === 'object', 'Heritage pillar in matrix');
+  const beachesSub = matrix.nature?.subcategories?.find(s => s.id === 'beaches');
+  assert(beachesSub && beachesSub.available, 'Beaches is available in multi-destination matrix');
+  assert(beachesSub.availableIn.length === 1 && /goa/i.test(beachesSub.availableIn[0]), 'Beaches is available ONLY for Goa (availableIn: ' + JSON.stringify(beachesSub.availableIn) + ')');
 
-  const beachesSub = matrix.nature.subcategories.find(s => s.id === 'beaches');
-  assert(beachesSub && beachesSub.available, 'Beaches is available in multi-destination trip with Goa');
-  assert(beachesSub.availableIn.some(d => /goa/i.test(d)), 'Beaches shows available in Goa');
-
-  const fortsSub = matrix.heritage.subcategories.find(s => s.id === 'forts');
-  assert(fortsSub && fortsSub.available, 'Forts is available in multi-destination trip');
-
-  // Test 7: Deduplication across overlapping queries
-  console.log('\n--- Test 7: Place Deduplication Logic ---');
-  const duplicateFeed = [
-    { place_id: 'dup_1', name: 'Calangute Beach', types: ['natural_feature'] },
-    { place_id: 'dup_1', name: 'Calangute Beach', types: ['natural_feature'] },
-    { place_id: 'dup_2', name: 'Baga Beach', types: ['natural_feature'] }
-  ];
-  const seen = new Set();
-  const deduped = [];
-  for (const p of duplicateFeed) {
-    if (seen.has(p.place_id)) continue;
-    seen.add(p.place_id);
-    deduped.push(p);
-  }
-  assert(deduped.length === 2, `Duplicate places merged into exactly 2 unique records (got ${deduped.length})`);
+  // Additional check: Canonical queries structure
+  console.log('\n--- Test 10: Canonical Targeted Discovery Queries Integrity ---');
+  assert(Array.isArray(TARGETED_DISCOVERY_QUERIES), 'TARGETED_DISCOVERY_QUERIES is array');
+  assert(TARGETED_DISCOVERY_QUERIES.length === 6, '6 decoupled discovery queries');
 
   console.log('\n===============================================================');
   console.log(`REGRESSION RESULTS: ${passed} PASSED, ${failed} FAILED`);

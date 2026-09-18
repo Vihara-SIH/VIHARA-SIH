@@ -287,11 +287,11 @@ export function classifyGooglePlace(place) {
   }
 
   // Beaches & Coastal Shorelines
-  if (
-    types.includes('beach') ||
-    /\b(beach|beaches|coast|shore|cove|promenade|sea shore|bay)\b/i.test(name) ||
-    (types.includes('natural_feature') && /\b(sea|ocean|coast|beach|creek)\b/i.test(name))
-  ) {
+  const hasBeachType = types.includes('beach');
+  const hasNaturalFeature = types.includes('natural_feature');
+  const hasBeachName = /\b(beach|beaches|coast|shore|cove|bay)\b/i.test(name);
+
+  if (hasBeachType || (hasNaturalFeature && hasBeachName)) {
     matchedSubcategories.add('beaches');
     matchedCategories.add('nature');
   }
