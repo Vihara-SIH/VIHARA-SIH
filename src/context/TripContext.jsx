@@ -16,7 +16,7 @@ import {
   LocationErrorCode
 } from '../services/locationService';
 import { buildCanonicalTripData } from '../services/vihara/tripSnapshot';
-import { compactTripForAI } from '../services/vihara/schemas';
+import { compactTripForAI, formatVisitingHours } from '../services/vihara/schemas';
 import { validateActions, applyActionsToItinerary } from '../services/vihara/patchEngine';
 import { saveTravelPreferences } from '../services/vihara/personalizationEngine';
 import { buildBudgetModel, recalculateBudgetWithItinerary } from '../services/vihara/budgetEngine';
@@ -567,7 +567,8 @@ export const TripProvider = ({ children }) => {
       time: slotType === 'Morning' ? '09:30 AM - 11:00 AM' : (slotType === 'Evening' ? '05:30 PM - 07:00 PM' : '02:30 PM - 04:00 PM'),
       slotType: `${slotType} Discovery`,
       image: activity.image || 'https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?auto=format&fit=crop&w=800&q=80',
-      visitingHours: activity.visitingHours ? (typeof activity.visitingHours === 'object' ? `${activity.visitingHours.open} - ${activity.visitingHours.close}` : activity.visitingHours) : '09:00 AM - 06:00 PM',
+      visitingHours: formatVisitingHours(activity.visitingHours),
+      regularOpeningHours: activity.regularOpeningHours || null,
       entryInfo: activity.entryInfo || activity.price || (activity.priceVal ? `₹${activity.priceVal}` : 'Free entry'),
       cost: activity.cost ?? activity.priceVal ?? 0,
       priceVal: activity.priceVal ?? activity.cost ?? 0,

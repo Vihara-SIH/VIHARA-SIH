@@ -462,59 +462,75 @@ export function TripOverviewPage({ onPlanNewTrip, onBookStay }) {
                   )}
                 </div>
 
-                {/* Day Activities List */}
+                {/* Day Activities List or Coverage / Leisure Notice */}
                 <div className="p-5 space-y-4">
-                  {day.activities.map((act, actIdx) => (
-                    <div
-                      key={actIdx}
-                      className="flex flex-col sm:flex-row gap-4 p-4 rounded-2xl bg-[#fafaf5] border border-gray-100 hover:border-[#D4AF37]/50 transition-all"
-                    >
-                      {/* Photo Thumbnail */}
-                      <div className="w-full sm:w-36 h-28 flex-shrink-0 rounded-xl overflow-hidden bg-gray-100 relative">
-                        <img
-                          src={act.image}
-                          alt={act.title}
-                          onError={(e) => {
-                            e.target.src = 'https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?auto=format&fit=crop&w=800&q=80';
-                          }}
-                          className="w-full h-full object-cover"
-                        />
-                        <span className="absolute bottom-1 left-1 bg-[#0d1c32]/85 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">
-                          {act.category}
-                        </span>
-                      </div>
+                  {day.activities && day.activities.length > 0 ? (
+                    day.activities.map((act, actIdx) => (
+                      <div
+                        key={actIdx}
+                        className="flex flex-col sm:flex-row gap-4 p-4 rounded-2xl bg-[#fafaf5] border border-gray-100 hover:border-[#D4AF37]/50 transition-all"
+                      >
+                        {/* Photo Thumbnail */}
+                        <div className="w-full sm:w-36 h-28 flex-shrink-0 rounded-xl overflow-hidden bg-gray-100 relative">
+                          <img
+                            src={act.image}
+                            alt={act.title}
+                            onError={(e) => {
+                              e.target.src = 'https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?auto=format&fit=crop&w=800&q=80';
+                            }}
+                            className="w-full h-full object-cover"
+                          />
+                          <span className="absolute bottom-1 left-1 bg-[#0d1c32]/85 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">
+                            {act.category}
+                          </span>
+                        </div>
 
-                      {/* Content */}
-                      <div className="flex-1 flex flex-col justify-between">
-                        <div>
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="text-[11px] font-bold uppercase tracking-wider text-[#735c00] flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
-                              {act.time}
-                            </span>
-                            <span className="text-[10px] text-gray-500 bg-white px-2 py-0.5 rounded-full border border-gray-200">
-                              {act.slotType}
-                            </span>
+                        {/* Content */}
+                        <div className="flex-1 flex flex-col justify-between">
+                          <div>
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-[11px] font-bold uppercase tracking-wider text-[#735c00] flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                {act.time}
+                              </span>
+                              <span className="text-[10px] text-gray-500 bg-white px-2 py-0.5 rounded-full border border-gray-200">
+                                {act.slotType}
+                              </span>
+                            </div>
+                            <h4 className="text-sm font-bold text-[#0d1c32] mb-1">{act.title}</h4>
+                            <p className="text-xs text-gray-600 leading-relaxed mb-2">{act.description}</p>
                           </div>
-                          <h4 className="text-sm font-bold text-[#0d1c32] mb-1">{act.title}</h4>
-                          <p className="text-xs text-gray-600 leading-relaxed mb-2">{act.description}</p>
-                        </div>
 
-                        {/* Travel Tip & Visiting Info */}
-                        <div className="flex flex-wrap items-center gap-3 text-[11px] text-gray-500 pt-2 border-t border-gray-200/60">
-                          {act.visitingHours && (
-                            <span>⏰ <strong>Hours:</strong> {act.visitingHours}</span>
-                          )}
-                          {act.entryInfo && (
-                            <span>🎟️ <strong>Entry:</strong> {act.entryInfo}</span>
-                          )}
-                          {act.travelTip && (
-                            <span className="text-[#735c00]">💡 {act.travelTip}</span>
-                          )}
+                          {/* Travel Tip & Visiting Info */}
+                          <div className="flex flex-wrap items-center gap-3 text-[11px] text-gray-500 pt-2 border-t border-gray-200/60">
+                            {act.visitingHours && (
+                              <span>⏰ <strong>Hours:</strong> {act.visitingHours}</span>
+                            )}
+                            {act.entryInfo && (
+                              <span>🎟️ <strong>Entry:</strong> {act.entryInfo}</span>
+                            )}
+                            {act.travelTip && (
+                              <span className="text-[#735c00]">💡 {act.travelTip}</span>
+                            )}
+                          </div>
                         </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-5 rounded-2xl bg-[#fafaf5] border border-dashed border-[#D4AF37]/60 flex items-start gap-3.5">
+                      <div className="w-9 h-9 rounded-xl bg-[#fed65b]/25 border border-[#D4AF37]/40 text-[#735c00] flex items-center justify-center shrink-0 mt-0.5">
+                        <Compass className="w-4 h-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-[#735c00] mb-1">
+                          {day.coverageNotice ? 'Curated Exploration & Leisure' : 'Free Exploration Day'}
+                        </h4>
+                        <p className="text-xs text-gray-600 leading-relaxed">
+                          {day.coverageNotice || 'No scheduled activities for this day. Reserved for leisure, independent exploration, or relaxing at your stay.'}
+                        </p>
                       </div>
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
             ))}

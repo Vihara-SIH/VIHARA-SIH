@@ -208,6 +208,11 @@ export function PDFItineraryModal({
 
   const firstDestImg = placeCards[0]?.image || 'https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?auto=format&fit=crop&w=1200&q=80';
 
+  const formatDestStr = (d) => {
+    if (!d) return '';
+    return typeof d === 'object' ? (d.name || d.id || '') : String(d);
+  };
+
   return (
     <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
       <div className="bg-[#1e293b] text-[#1a1c19] w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] border border-[#D4AF37]/50 animate-fadeIn">
@@ -225,7 +230,7 @@ export function PDFItineraryModal({
                 VIHARA Travel Dossier PDF
               </h2>
               <span className="text-[11px] text-gray-400">
-                {numberOfDays} Days • {destinationOrder.map(d => d.toUpperCase()).join(' ~ ')}
+                {numberOfDays} Days • {destinationOrder.map(d => formatDestStr(d).toUpperCase()).join(' ~ ')}
               </span>
             </div>
           </div>
@@ -274,7 +279,7 @@ export function PDFItineraryModal({
                     {tripTitle.toUpperCase()}
                   </h1>
                   <p className="text-sm font-semibold tracking-widest text-[#fed65b] uppercase">
-                    {numberOfDays}D / {Math.max(1, numberOfDays - 1)}N • {destinationOrder.map(d => d.toUpperCase()).join(' ~ ')}
+                    {numberOfDays}D / {Math.max(1, numberOfDays - 1)}N • {destinationOrder.map(d => formatDestStr(d).toUpperCase()).join(' ~ ')}
                   </p>
                 </div>
               </div>
@@ -283,7 +288,7 @@ export function PDFItineraryModal({
               <div className="route-strip flex flex-wrap items-center justify-between bg-[#fafaf5] border border-dashed border-[#D4AF37] p-4 rounded-xl text-xs font-bold text-[#0d1c32] mb-6">
                 <span>📍 Origin: {currentLocation}</span>
                 <span>➔</span>
-                <span>{destinationOrder.map(d => d.toUpperCase()).join(' ➔ ')}</span>
+                <span>{destinationOrder.map(d => formatDestStr(d).toUpperCase()).join(' ➔ ')}</span>
                 <span>➔</span>
                 <span>👥 {numberOfTravelers} Travelers ({travelType})</span>
               </div>
@@ -297,7 +302,7 @@ export function PDFItineraryModal({
                   About This Journey
                 </h3>
                 <p className="text-xs text-gray-700 leading-relaxed">
-                  Welcome to your personalized <strong>{tripTitle}</strong>. Spanning <strong>{numberOfDays} days</strong>, this itinerary takes you through the most iconic monuments, sacred heritage sanctums, authentic culinary tasting circuits, and serene sunset viewpoints across <strong>{destinationOrder.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(' and ')}</strong>.
+                  Welcome to your personalized <strong>{tripTitle}</strong>. Spanning <strong>{numberOfDays} days</strong>, this itinerary takes you through the most iconic monuments, sacred heritage sanctums, authentic culinary tasting circuits, and serene sunset viewpoints across <strong>{destinationOrder.map(d => { const s = formatDestStr(d); return s.charAt(0).toUpperCase() + s.slice(1); }).join(' and ')}</strong>.
                 </p>
               </div>
 
@@ -353,33 +358,42 @@ export function PDFItineraryModal({
                       )}
                     </div>
 
-                    {/* Activities Rows */}
-                    <div className="divide-y divide-gray-100">
-                      {day.activities.map((act, actIdx) => (
-                        <div key={actIdx} className="activity-row p-4 flex flex-col sm:flex-row gap-4">
-                          <img
-                            src={act.image}
-                            alt={act.title}
-                            onError={(e) => {
-                              e.target.src = 'https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?auto=format&fit=crop&w=800&q=80';
-                            }}
-                            className="activity-img w-full sm:w-28 h-24 rounded-lg object-cover bg-gray-100 flex-shrink-0"
-                          />
-                          <div className="activity-body flex-1 text-xs">
-                            <span className="time-badge font-bold text-[#735c00] text-[10px] uppercase block mb-1">
-                              ⏰ {act.time} • {act.slotType}
-                            </span>
-                            <h5 className="act-title text-sm font-bold text-[#0d1c32] mb-1">{act.title}</h5>
-                            <p className="act-desc text-gray-600 leading-relaxed mb-2">{act.description}</p>
-                            <div className="act-meta flex flex-wrap gap-3 text-[11px] text-gray-500">
-                              {act.visitingHours && <span>🕒 {act.visitingHours}</span>}
-                              {act.entryInfo && <span>🎟️ {act.entryInfo}</span>}
-                              {act.travelTip && <span className="text-[#735c00]">💡 {act.travelTip}</span>}
+                    {/* Activities Rows or Coverage Notice */}
+                    {day.activities && day.activities.length > 0 ? (
+                      <div className="divide-y divide-gray-100">
+                        {day.activities.map((act, actIdx) => (
+                          <div key={actIdx} className="activity-row p-4 flex flex-col sm:flex-row gap-4">
+                            <img
+                              src={act.image}
+                              alt={act.title}
+                              onError={(e) => {
+                                e.target.src = 'https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?auto=format&fit=crop&w=800&q=80';
+                              }}
+                              className="activity-img w-full sm:w-28 h-24 rounded-lg object-cover bg-gray-100 flex-shrink-0"
+                            />
+                            <div className="activity-body flex-1 text-xs">
+                              <span className="time-badge font-bold text-[#735c00] text-[10px] uppercase block mb-1">
+                                ⏰ {act.time} • {act.slotType}
+                              </span>
+                              <h5 className="act-title text-sm font-bold text-[#0d1c32] mb-1">{act.title}</h5>
+                              <p className="act-desc text-gray-600 leading-relaxed mb-2">{act.description}</p>
+                              <div className="act-meta flex flex-wrap gap-3 text-[11px] text-gray-500">
+                                {act.visitingHours && <span>🕒 {act.visitingHours}</span>}
+                                {act.entryInfo && <span>🎟️ {act.entryInfo}</span>}
+                                {act.travelTip && <span className="text-[#735c00]">💡 {act.travelTip}</span>}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="p-4 bg-[#fafaf5] border-t border-gray-100 text-xs text-gray-600 leading-relaxed">
+                        <span className="font-bold text-[#735c00] block mb-0.5">
+                          {day.coverageNotice ? 'Curated Exploration & Leisure' : 'Free Exploration Day'}
+                        </span>
+                        <p>{day.coverageNotice || 'No scheduled activities for this day. Reserved for leisure, independent exploration, or relaxing at your stay.'}</p>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

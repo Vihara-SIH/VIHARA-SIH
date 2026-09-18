@@ -1,59 +1,20 @@
 import { db } from './firebase.js';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 
-/**
- * Standard Category Definitions for VIHARA
- */
-export const CATEGORY_DEFINITIONS = {
-  spiritual: {
-    id: 'spiritual',
-    name: 'Spiritual',
-    tagline: 'Temples, Sanctums & Inner Peace',
-    subcategories: [
-      { id: 'temples', name: 'Temples' },
-      { id: 'ashrams', name: 'Ashrams' },
-      { id: 'pilgrimage-sites', name: 'Pilgrimage Sites' },
-      { id: 'spiritual-towns', name: 'Spiritual Towns' },
-      { id: 'yoga-meditation', name: 'Yoga & Meditation' }
-    ]
-  },
-  adventure: {
-    id: 'adventure',
-    name: 'Adventure',
-    tagline: 'Thrills, Summits & Expeditions',
-    subcategories: [
-      { id: 'trekking', name: 'Trekking' },
-      { id: 'camping', name: 'Camping' },
-      { id: 'river-rafting', name: 'River Rafting' },
-      { id: 'paragliding', name: 'Paragliding' },
-      { id: 'wildlife-safari', name: 'Wildlife Safari' }
-    ]
-  },
-  heritage: {
-    id: 'heritage',
-    name: 'Heritage',
-    tagline: 'Forts, Palaces & Royal Legacies',
-    subcategories: [
-      { id: 'forts', name: 'Forts' },
-      { id: 'palaces', name: 'Palaces' },
-      { id: 'historical-monuments', name: 'Historical Monuments' },
-      { id: 'unesco-sites', name: 'UNESCO Sites' },
-      { id: 'heritage-walks', name: 'Heritage Walks' }
-    ]
-  },
-  nature: {
-    id: 'nature',
-    name: 'Nature',
-    tagline: 'Lakes, Valleys, Coasts & Wilderness',
-    subcategories: [
-      { id: 'hills-valleys', name: 'Hills & Valleys' },
-      { id: 'waterfalls', name: 'Waterfalls' },
-      { id: 'beaches', name: 'Beaches' },
-      { id: 'national-parks', name: 'National Parks' },
-      { id: 'lakes', name: 'Lakes' }
-    ]
-  }
+import {
+  CATEGORY_DEFINITIONS,
+  resolveRequiredPillars,
+  classifyGooglePlace,
+  getMainCategoryForSubcategory
+} from './vihara/placeClassifier.js';
+
+export {
+  CATEGORY_DEFINITIONS,
+  resolveRequiredPillars,
+  classifyGooglePlace,
+  getMainCategoryForSubcategory
 };
+
 
 /**
  * Rich Knowledge Catalog for expanded Indian destinations with 6+ iconic attractions each.
@@ -223,7 +184,7 @@ export const DESTINATION_CATALOG = {
         id: 'fort-aguada',
         name: 'Fort Aguada & Sinquerim Lighthouse',
         category: 'Heritage',
-        subcategories: ['forts', 'historical-monuments', 'beaches'],
+        subcategories: ['forts', 'historical-monuments'],
         description: 'Well-preserved 17th-century Portuguese fortress standing proudly on Sinquerim Beach, overlooking the Arabian Sea.',
         image: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=800&q=80',
         coordinates: { lat: 15.4920, lng: 73.7736 },
@@ -261,7 +222,7 @@ export const DESTINATION_CATALOG = {
         id: 'chapora-fort',
         name: 'Chapora Fort & Vagator Coast',
         category: 'Heritage',
-        subcategories: ['forts', 'beaches'],
+        subcategories: ['forts', 'historical-monuments'],
         description: 'Iconic red laterite hilltop bastion made famous in popular cinema, offering spectacular 360-degree ocean views over Vagator and Morjim.',
         image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
         coordinates: { lat: 15.6059, lng: 73.7389 },
@@ -299,7 +260,7 @@ export const DESTINATION_CATALOG = {
         id: 'calangute-anjuna',
         name: 'Calangute & Anjuna Coastal Promenade',
         category: 'Nature',
-        subcategories: ['beaches', 'heritage-walks'],
+        subcategories: ['beaches'],
         description: 'Vibrant golden sand shoreline lined with beach shacks, water sports, flea markets, and coastal sunset cafes.',
         image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
         coordinates: { lat: 15.5439, lng: 73.7553 },

@@ -1,4 +1,4 @@
-import { ALLOWED_AI_ACTIONS, expandSelectedCategories } from './schemas.js';
+import { ALLOWED_AI_ACTIONS, expandSelectedCategories, formatVisitingHours } from './schemas.js';
 import { CATEGORY_DEFINITIONS } from '../destinationService.js';
 
 const VALID_CATS = new Set([
@@ -292,7 +292,7 @@ export function applyActionsToItinerary(itinerary = [], actions = []) {
         description: place.description || 'Added by AI Concierge.',
         image: place.image || 'https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?auto=format&fit=crop&w=800&q=80',
         category: place.category || 'Heritage',
-        visitingHours: place.visitingHours || '09:00 AM - 05:00 PM',
+        visitingHours: formatVisitingHours(place.visitingHours),
         entryInfo: place.entryInfo || place.price || 'Standard Entry',
         travelTip: place.travelTip || place.tip || 'Added from concierge request. Confirm opening hours locally.',
         placeId: action.placeId || place.id || `custom_${Date.now()}`,
@@ -336,7 +336,7 @@ export function applyActionsToItinerary(itinerary = [], actions = []) {
         category: repl.category || oldAct.category || 'Heritage',
         image: repl.image || oldAct.image,
         coordinates: repl.coordinates || oldAct.coordinates,
-        visitingHours: repl.visitingHours || oldAct.visitingHours || '09:00 AM - 05:00 PM',
+        visitingHours: formatVisitingHours(repl.visitingHours || oldAct.visitingHours),
         entryInfo: repl.entryInfo || repl.price || oldAct.entryInfo || 'Standard Entry',
         travelTip: repl.travelTip || repl.tip || oldAct.travelTip || 'Recommended cultural replacement.',
         source: 'concierge-replacement',

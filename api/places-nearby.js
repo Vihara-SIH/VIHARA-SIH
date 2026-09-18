@@ -5,14 +5,56 @@ function mapsKey() {
 }
 
 const CATEGORY_HINTS = {
-  heritage: { type: 'tourist_attraction', keyword: 'heritage fort palace monument' },
-  spiritual: { type: 'place_of_worship', keyword: 'temple church mosque' },
-  nature: { type: 'park', keyword: 'lake garden waterfall beach' },
-  adventure: { type: 'tourist_attraction', keyword: 'trek adventure viewpoint' },
+  heritage: { type: 'tourist_attraction', keyword: 'heritage' },
+  spiritual: { type: 'place_of_worship', keyword: 'temple' },
+  nature: { type: 'natural_feature', keyword: 'nature' },
+  adventure: { type: 'tourist_attraction', keyword: 'adventure' },
   forts: { type: 'tourist_attraction', keyword: 'fort' },
   temples: { type: 'hindu_temple', keyword: 'temple' },
-  beaches: { type: 'natural_feature', keyword: 'beach' }
+  beaches: { type: 'natural_feature', keyword: 'beach' },
+  waterfalls: { type: 'natural_feature', keyword: 'waterfall' },
+  lakes: { type: 'natural_feature', keyword: 'lake' },
+  palaces: { type: 'tourist_attraction', keyword: 'palace' }
 };
+
+function extractVisitingHours(p) {
+  const reg = p.regularOpeningHours || p.currentOpeningHours;
+  const periods = reg?.periods;
+  const desc = (reg?.weekdayDescriptions || []).join(' ');
+
+  if (/open\s*24\s*hours|24\s*hours\s*open/i.test(desc)) {
+    return { open: 'Open 24 hours', close: '' };
+  }
+
+  if (Array.isArray(periods) && periods.length > 0) {
+    const p0 = periods[0];
+    if (p0.open && !p0.close && periods.length === 1) {
+      return { open: 'Open 24 hours', close: '' };
+    }
+
+    const formatTime = (t) => {
+      const h = Number(t.hour ?? 9);
+      const m = String(t.minute ?? 0).padStart(2, '0');
+      const ap = h >= 12 ? 'PM' : 'AM';
+      const h12 = h % 12 || 12;
+      return `${String(h12).padStart(2, '0')}:${m} ${ap}`;
+    };
+
+    if (p0.open && p0.close) {
+      return {
+        open: formatTime(p0.open),
+        close: formatTime(p0.close)
+      };
+    }
+    if (p0.open && !p0.close) {
+      return {
+        open: formatTime(p0.open),
+        close: ''
+      };
+    }
+  }
+  return null;
+}
 
 export default async function handler(req, res) {
   applyCors(res, req);
@@ -49,7 +91,7 @@ export default async function handler(req, res) {
         headers: {
           'Content-Type': 'application/json',
           'X-Goog-Api-Key': key,
-          'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.location,places.types,places.rating,places.userRatingCount,places.currentOpeningHours,places.googleMapsUri,places.priceLevel'
+          'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.location,places.types,places.rating,places.userRatingCount,places.currentOpeningHours,places.regularOpeningHours,places.googleMapsUri,places.priceLevel'
         },
         body: JSON.stringify({
           textQuery: q,
@@ -71,8 +113,9 @@ export default async function handler(req, res) {
           const places = rawList.slice(0, 12).map((p) => {
             const pLat = p.location?.latitude;
             const pLng = p.location?.longitude;
-            const name = p.displayName?.text || p.name || 'Heritage Attraction';
+            const name = p.displayName?.text || p.name || 'Attraction';
             const vicinity = p.formattedAddress || '';
+            const hours = extractVisitingHours(p);
             return {
               placeId: p.id,
               place_id: p.id,
@@ -90,6 +133,8 @@ export default async function handler(req, res) {
               longitude: pLng,
               coordinates: Number.isFinite(pLat) && Number.isFinite(pLng) ? { lat: pLat, lng: pLng } : null,
               openingHours: p.currentOpeningHours ? { open_now: !!p.currentOpeningHours.openNow } : null,
+              visitingHours: hours,
+              regularOpeningHours: p.regularOpeningHours || null,
               googleMapsUri: p.googleMapsUri || null,
               priceLevel: p.priceLevel || null,
               source: 'google-places-new',
@@ -115,7 +160,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    const q = `${hint.keyword} ${destination || ''}`.trim();
+    const nomKeyword = hint.keyword || 'attraction';
+    const q = destination ? `${nomKeyword} in ${destination}` : nomKeyword;
     const nominatimUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=8&addressdetails=1`;
     const nomRes = await fetch(nominatimUrl, {
       headers: { 'User-Agent': 'VIHARA-Tourism-App/1.0 (vihara-heritage-travel)' }

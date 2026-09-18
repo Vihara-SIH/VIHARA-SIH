@@ -13,6 +13,10 @@ export function fallbackWeather(city = '') {
   };
 }
 
+function getBaseUrl() {
+  return typeof window !== 'undefined' ? '' : (process.env.TEST_BASE_URL || 'http://localhost:5173');
+}
+
 export async function fetchWeather({ latitude, longitude, date, city } = {}) {
   const lat = Number(latitude);
   const lng = Number(longitude);
@@ -33,7 +37,7 @@ export async function fetchWeather({ latitude, longitude, date, city } = {}) {
     if (day) params.set('date', day);
     if (city) params.set('city', city);
 
-    const res = await fetch(`/api/weather?${params.toString()}`);
+    const res = await fetch(`${getBaseUrl()}/api/weather?${params.toString()}`);
     const data = await res.json();
     if (!res.ok || !data.success || !data.weather) {
       return fallbackWeather(city);

@@ -1,10 +1,10 @@
 import { getDestinationData } from '../destinationService.js';
 import { orderByProximity, clusterPlaces, estimateTravelMinutes } from './geo.js';
 import { rankPlaces, selectDailyCandidates } from './placeRanker.js';
-import { fetchNearbyPlaces, mergeCatalogAndLive } from './nearbyClient.js';
+import { fetchNearbyPlaces, fetchNearbyPlacesForPillars, mergeCatalogAndLive } from './nearbyClient.js';
 import { fetchWeather } from './weatherClient.js';
 import { getRouteDuration } from './routeClient.js';
-import { parseDurationMinutes, parseClock, formatClock, destName, placeMatchesCategories } from './schemas.js';
+import { parseDurationMinutes, parseClock, formatClock, destName, placeMatchesCategories, resolveRequiredPillars, formatVisitingHours } from './schemas.js';
 import { parseEntryCost, getActivityCost } from './budgetEngine.js';
 
 const INDOOR_CATS = /heritage|spiritual|museum|fort|palace|monument|temple|ashram|unesco|gallery/i;
@@ -162,9 +162,9 @@ export async function packDay(places, dest, originCoords, options = {}) {
       description: place.description,
       image: place.image,
       category: place.category || 'Heritage',
-      visitingHours: place.visitingHours?.open
-        ? `${place.visitingHours.open} - ${place.visitingHours.close}`
-        : (typeof place.visitingHours === 'string' ? place.visitingHours : '09:00 AM - 05:00 PM'),
+      visitingHours: formatVisitingHours(place.visitingHours),
+      regularOpeningHours: place.regularOpeningHours || null,
+      currentOpeningHours: place.currentOpeningHours || null,
       entryInfo: place.entryInfo || 'Standard Entry',
       travelTip: place.travelTips || place.rankReasons?.[0] || 'Arrive with buffer time for security checks.',
       placeId: place.id || place.placeId,
@@ -189,32 +189,44 @@ export async function discoverDestinationPlaces(destInput, tripParams) {
   const dest = await getDestinationData(destInput);
   const lat = dest.coordinates?.lat;
   const lng = dest.coordinates?.lng;
-  const primaryCat = (tripParams.selectedCategories || []).find((c) =>
-    ['heritage', 'spiritual', 'nature', 'adventure'].includes(c)
-  ) || 'heritage';
+
+  // Resolve user's selected categories / subcategories into required parent pillars only
+  const requiredPillars = resolveRequiredPillars(tripParams.selectedCategories || []);
 
   let live = { places: [] };
   if (Number.isFinite(lat) && Number.isFinite(lng)) {
-    live = await fetchNearbyPlaces({
+    live = await fetchNearbyPlacesForPillars({
       latitude: lat,
       longitude: lng,
       destination: dest.name,
-      category: primaryCat
+      pillars: requiredPillars,
+      radius: 30000
     });
   }
 
+  // Merge Live Google Places (primary) with catalog / Firestore places
   const merged = mergeCatalogAndLive(dest.places || [], live.places || [], dest);
   const matching = merged.filter((p) => placeMatchesCategories(p, tripParams.selectedCategories || []));
-  const pool = matching.length >= 2 ? matching : merged;
+  const pool = (tripParams.selectedCategories && tripParams.selectedCategories.length > 0)
+    ? matching
+    : merged;
   const ranked = rankPlaces(pool, {
     ...tripParams,
     originCoords: dest.coordinates
   });
 
+  const categoryCoverage = {
+    requested: (tripParams.selectedCategories || []).join(', ') || 'all',
+    availableCandidates: matching.length,
+    requestedDays: tripParams.numberOfDays || 5,
+    fullyCovered: matching.length >= (tripParams.numberOfDays || 5)
+  };
+
   return {
     ...dest,
     places: ranked,
-    discoverySource: live.source || 'catalog',
+    categoryCoverage,
+    discoverySource: live.source || (dest.places?.length ? 'catalog' : 'live'),
     liveFallback: !!live.fallback
   };
 }
@@ -266,8 +278,13 @@ export async function generateIntelligentItinerary(tripData) {
         originCoords: dest.coordinates,
         budgetPerPersonPerDay
       });
-      const pace = tripData.paceByDay?.[dayNumber] || 3;
-      const picked = selectDailyCandidates(rankedCluster, Math.max(2, Math.min(4, pace)), usedIds);
+
+      // Distribute remaining candidates sensibly across remaining destination days
+      const remainingCandidates = (dest.places || []).filter((p) => !usedIds.has(p.id || p.placeId)).length;
+      const remainingDays = Math.max(1, days - d);
+      const idealPace = Math.max(1, Math.min(3, Math.ceil(remainingCandidates / remainingDays)));
+      const pace = tripData.paceByDay?.[dayNumber] || idealPace;
+      const picked = selectDailyCandidates(rankedCluster, pace, usedIds);
 
       const dateIso = isoDateOffset(startDate, dayNumber - 1);
       const weather = await fetchWeather({
@@ -293,7 +310,10 @@ export async function generateIntelligentItinerary(tripData) {
         dateIso,
         weather,
         highlights: activities.filter((a) => a.placeId).map((a) => a.title),
-        activities
+        activities,
+        coverageNotice: activities.length === 0
+          ? `No additional ${selectedCategories.join(', ') || 'attractions'} available. Day reserved for leisure or independent exploration.`
+          : null
       });
       dayNumber += 1;
     }
@@ -302,8 +322,12 @@ export async function generateIntelligentItinerary(tripData) {
   while (itinerary.length < totalDays) {
     const last = destDataList[destDataList.length - 1];
     const dayIdx = itinerary.length;
-    const picked = selectDailyCandidates(last.places || [], 3, usedIds);
+    const remainingCandidates = (last.places || []).filter((p) => !usedIds.has(p.id || p.placeId)).length;
+    const remainingDays = Math.max(1, totalDays - dayIdx);
+    const idealPace = Math.max(1, Math.min(3, Math.ceil(remainingCandidates / remainingDays)));
+    const picked = selectDailyCandidates(last.places || [], idealPace, usedIds);
     const dateIso = isoDateOffset(startDate, dayIdx);
+    const activities = await packDay(picked, last, last.coordinates, { travelMode: tripData.travelMode || 'DRIVE' });
     itinerary.push({
       dayNumber: dayIdx + 1,
       city: last.name,
@@ -317,11 +341,24 @@ export async function generateIntelligentItinerary(tripData) {
         city: last.name
       }),
       highlights: picked.map((p) => p.name),
-      activities: await packDay(picked, last, last.coordinates, { travelMode: tripData.travelMode || 'DRIVE' })
+      activities,
+      coverageNotice: activities.length === 0
+        ? `No additional ${selectedCategories.join(', ') || 'attractions'} available. Day reserved for leisure or independent exploration.`
+        : null
     });
   }
 
-  return itinerary.slice(0, totalDays);
+  const totalAvailableCandidates = destDataList.reduce((sum, d) => sum + (d.places?.length || 0), 0);
+  const categoryCoverage = {
+    requested: selectedCategories.join(', ') || 'all',
+    availableCandidates: totalAvailableCandidates,
+    requestedDays: totalDays,
+    fullyCovered: totalAvailableCandidates >= totalDays
+  };
+
+  const finalItinerary = itinerary.slice(0, totalDays);
+  finalItinerary.categoryCoverage = categoryCoverage;
+  return finalItinerary;
 }
 
 export function generatePlaceCards(itinerary, tripParams = {}) {
@@ -343,7 +380,8 @@ export function generatePlaceCards(itinerary, tripParams = {}) {
         dayNumber: day.dayNumber,
         image: act.image,
         description: act.description,
-        visitingHours: act.visitingHours,
+        visitingHours: formatVisitingHours(act.visitingHours),
+        regularOpeningHours: act.regularOpeningHours || null,
         entryInfo: act.entryInfo,
         travelTips: act.travelTip,
         personalizedRationale: act.rankScore
