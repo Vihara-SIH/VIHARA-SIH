@@ -111,16 +111,11 @@ export default async function handler(req, res) {
     ? `TRIP_CONTEXT_JSON:\n${JSON.stringify(compactTrip).slice(0, 12000)}\n\nUSER_QUESTION:\n${message.trim()}`
     : `USER_QUESTION:\n${message.trim()}\n\n(No active trip context was provided. Answer generally. actions must be [].)`;
 
-  const primaryModel = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+  const primaryModel = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
   const candidateModels = [
     primaryModel,
-    'gemini-2.5-flash',
-    'gemini-2.0-flash',
-    'gemini-1.5-flash',
-    'gemini-flash-latest',
-    'gemini-3.6-flash',
-    'gemini-3.5-flash',
     'gemini-3.5-flash-lite',
+    'gemini-3.5-flash',
     'gemini-3.1-flash-lite'
   ].filter((v, i, a) => a.indexOf(v) === i);
 
