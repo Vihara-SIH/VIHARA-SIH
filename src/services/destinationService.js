@@ -717,11 +717,16 @@ export const fetchDestinationCategoryDiscovery = async (destinationInput) => {
   // 1. Primary: Query the secure /api/destination-categories backend endpoint
   if (lat !== null && lng !== null && Number.isFinite(lat) && Number.isFinite(lng)) {
     try {
+      const searchRadius = (typeof destinationInput === 'object' && destinationInput.radius)
+        ? Math.min(50000, Math.max(3000, destinationInput.radius))
+        : 45000;
+
       const params = new URLSearchParams({
         latitude: String(lat),
         longitude: String(lng),
         destination: name,
-        placeId: placeId || ''
+        placeId: placeId || '',
+        radius: String(searchRadius)
       });
       const baseUrl = typeof window !== 'undefined' ? '' : (process.env.TEST_BASE_URL || 'http://localhost:5173');
       const res = await fetch(`${baseUrl}/api/destination-categories?${params.toString()}`);

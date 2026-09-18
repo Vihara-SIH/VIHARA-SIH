@@ -63,6 +63,21 @@ export const CATEGORY_DEFINITIONS = {
 export const ALL_PILLARS = ['spiritual', 'heritage', 'nature', 'adventure'];
 
 /**
+ * Canonical targeted discovery queries for Google Places (New).
+ * Decouples competing landforms (beaches, waterfalls/lakes, parks/hills)
+ * so subcategories never exhaust each other's result quota.
+ */
+export const TARGETED_DISCOVERY_QUERIES = [
+  { cat: 'spiritual', queryHint: 'temple ashram pilgrimage shrine place of worship' },
+  { cat: 'heritage', queryHint: 'fort palace monument heritage museum unesco site' },
+  { cat: 'nature', subcat: 'beaches', queryHint: 'beach beaches coast shoreline' },
+  { cat: 'nature', subcat: 'waterfalls-lakes', queryHint: 'waterfall falls lake lakes' },
+  { cat: 'nature', subcat: 'parks-hills', queryHint: 'national park wildlife sanctuary reserve valley hill' },
+  { cat: 'adventure', queryHint: 'trekking camping rafting paragliding safari adventure' }
+];
+
+
+/**
  * Reverse mapping from subcategory ID to parent category ID
  */
 const SUBCAT_TO_PARENT_MAP = new Map();

@@ -16,10 +16,11 @@ function getCacheKey(lat, lng, destName, radius) {
 import {
   classifyGooglePlace,
   NON_ATTRACTION_TYPES,
-  GENUINE_TOURISM_TYPES
+  GENUINE_TOURISM_TYPES,
+  TARGETED_DISCOVERY_QUERIES
 } from '../src/services/vihara/placeClassifier.js';
 
-export { classifyGooglePlace, NON_ATTRACTION_TYPES, GENUINE_TOURISM_TYPES };
+export { classifyGooglePlace, NON_ATTRACTION_TYPES, GENUINE_TOURISM_TYPES, TARGETED_DISCOVERY_QUERIES };
 
 
 export default async function handler(req, res) {
@@ -79,13 +80,13 @@ export default async function handler(req, res) {
         }
       };
 
-      // 4 Targeted pillar queries ensuring fair discovery for each category
-      const queries = [
-        { cat: 'spiritual', query: `temple ashram pilgrimage shrine place of worship in ${destination || 'area'}` },
-        { cat: 'heritage', query: `fort palace monument heritage museum unesco site in ${destination || 'area'}` },
-        { cat: 'nature', query: `park lake waterfall beach valley hill mountain in ${destination || 'area'}` },
-        { cat: 'adventure', query: `trekking camping rafting paragliding safari adventure in ${destination || 'area'}` }
-      ];
+      // Targeted queries ensuring fair discovery for all categories and subcategories
+      // Decouples competing landforms (beaches, waterfalls/lakes, parks/hills)
+      const queries = TARGETED_DISCOVERY_QUERIES.map(q => ({
+        cat: q.cat,
+        subcat: q.subcat || null,
+        query: `${q.queryHint} in ${destination || 'area'}`
+      }));
 
       const queryPromises = queries.map(q =>
         fetch(url, {
@@ -94,7 +95,7 @@ export default async function handler(req, res) {
           body: JSON.stringify({
             textQuery: q.query,
             locationBias,
-            maxResultCount: 10
+            maxResultCount: 8
           }),
           signal: AbortSignal.timeout(8000)
         })
